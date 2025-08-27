@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './page/homepage/homepage.component';
@@ -14,6 +13,9 @@ import { PaymentManageComponent } from './admin-page/payment-manage/payment-mana
 import { PromotionComponent } from './admin-page/promotion/promotion.component';
 import { UserInfoComponent } from './admin-page/user-info/user-info.component';
 import { CrudfurnitureComponent } from './admin-page/crudfurniture/crudfurniture.component';
+import { LoginComponent } from './page/login/login.component';
+import { RegisterComponent } from './page/register/register.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -28,11 +30,14 @@ import { CrudfurnitureComponent } from './admin-page/crudfurniture/crudfurniture
     PaymentManageComponent,
     PromotionComponent,
     UserInfoComponent,
-    CrudfurnitureComponent
+    CrudfurnitureComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
