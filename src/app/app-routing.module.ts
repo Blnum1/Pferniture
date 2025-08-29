@@ -11,19 +11,50 @@ import { PromotionComponent } from './admin-page/promotion/promotion.component';
 import { UserInfoComponent } from './admin-page/user-info/user-info.component';
 import { LoginComponent } from './page/login/login.component';
 import { RegisterComponent } from './page/register/register.component';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: HomepageComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'checkstock', component: CheckStockComponent },
-  { path: 'crud', component: CrudfurnitureComponent },
-  { path: 'onoff', component: OnOffStatusComponent },
-  { path: 'oder-manage', component: OrderManageComponent },
-  { path: 'payment-manage', component: PaymentManageComponent },
-  { path: 'promation', component: PromotionComponent },
-  { path: 'userinfo', component: UserInfoComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: '', 
+    component: HomepageComponent
+  },
+  { path: 'dashboard', 
+    component: DashboardComponent,
+    canActivate:[AuthGuard]
+  },
+  { path: 'checkstock', 
+    component: CheckStockComponent,
+    canActivate:[AuthGuard] 
+  },
+  { path: 'crud', 
+    component: CrudfurnitureComponent,
+    canActivate:[AuthGuard] 
+  },
+  { path: 'onoff', 
+    component: OnOffStatusComponent,
+    canActivate:[AuthGuard] 
+  },
+  { path: 'oder-manage', 
+    component: OrderManageComponent,
+    canActivate:[AuthGuard] 
+  },
+  { path: 'payment-manage', 
+    component: PaymentManageComponent,
+    canActivate:[AuthGuard] 
+  },
+  { path: 'promation', 
+    component: PromotionComponent,
+    canActivate:[AuthGuard] 
+  },
+  { path: 'userinfo', 
+    component: UserInfoComponent,
+    canActivate:[AuthGuard] 
+  },
+  { path: 'login', 
+    component: LoginComponent 
+  },
+  { path: 'register', 
+    component: RegisterComponent 
+  },
 ];
 
 @NgModule({

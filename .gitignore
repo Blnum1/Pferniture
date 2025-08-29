@@ -37,6 +37,7 @@ yarn-error.log
 testem.log
 /typings
 
+<<<<<<< HEAD
 # Visual Studio temporary files
 .vs/
 *.sln.sqlite
@@ -46,3 +47,14 @@ testem.log
 [Rr]elease/
 bin/
 obj/
+=======
+# System files
+.DS_Store
+Thumbs.db
+
+# Visual Studio
+.vs/
+*.vsdb
+*.user
+*.suo
+>>>>>>> feature/Login-Register-26082025
