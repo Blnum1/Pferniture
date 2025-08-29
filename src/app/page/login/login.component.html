@@ -1,1 +1,45 @@
-<p>login works!</p>
+<div class="container">
+    <form class="form border p-4 rounded shadow" [formGroup]="loginForm" (ngSubmit)="loginSubmit()">
+        <div class="row">
+            <div class="col text-center p-2 mb-3 bg-light">
+                <span class="fs-3">Login</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col"> <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" formControlName="email">
+                <div class="form-text text-danger" *ngIf="Email.errors?.['required'] && (Email.touched || Email.dirty)">
+                    Email is required.
+                </div>
+                <div class="form-text text-danger" *ngIf="Email.errors?.['email'] && (Email.touched || Email.dirty)">
+                    Email is Invalid.
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="pwd" class="form-label">Password</label>
+                <input type="password" class="form-control" id="pwd" formControlName="pwd">
+                <div class="form-text text-danger" *ngIf="Pwd.errors?.['required'] && (Pwd.touched || Pwd.dirty)">
+                    Password is required.
+                </div>
+                <div class="form-text text-danger" *ngIf="Pwd.errors?.['minlength'] && (Pwd.touched || Pwd.dirty)">
+                    Password number should be at least 6 and max 15 characters long.
+                </div>
+                <div class="form-text text-danger" *ngIf="Pwd.errors?.['maxlength'] && (Pwd.touched || Pwd.dirty)">
+                    Password number should be at least 6 and max 15 characters long.
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col text-center">
+                <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary px-5">Login</button>   
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col text-center">
+                <span>Don't have an account? <a routerLink="/register">Register</a></span>
+            </div>
+        </div>
+    </form>
+</div>
