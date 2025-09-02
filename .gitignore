@@ -58,3 +58,6 @@ Thumbs.db
 *.user
 *.suo
 >>>>>>> feature/Login-Register-26082025
+
+bin/
+obj/
