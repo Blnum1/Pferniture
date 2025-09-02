@@ -13,6 +13,6 @@ namespace TEST100API.Models.Entities
       public string Category_Name { get; set; }
       public string Image_Url1 { get; set; }
       public string Is_Active { get; set; }
-
+      public int? Stock { get; set; }
   }
 }

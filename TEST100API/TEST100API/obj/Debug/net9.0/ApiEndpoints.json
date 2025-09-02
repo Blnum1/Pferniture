@@ -92,7 +92,7 @@
   {
     "ContainingType": "TEST100API.Controllers.ProductController",
     "Method": "GetByCategorySql",
-    "RelativePath": "api/Product/GetByProduct",
+    "RelativePath": "api/Product/GetByProductID",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

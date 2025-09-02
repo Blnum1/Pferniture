@@ -43,7 +43,8 @@ namespace TEST100API.Migrations.ProductDb
                     Image_Url2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image_Url3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Create_At = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Is_Active = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Is_Active = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Stock = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

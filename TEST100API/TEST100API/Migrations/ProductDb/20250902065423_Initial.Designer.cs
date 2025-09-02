@@ -12,7 +12,7 @@ using TEST100API.Data;
 namespace TEST100API.Migrations.ProductDb
 {
     [DbContext(typeof(ProductDbContext))]
-    [Migration("20250831173409_Initial")]
+    [Migration("20250902065423_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -92,6 +92,9 @@ namespace TEST100API.Migrations.ProductDb
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("Stock")
+                        .HasColumnType("int");
+
                     b.HasKey("ProductID");
 
                     b.HasIndex("CategoryID");
@@ -111,7 +114,7 @@ namespace TEST100API.Migrations.ProductDb
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image_Url")
+                    b.Property<string>("Image_Url1")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -137,6 +140,9 @@ namespace TEST100API.Migrations.ProductDb
 
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Stock")
+                        .HasColumnType("int");
 
                     b.ToTable((string)null);
 

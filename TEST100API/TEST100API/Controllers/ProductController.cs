@@ -60,20 +60,23 @@ namespace TEST100API.Controllers
               p.Product_Name, 
               p.Price,
               p.Size,
-              p.color
+              p.Color,
               p.Price_Discount,
               p.PDescription1,
-              c.CategoryID ,
+              c.CategoryID,
               c.Category_Name,
-              p.Image_Url, 
-              p.Is_Active
+              p.Image_Url1, 
+              p.Is_Active,
+              p.Stock
             FROM dbo.Products p
             JOIN dbo.Categories c ON p.CategoryID = c.CategoryID
             ORDER BY p.ProductID")
           .AsNoTracking()
           .ToListAsync();
+
       return Ok(rows);
     }
+
 
     [HttpPut("UpdateProduct/{id:int}")]
     public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductUpdateDto dto)
@@ -100,6 +103,7 @@ namespace TEST100API.Controllers
       if (dto.Image_Url2 != null) product.Image_Url2 = dto.Image_Url2;
       if (dto.Image_Url3 != null) product.Image_Url1 = dto.Image_Url3;
       if (dto.Is_Active != null) product.Is_Active = dto.Is_Active;
+      if (dto.Stock != null) product.Stock = dto.Stock;
 
       await _context.SaveChangesAsync();
       return NoContent();
@@ -147,7 +151,5 @@ namespace TEST100API.Controllers
       await _context.SaveChangesAsync();
       return NoContent();
     }
-
-
   }
 }

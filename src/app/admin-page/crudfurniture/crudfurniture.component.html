@@ -1,2 +1,37 @@
 <app-nav-admin></app-nav-admin>
 <p>crudfurniture works!</p>
+<br />
+<h3>Products</h3>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Action</th>
+  </tr>
+  <tr *ngFor="let p of product">
+    <td>{{ p.product_Name }}</td>
+    <td>{{ p.categoryID }}</td>
+    <td>{{ p.price }}</td>
+    <td>{{ p.price_Discount }}</td>
+    <td>{{ p.pDescription1 }}</td>
+    <td>
+      <img [src]="p.image_Url1" alt="{{ p.product_Name }}" width="100" height="100" />
+    </td>
+
+    <td>
+      <button (click)="editProduct(p)">Edit</button>
+      <button (click)="deleteProduct(p.productID!)">Delete</button>
+    </td>
+  </tr>
+</table>
+
+<div *ngIf="editingProduct">
+    <h3>Edit Product</h3>
+    <input [(ngModel)]="editingProduct.product_Name" placeholder="Product Name" />
+    <input [(ngModel)]="editingProduct.price" placeholder="Price" type="number" />
+    <input [(ngModel)]="editingProduct.price_Discount" placeholder="Price Discount" type="number" />
+    <input [(ngModel)]="editingProduct.pDescription1" placeholder="Description" />      
+    <input [(ngModel)]="editingProduct.image_Url1" placeholder="Image URL" />
+    <button (click)="updateProduct()">Save</button>
+    <button (click)="editingProduct=null">Cancel</button>
+</div>

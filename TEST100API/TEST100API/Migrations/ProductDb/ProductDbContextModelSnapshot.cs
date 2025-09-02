@@ -89,6 +89,9 @@ namespace TEST100API.Migrations.ProductDb
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("Stock")
+                        .HasColumnType("int");
+
                     b.HasKey("ProductID");
 
                     b.HasIndex("CategoryID");
@@ -108,7 +111,7 @@ namespace TEST100API.Migrations.ProductDb
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image_Url")
+                    b.Property<string>("Image_Url1")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -134,6 +137,9 @@ namespace TEST100API.Migrations.ProductDb
 
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Stock")
+                        .HasColumnType("int");
 
                     b.ToTable((string)null);
 
