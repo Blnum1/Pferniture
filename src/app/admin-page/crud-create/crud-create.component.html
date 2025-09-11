@@ -1,0 +1,115 @@
+<app-nav-admin></app-nav-admin>
+<br />
+<br />
+<div class="main-container mb-3">
+  <div *ngIf="product" class="row">
+    
+    <!-- คอลัมน์แรกสำหรับแสดงรูป -->
+    <div class="col-md-6 mb-6">
+      <!-- แถวที่ 1 สำหรับ Image 1 และ URL input -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label>Image 1:</label>
+          <div *ngIf="product.image_Url1">
+            <img [src]="product.image_Url1" alt="Image Preview" width="200" height="200" class="img-thumbnail" />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <input [(ngModel)]="product.image_Url1" name="image_Url1" class="form-control" />
+        </div>
+      </div>
+
+      <!-- แถวที่ 2 สำหรับ Image 2 และ URL input -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label>Image 2:</label>
+          <div *ngIf="product.image_Url2">
+            <img [src]="product.image_Url2" alt="Image Preview" width="200" height="200" class="img-thumbnail" />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <input [(ngModel)]="product.image_Url2" name="image_Url2" class="form-control" />
+        </div>
+      </div>
+
+      <!-- แถวที่ 3 สำหรับ Image 3 และ URL input -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label>Image 3:</label>
+          <div *ngIf="product.image_Url3">
+            <img [src]="product.image_Url3" alt="Image Preview" width="200" height="200" class="img-thumbnail" />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <input [(ngModel)]="product.image_Url3" name="image_Url3" class="form-control" />
+        </div>
+      </div>
+    </div>
+
+    <!-- คอลัมน์ที่สองสำหรับแสดงข้อมูลสินค้า -->
+    <div class="col-md-6 mb-6">
+      <div class="d-flex justify-content-end align-items-end mb-1">
+        <h1>เพิ่มสินค้า</h1>
+        <button type="button" (click)="createProduct(product)" class="btn btn-primary">
+          Create
+        </button>
+      </div>
+
+      <h2>{{ product?.product_Name }}</h2>
+      <form #productForm="ngForm">
+        <div>
+          <label>Product Name:</label>
+          <input [(ngModel)]="product.product_Name" name="product_Name" class="form-control" />
+        </div>
+        <div>
+          <label>Product ID:</label>
+          <input [(ngModel)]="product.productID" name="productID" readonly class="form-control" />
+        </div>
+        <div>
+          <label>Category Name:</label>
+          <input [(ngModel)]="product.category_Name" name="category_Name" readonly class="form-control" />
+        </div>
+        <div>
+          <label>Category ID:</label>
+          <input [(ngModel)]="product.categoryID" name="categoryID" class="form-control" />
+        </div>
+        <div>
+          <label>Size:</label>
+          <input [(ngModel)]="product.size" name="size" class="form-control" />
+        </div>
+        <div>
+          <label>Color:</label>
+          <input [(ngModel)]="product.color" name="color" class="form-control" />
+        </div>
+        <div>
+          <label>Price:</label>
+          <input [(ngModel)]="product.price" name="price" class="form-control" />
+        </div>
+        <div>
+          <label>Price Discount:</label>
+          <input [(ngModel)]="product.price_Discount" name="price_Discount" class="form-control" />
+        </div>
+        <div>
+          <label>Description:</label>
+          <textarea [(ngModel)]="product.pDescription1" name="description1" class="form-control"></textarea>
+        </div>
+        <div>
+          <label>Description 2:</label>
+          <textarea [(ngModel)]="product.pDescription2" name="description2" class="form-control"></textarea>
+        </div>
+        <div>
+          <label>Description 3:</label>
+          <textarea [(ngModel)]="product.pDescription3" name="description3" class="form-control"></textarea>
+        </div>
+        <div>
+          <label>Stock:</label>
+          <input [(ngModel)]="product.stock" name="stock" class="form-control"/>
+        </div>
+        <div>
+          <label>Is Active</label>
+          <input [(ngModel)]="product.is_Active" name="is_Active" class="form-control"/>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

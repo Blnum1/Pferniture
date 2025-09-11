@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 using TEST100API.Data;
 using TEST100API.Models.Entities;
 
@@ -40,14 +42,72 @@ namespace TEST100API.Controllers
 
     [AllowAnonymous]
     [HttpGet("GetByProductID")]
-    public async Task<IActionResult> GetByCategorySql([FromQuery] int productID)
+    public async Task<IActionResult> GetByProductID([FromQuery] int productID)
     {
-      var rows = await _context.Products
-          .FromSqlInterpolated($@"SELECT * FROM dbo.Products WHERE ProductID = {productID}")
+      var rows = await _context.ProductDto
+          .FromSqlRaw(@"
+            SELECT
+                p.ProductID, 
+                p.Product_Name, 
+                p.Price,
+                p.Price_Discount,
+                p.Size,
+                p.Color,
+                p.PDescription1,
+                p.PDescription2,
+                p.PDescription3,
+                c.CategoryID,
+                c.Category_Name,
+                p.Image_Url1,
+                p.Image_Url2,
+                p.Image_Url3, 
+                p.Is_Active,
+                p.Stock
+            FROM dbo.Products p
+            JOIN dbo.Categories c ON p.CategoryID = c.CategoryID
+            WHERE p.ProductID = @ProductID  
+            ORDER BY p.ProductID",
+              new SqlParameter("@ProductID", productID)  
+          )
           .AsNoTracking()
           .ToListAsync();
       return Ok(rows);
     }
+
+    [AllowAnonymous]
+    [HttpGet("GetCategoryByID")]
+    public async Task<IActionResult> GetCategoryByID([FromQuery] int categoryID)
+    {
+      var rows = await _context.ProductDto
+          .FromSqlRaw(@"
+            SELECT
+                p.ProductID, 
+                p.Product_Name, 
+                p.Price,
+                p.Size,
+                p.Color,
+                p.Price_Discount,
+                p.PDescription1,
+                p.PDescription2,
+                p.PDescription3,
+                c.CategoryID,
+                c.Category_Name,
+                p.Image_Url1,
+                p.Image_Url2,
+                p.Image_Url3,
+                p.Is_Active,
+                p.Stock
+            FROM dbo.Products p
+            JOIN dbo.Categories c ON p.CategoryID = c.CategoryID
+            WHERE c.CategoryID = @CategoryID 
+            ORDER BY p.ProductID",
+              new SqlParameter("@CategoryID ", categoryID)
+          )
+          .AsNoTracking()
+          .ToListAsync();
+      return Ok(rows);
+    }
+
 
     [AllowAnonymous]
     [HttpGet("GetProductAll")]
@@ -57,17 +117,21 @@ namespace TEST100API.Controllers
           .FromSqlRaw(@"
             SELECT
               p.ProductID, 
-              p.Product_Name, 
-              p.Price,
-              p.Size,
-              p.Color,
-              p.Price_Discount,
-              p.PDescription1,
-              c.CategoryID,
-              c.Category_Name,
-              p.Image_Url1, 
-              p.Is_Active,
-              p.Stock
+                p.Product_Name, 
+                p.Price,
+                p.Price_Discount,
+                p.Size,
+                p.Color,
+                p.PDescription1,
+                p.PDescription2,
+                p.PDescription3,
+                c.CategoryID,
+                c.Category_Name,
+                p.Image_Url1,
+                p.Image_Url2,
+                p.Image_Url3, 
+                p.Is_Active,
+                p.Stock
             FROM dbo.Products p
             JOIN dbo.Categories c ON p.CategoryID = c.CategoryID
             ORDER BY p.ProductID")
@@ -151,5 +215,9 @@ namespace TEST100API.Controllers
       await _context.SaveChangesAsync();
       return NoContent();
     }
+
+  
+
+
   }
 }

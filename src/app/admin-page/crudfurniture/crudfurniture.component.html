@@ -1,31 +1,132 @@
 <app-nav-admin></app-nav-admin>
 <p>crudfurniture works!</p>
 <br />
-<h3>Products</h3>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Price</th>
-    <th>Action</th>
-  </tr>
-  <tr *ngFor="let p of product">
-    <td>{{ p.product_Name }}</td>
-    <td>{{ p.categoryID }}</td>
-    <td>{{ p.price }}</td>
-    <td>{{ p.price_Discount }}</td>
-    <td>{{ p.pDescription1 }}</td>
-    <td>
-      <img [src]="p.image_Url1" alt="{{ p.product_Name }}" width="100" height="100" />
-    </td>
+<div class="main-container">
+  <div class="d-flex justify-content-between align-items-center mb-1">
+    <h1>จัดการสินค้า</h1>
+    <button class="btn btn-primary me-2" style="width: 100px;" [routerLink]="['/crud-create']">เพิ่มสินค้า</button>
+  </div>
 
-    <td>
-      <button (click)="editProduct(p)">Edit</button>
-      <button (click)="deleteProduct(p.productID!)">Delete</button>
-    </td>
-  </tr>
-</table>
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col-md-2">
+        <label for="searchProductId">Search by ID:</label>
+      </div>
+      <div class="col-md-4">
+        <input id="searchProductId" [(ngModel)]="searchProductId" class="form-control" placeholder="Enter product ID" />
+      </div>
+      <div class="col-md-2">
+        <label for="searchProductName">Search by Name:</label>
+      </div>
+      <div class="col-md-4">
+        <input id="searchProductName" [(ngModel)]="searchProductName" class="form-control"
+          placeholder="Enter product name" />
+      </div>
+    </div>
 
-<div *ngIf="editingProduct">
+    <div class="row mb-3">
+      <div class="col-md-2">
+        <label for="searchCategoryId">Search by Category ID:</label>
+      </div>
+      <div class="col-md-4">
+        <input id="searchCategoryId" [(ngModel)]="searchCategoryId" class="form-control"
+          placeholder="Enter category ID" />
+      </div>
+      <div class="col-md-2">
+        <label for="searchCategoryName">Search by Category Name:</label>
+      </div>
+      <div class="col-md-4">
+        <input id="searchCategoryName" [(ngModel)]="searchCategoryName" class="form-control"
+          placeholder="Enter category name" />
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-2">
+        <label for="searchPriceStart">Price Start:</label>
+      </div>
+      <div class="col-md-4">
+        <input type="number" id="searchPriceStart" [(ngModel)]="searchPriceStart" class="form-control"
+          placeholder="Min price" />
+      </div>
+      <div class="col-md-2">
+        <label for="searchPriceEnd">Price End:</label>
+      </div>
+      <div class="col-md-4">
+        <input type="number" id="searchPriceEnd" [(ngModel)]="searchPriceEnd" class="form-control"
+          placeholder="Max price" />
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-2">
+        <label for="searchIsActive">Active:</label>
+      </div>
+      <div class="col-md-4">
+        <input id="searchIsActive" [(ngModel)]="searchIsActive" class="form-control" placeholder="true / false" />
+      </div>
+    </div>
+  </div>
+
+  <div class="search-button d-flex justify-content-center mb-3" style="gap: 10px;">
+    <button class="btn btn-primary" (click)="searchProducts()">Search</button>
+    <button class="btn btn-secondary" (click)="clearSearch()">Clear</button>
+  </div>
+
+  <div class="table-container">
+    <table class="table table-bordered table-striped table-responsive" style="width: 100%;">
+      <thead>
+        <tr>
+          <th scope="col" style="width: 20%;">Product Name</th>
+          <th scope="col" style="width: 10%;">Product ID</th>
+          <th scope="col" style="width: 10%;">Size</th>
+          <th scope="col" style="width: 10%;">Color</th>
+          <th scope="col" style="width: 15%;">Category Name</th>
+          <th scope="col" style="width: 10%;">Category ID</th>
+          <th scope="col" style="width: 10%;">Price</th>
+          <th scope="col" style="width: 10%;">Price Discount</th>
+          <th scope="col" style="width: 10%;">Active</th>
+          <th scope="col" style="width: 10%;">Stock</th>
+          <th scope="col" style="width: 10%;">Image</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of currentProducts()">
+          <td>{{ p.product_Name }}</td>
+          <td>
+            <a [routerLink]="['/crud', p.productID]">{{ p.productID }}</a>
+          </td>
+          <td>{{ p.size }}</td>
+          <td>{{ p.color }}</td>
+          <td>{{ p.category_Name }}</td>
+          <td>{{ p.categoryID}}</td>
+          <td>{{ p.price }}</td>
+          <td>{{ p.price_Discount }}</td>
+          <td>{{ p.is_Active }}</td>
+          <td>{{ p.stock }}</td>
+          <td>
+            <img [src]="p.image_Url1" alt="{{ p.product_Name }}" width="100" height="100" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-options">
+    <label for="pageSize">Items per page: </label>
+    <select id="pageSize" [(ngModel)]="pageSize" (change)="updatePageSize()">
+      <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
+    </select>
+  </div>
+  <div class="pagination-controls">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+
+</div>
+
+<!-- <div *ngIf="editingProduct">
     <h3>Edit Product</h3>
     <input [(ngModel)]="editingProduct.product_Name" placeholder="Product Name" />
     <input [(ngModel)]="editingProduct.price" placeholder="Price" type="number" />
@@ -34,4 +135,4 @@
     <input [(ngModel)]="editingProduct.image_Url1" placeholder="Image URL" />
     <button (click)="updateProduct()">Save</button>
     <button (click)="editingProduct=null">Cancel</button>
-</div>
+</div> -->

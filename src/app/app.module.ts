@@ -19,7 +19,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { FormsModule } from '@angular/forms';
-
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CrudCreateComponent } from './admin-page/crud-create/crud-create.component';
+import { CrudDetailComponent } from './admin-page/crud-detail/crud-detail.component';
 
 @NgModule({
   declarations: [
@@ -36,17 +42,24 @@ import { FormsModule } from '@angular/forms';
     UserInfoComponent,
     CrudfurnitureComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    CrudCreateComponent,
+    CrudDetailComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatButtonModule,
+    BrowserAnimationsModule
   ],
   providers: [
-    AuthService
+    AuthService,
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })

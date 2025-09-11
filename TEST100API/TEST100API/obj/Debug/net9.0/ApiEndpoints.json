@@ -91,7 +91,7 @@
   },
   {
     "ContainingType": "TEST100API.Controllers.ProductController",
-    "Method": "GetByCategorySql",
+    "Method": "GetByProductID",
     "RelativePath": "api/Product/GetByProductID",
     "HttpMethod": "GET",
     "IsController": true,
@@ -99,6 +99,22 @@
     "Parameters": [
       {
         "Name": "productID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TEST100API.Controllers.ProductController",
+    "Method": "GetCategoryByID",
+    "RelativePath": "api/Product/GetCategoryByID",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "categoryID",
         "Type": "System.Int32",
         "IsRequired": false
       }

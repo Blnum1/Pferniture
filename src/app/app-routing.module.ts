@@ -1,3 +1,4 @@
+import { CrudDetailComponent } from './admin-page/crud-detail/crud-detail.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomepageComponent } from './page/homepage/homepage.component'; 
@@ -12,6 +13,7 @@ import { UserInfoComponent } from './admin-page/user-info/user-info.component';
 import { LoginComponent } from './page/login/login.component';
 import { RegisterComponent } from './page/register/register.component';
 import { AuthGuard } from './services/auth.guard';
+import { CrudCreateComponent } from './admin-page/crud-create/crud-create.component';
 
 const routes: Routes = [
   { path: '', 
@@ -27,6 +29,14 @@ const routes: Routes = [
   },
   { path: 'crud', 
     component: CrudfurnitureComponent,
+    canActivate:[AuthGuard] 
+  },
+  { path: 'crud/:id', 
+    component: CrudDetailComponent,
+    canActivate:[AuthGuard] 
+  },
+  { path: 'crud-create', 
+    component: CrudCreateComponent,
     canActivate:[AuthGuard] 
   },
   { path: 'onoff', 

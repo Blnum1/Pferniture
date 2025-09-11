@@ -1,0 +1,61 @@
+.table-responsive {
+  overflow-x: auto; /* ทำให้สามารถเลื่อนแนวนอนได้ */
+  -webkit-overflow-scrolling: touch;
+}
+
+.table th, .table td {
+  text-align: center; /* จัดการข้อความให้อยู่ตรงกลาง */
+  vertical-align: middle; /* จัดการข้อความให้อยู่ในแนวตั้งตรงกลาง */
+}
+
+.table td img {
+  max-width: 100%; /* ปรับขนาดภาพให้ไม่เกินขนาดของเซลล์ */
+  height: auto;
+}
+
+.ContainerTable {
+  margin: 10px; /* เพิ่มระยะห่างรอบๆ ตาราง */
+  border: 1px solid #ddd; /* ขอบตาราง */
+  border-radius: 5px; /* มุมโค้งมน */
+  background-color: #f9f9f9; /* สีพื้นหลังอ่อนๆ */
+}
+
+.table-container {
+  max-height: 600px;  /* กำหนดความสูงสูงสุดของตาราง */
+  overflow-y: auto;   /* เปิดใช้งานการเลื่อนในแนวตั้ง */
+  display: block;     /* ทำให้ตารางสามารถเลื่อนในแนวตั้งได้ */
+}
+
+.pagination-options {
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: end;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.pagination-controls button {
+  padding: 5px 10px;
+  margin: 0 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+}
+
+.pagination-controls button:disabled {
+  cursor: not-allowed;
+  background-color: #ddd;
+}
+.main-container{
+  padding-left: 7%; 
+  padding-right: 7%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  
+}

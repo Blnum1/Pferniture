@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 export interface Product {
   productID?: number;
   categoryID?: number;
+  category_Name?: string;
   product_Name?: string;
   size?: string;
   color?: string;
@@ -26,29 +27,35 @@ export interface Product {
 })
 
 export class ProductService {
-  private apiUrl = 'http://localhost:5140/api/Product'; // เปลี่ยนตาม backend ของคุณ
+  private apiUrl = 'http://localhost:5140/api/Product'; 
 
   constructor(private http: HttpClient) { }
 
-  // GET products
+
   getAllProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrl}/GetProductAll`);
   }
 
-  getProductByID(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.apiUrl}/GetByProductID/${id}`);
-  }
-  // CREATE product
+ getProductByID(productID: number): Observable<Product[]> {
+  const params = new HttpParams().set('productID', productID.toString());
+  return this.http.get<Product[]>(`${this.apiUrl}/GetByProductID`, { params });
+}
+
+getCategoryByID(categoryID: number): Observable<Product[]> {
+  const params = new HttpParams().set('categoryID', categoryID.toString());
+  return this.http.get<Product[]>(`${this.apiUrl}/GetCategoryByID`, { params });
+}
+
+
   createProduct(product: Product): Observable<any> {
     return this.http.post(`${this.apiUrl}/CreateProduct`, product);
   }
 
-  // UPDATE product
+
   updateProduct(id: number, product: Product): Observable<any> {
     return this.http.put(`${this.apiUrl}/UpdateProduct/${id}`, product);
   }
 
-  // DELETE product
   deleteProduct(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/DeleteProduct/${id}`);
   }
