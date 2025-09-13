@@ -1,0 +1,18 @@
+.nav-block {
+  display: block;           /* ให้กล่องกว้างเต็มความกว้างของตัว container */
+  width: 175px;              /* ทำให้กล่องมีความกว้างเต็มหน้าจอ */
+  padding: 20px 20px;       /* เพิ่ม padding ภายในกล่อง */
+  font-size: 18px;          /* เพิ่มขนาดตัวอักษร */
+  text-align: center;       /* ทำให้ข้อความอยู่กลาง */
+  background-color: #f8f9fa;/* สีพื้นหลังเมื่อปกติ */
+  border: 2px solid transparent; /* เส้นขอบโปร่งใสเมื่อไม่ hover */
+  cursor: pointer;         /* เปลี่ยน cursor เมื่อ hover */
+  border-radius: 5px;       /* มุมมน */
+  transition: all 0.3s;     /* เพิ่ม transition ให้คลิกดูนุ่มนวล */
+}
+
+.nav-block:hover {
+  background-color: #393a3b; /* เปลี่ยนสีพื้นหลังเมื่อ hover */
+  color: white;               /* เปลี่ยนสีตัวอักษรเมื่อ hover */
+  border-color: #393a3b;      /* เปลี่ยนสีขอบเมื่อ hover */
+}

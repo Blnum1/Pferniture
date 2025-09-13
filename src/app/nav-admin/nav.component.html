@@ -1,9 +1,10 @@
-<nav class="navbar">
+<nav class="navbar justify-content-between">
   <div class="hamburger-menu" (click)="toggleMenu()">
     <div class="line" [class.open]="isMenuOpen"></div>
     <div class="line" [class.open]="isMenuOpen"></div>
     <div class="line" [class.open]="isMenuOpen"></div>
   </div>
+  <button class="btn btn-primary"(click)="logout()">Logout</button>
   <div class="menu" [class.open]="isMenuOpen">
     <ul>
       <li><a routerLink="/" (click)="closeMenu()">Home</a></li>

@@ -14,6 +14,16 @@ import { LoginComponent } from './page/login/login.component';
 import { RegisterComponent } from './page/register/register.component';
 import { AuthGuard } from './services/auth.guard';
 import { CrudCreateComponent } from './admin-page/crud-create/crud-create.component';
+import { Pd1Component } from './page/pd-1/pd-1.component';
+import { Pd2Component } from './page/pd-2/pd-2.component';
+import { Pd3Component } from './page/pd-3/pd-3.component';
+import { Pd4Component } from './page/pd-4/pd-4.component';
+import { Pd5Component } from './page/pd-5/pd-5.component';
+import { Pd6Component } from './page/pd-6/pd-6.component';
+import { Pd7Component } from './page/pd-7/pd-7.component';
+import { Pd8Component } from './page/pd-8/pd-8.component';
+import { CartComponent } from './page/cart/cart.component';
+import { ProductDetailComponent } from './page/product-detail/product-detail.component';
 
 const routes: Routes = [
   { path: '', 
@@ -65,6 +75,37 @@ const routes: Routes = [
   { path: 'register', 
     component: RegisterComponent 
   },
+  { path: 'pd-1', 
+    component: Pd1Component 
+  },
+  { path: 'pd-2', 
+    component: Pd2Component 
+  },
+  { path: 'pd-3', 
+    component: Pd3Component 
+  },
+  { path: 'pd-4', 
+    component: Pd4Component 
+  },
+  { path: 'pd-5', 
+    component: Pd5Component 
+  },
+  { path: 'pd-6', 
+    component: Pd6Component 
+  },
+  { path: 'pd-7', 
+    component: Pd7Component 
+  },
+  { path: 'pd-8', 
+    component: Pd8Component 
+  },
+  { path: 'cart', 
+    component: CartComponent 
+  },
+  { path: 'product-detail/:id', 
+    component: ProductDetailComponent
+  },
+
 ];
 
 @NgModule({
