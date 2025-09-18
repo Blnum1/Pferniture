@@ -10,5 +10,7 @@ namespace TEST100API.Models.Entities
     public string? Pwd { get; set; }
     public string? Role { get; set; }
     public DateTime MemberSince { get; set; }
+
+    public ICollection<Order>? Orders { get; set; }
   }
 }

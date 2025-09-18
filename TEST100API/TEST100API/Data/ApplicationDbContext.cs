@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TEST100API.Models.Entities;
 
 namespace TEST100API.Data

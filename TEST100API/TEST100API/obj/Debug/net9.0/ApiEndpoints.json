@@ -26,6 +26,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "TEST100API.Controllers.OrderController",
+    "Method": "Create",
+    "RelativePath": "api/Order/CreateOrder",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "order",
+        "Type": "TEST100API.Models.Entities.Order",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TEST100API.Controllers.PaymentController",
+    "Method": "Create",
+    "RelativePath": "api/Payment/CreatePayment",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "payment",
+        "Type": "TEST100API.Models.Entities.Payment",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TEST100API.Controllers.ProductController",
     "Method": "CreateCate",
     "RelativePath": "api/Product/CreateCategory",
@@ -168,6 +200,22 @@
       {
         "Name": "dto",
         "Type": "TEST100API.Models.Entities.ProductUpdateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TEST100API.Controllers.ShippingInfoController",
+    "Method": "Create",
+    "RelativePath": "api/ShippingInfo/CreateShippingInfo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "shippingInfo",
+        "Type": "TEST100API.Models.Entities.ShippingInfo",
         "IsRequired": true
       }
     ],
