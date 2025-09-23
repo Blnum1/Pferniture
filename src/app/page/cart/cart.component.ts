@@ -1,5 +1,6 @@
+// src/app/page/cart/cart.component.ts
 import { Component, OnInit } from '@angular/core';
-import { CartService, Order } from '../../services/cart.service';
+import { CartService, CartItemDto } from '../../services/cart.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,51 +9,93 @@ import { Router } from '@angular/router';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  cartItems: Order[] = [];
-  userID: number = 1;
+  userID = 1;                // ดึงมาจาก AuthService.currentUser.id ในโปรเจกต์จริง
+  cartID!: number;           // ได้มาจาก getOrCreate
+  cartItems: CartItemDto[] = [];
+  loading = true;
+  errorMsg = '';
+  allSelected = false;
+  selectedTotal = 0;
 
-  constructor(private cartService: CartService, private router: Router) {}
+
+  constructor(private cartSvc: CartService, private router: Router) { }
 
   ngOnInit(): void {
-    this.cartService.getCartItems(this.userID).subscribe((data: Order[]) => {
-      if (data && Array.isArray(data)) {
-        this.cartItems = data;
+    this.loadCart();
+  }
+
+  private loadCart(): void {
+    this.loading = true;
+    this.errorMsg = '';
+    this.cartSvc.getOrCreateCart(this.userID).subscribe({
+      next: (cartId) => {
+        this.cartID = cartId;
+        this.cartSvc.getItems(cartId).subscribe({
+          next: (items) => {
+            this.cartItems = items ?? [];
+            this.loading = false;
+          },
+          error: (err) => {
+            this.errorMsg = 'โหลดรายการตะกร้าไม่สำเร็จ';
+            console.error(err);
+            this.loading = false;
+          }
+        });
+      },
+      error: (err) => {
+        this.errorMsg = 'สร้าง/ดึงตะกร้าไม่สำเร็จ';
+        console.error(err);
+        this.loading = false;
       }
     });
   }
 
-  // // ฟังก์ชันเพิ่มจำนวนสินค้า
-  increaseQuantity(productID: number): void {
-    const item = this.cartItems.find(i => i.productID === productID);
-    if (item) {
-      item.quantity++;
-      this.updateCart(item);
-    }
+  increaseQuantity(ci: CartItemDto): void {
+    const newQty = ci.quantity + 1;
+    this.cartSvc.updateItemQuantity(ci.cartItemID, newQty).subscribe({
+      next: () => ci.quantity = newQty,
+      error: (err) => console.error(err)
+    });
   }
 
-  // ฟังก์ชันลดจำนวนสินค้า
-  decreaseQuantity(productID: number): void {
-    const item = this.cartItems.find(i => i.productID === productID);
-    if (item && item.quantity > 1) {
-      item.quantity--;
-      this.updateCart(item);
-    }
+  decreaseQuantity(ci: CartItemDto): void {
+    if (ci.quantity <= 1) return;
+    const newQty = ci.quantity - 1;
+    this.cartSvc.updateItemQuantity(ci.cartItemID, newQty).subscribe({
+      next: () => ci.quantity = newQty,
+      error: (err) => console.error(err)
+    });
   }
 
-  // ฟังก์ชันลบสินค้าออกจากตะกร้า
-  removeFromCart(productID: number): void {
-    this.cartItems = this.cartItems.filter(i => i.productID !== productID);
-    this.updateCart();
+  remove(ci: CartItemDto): void {
+    this.cartSvc.removeItem(ci.cartItemID).subscribe({
+      next: () => this.cartItems = this.cartItems.filter(x => x.cartItemID !== ci.cartItemID),
+      error: (err) => console.error(err)
+    });
   }
 
-  // ฟังก์ชันคำนวณยอดรวม
-  getTotalAmount(): number {
-    return this.cartItems.reduce((total, item) => total + (item.price_amount * item.quantity), 0);
+  get total(): number {
+    return this.cartItems.reduce((sum, i) => sum + (i.price_amount * i.quantity), 0);
   }
 
-  // ฟังก์ชันอัปเดตตะกร้า
-  updateCart(item?: Order): void {
-    // อัปเดตข้อมูลตะกร้าทั้งหมดที่จำเป็น เช่น เก็บใน localStorage หรือ API
-    console.log('Updated Cart:', this.cartItems);
+  updateSelection() {
+    this.allSelected = this.cartItems.every(i => i.selected);
+    this.selectedTotal = this.cartItems
+      .filter(i => i.selected)
+      .reduce((sum, i) => sum + (i.price_amount * i.quantity), 0);
   }
+
+  toggleSelectAll(event: any) {
+    this.allSelected = event.target.checked;
+    this.cartItems.forEach(i => i.selected = this.allSelected);
+    this.updateSelection();
+  }
+  hasSelection(): boolean {
+    return this.cartItems.some(i => i.selected);
+  }
+  checkout() {
+    const selected = this.cartItems.filter(i => i.selected);
+    console.log('Selected items for checkout:', selected);
+  }
+  
 }

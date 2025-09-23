@@ -1,51 +1,58 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, map } from 'rxjs';
 
-export interface Order {
-  quantity: any;
-  orderID: number;
-  userID: number;
-  email: string;
-  firstName: string;
-  lastName: string;
+export interface CartItemDto {
+  cartItemID: number;
+  cartID: number;
   productID: number;
   product_Name: string;
-  status: string;
-  price_amount: number;
-  order_date: string;
-  total_amount: number;
-  address: string;
-  shipping_Method: string;
-  payment_Method: string;
-  payment_Status: string;
-  payment_date: string;
-  payment_Amount: number;
+  price_amount: number;   // ราคาต่อชิ้น (unit price)
+  quantity: number;
+  image_Url1?: string;
+   selected?: boolean;
+  // เพิ่ม field ฝั่ง backend ที่ส่งมาได้ตามจริง
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CartService {
-
-  private apiUrl = 'http://localhost:5140/api/Order'; 
+  private base = 'http://localhost:5140/api/Cart';
 
   constructor(private http: HttpClient) {}
 
-  getCartItems(userID: number): Observable<Order[]> {
-  const params = new HttpParams().set('UserID', userID.toString());  
-  return this.http.get<Order[]>(`${this.apiUrl}/GetOrderCart`, { params });
-}
+  getOrCreateCart(userId: number): Observable<number> {
+    const params = new HttpParams().set('userId', userId.toString());
+    return this.http.post<{ cartID: number }>(`${this.base}/GetOrCreateCart`, null, { params })
+      .pipe(map(res => res.cartID));
+  }
 
-  getAllOrder(): Observable<Order[]> {
-      return this.http.get<Order[]>(`${this.apiUrl}/GetOrderDetail`);
-    }
+  getItems(cartId: number): Observable<CartItemDto[]> {
+    const params = new HttpParams().set('cartId', cartId.toString());
+    return this.http.get<CartItemDto[]>(`${this.base}/Items`, { params });
+  }
 
-  addToCart(productId: number, userId: number | null): Observable<any> {
-    const body = {
-      ProductID: productId,
-      UserID: userId
-    };
-    return this.http.post(`${this.apiUrl}/AddToCart`, body);
+  addItem(cartId: number, productId: number, qty = 1): Observable<any> {
+    return this.http.post(`${this.base}/AddItemToCart`, {
+      cartID: cartId,
+      productID: productId,
+      quantity: qty
+    });
+  }
+
+  updateItemQuantity(cartItemId: number, qty: number): Observable<any> {
+    return this.http.put(`${this.base}/UpdateItemQuantity`, {
+      cartItemID: cartItemId,
+      quantity: qty
+    });
+  }
+
+  removeItem(cartItemId: number): Observable<any> {
+    return this.http.delete(`${this.base}/RemoveItem/${cartItemId}`);
+  }
+
+  /** เคลียร์ทั้งตะกร้า */
+  clear(cartId: number): Observable<any> {
+    const params = new HttpParams().set('cartId', cartId.toString());
+    return this.http.delete(`${this.base}/Clear`, { params });
   }
 }

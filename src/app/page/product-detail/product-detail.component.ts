@@ -4,21 +4,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
 
-declare const bootstrap: any; 
+declare const bootstrap: any;
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
-  styleUrls: ['./product-detail.component.css'] 
+  styleUrls: ['./product-detail.component.css']
 })
 export class ProductDetailComponent implements OnInit {
-  product: Product | null = null; 
-  userId: number | null = null;
-  isFavorite: false | undefined;
-
-  // รูปที่เกี่ยวข้อง
+  product: Product | null = null;
   images: string[] = [];
-  selectedImage: string | null = null; 
+  selectedImage: string | null = null;
+  isFavorite = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,84 +26,70 @@ export class ProductDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const productId = this.route.snapshot.paramMap.get('id');
+    // โหลดสินค้า
+    const productId = Number(this.route.snapshot.paramMap.get('id'));
     if (productId) {
-      this.productService.getProductByID(Number(productId)).subscribe(data => {
-        this.product = data && data.length ? data[0] : null;
+      this.productService.getProductByID(productId).subscribe(data => {
+        this.product = (data && data.length) ? data[0] : null;
         this.buildImages();
       });
     }
+
+    // ให้แน่ใจว่า currentUser ถูกเติมข้อมูล
     this.authService.loadCurrentUser();
   }
 
   private buildImages(): void {
     this.images = [];
     this.selectedImage = null;
-
     if (!this.product) return;
 
     if (this.product.image_Url1) this.images.push(this.product.image_Url1);
     if (this.product.image_Url2) this.images.push(this.product.image_Url2);
     if (this.product.image_Url3) this.images.push(this.product.image_Url3);
-
-    this.selectedImage = this.images.length ? this.images[0] : null;
+    this.selectedImage = this.images[0] ?? null;
   }
 
   selectImage(img?: string | number): void {
-    if (!this.images || this.images.length === 0) return;
-
-    if (typeof img === 'string') {
-      const idx = this.images.indexOf(img);
-      if (idx >= 0) {
-        this.goToSlide(idx);
-      } else {
-        this.selectedImage = img; // fallback
-      }
-      return;
-    }
-
-    const index = (typeof img === 'number') ? img : 0;
-    this.goToSlide(index);
+    if (!this.images?.length) return;
+    const idx = typeof img === 'number' ? img : this.images.indexOf(img ?? '');
+    this.goToSlide(Math.max(0, Math.min(idx, this.images.length - 1)));
   }
 
   private goToSlide(index: number) {
-    const carouselEl = document.getElementById('productCarousel');
-    if (typeof bootstrap !== 'undefined' && bootstrap.Carousel) {
-    try {
-      const instance = bootstrap.Carousel.getInstance(carouselEl) ?? new bootstrap.Carousel(carouselEl);
-      instance.to(index);
+    const el = document.getElementById('productCarousel');
+    if (typeof bootstrap !== 'undefined' && el) {
+      try {
+        const inst = bootstrap.Carousel.getInstance(el) ?? new bootstrap.Carousel(el);
+        inst.to(index);
+        return;
+      } catch {}
+    }
+    if (this.images[index]) this.selectedImage = this.images[index];
+  }
+
+  addToCart(): void {
+    if (!this.product?.productID) return;
+
+    const userId = this.authService.currentUser.value?.id;
+    if (!userId) {
+      // ยังไม่ล็อกอิน -> ส่งไปหน้า login หรือตามที่ต้องการ
+      this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
       return;
-    } catch (err) {
-      console.warn('bootstrap carousel control failed', err);
     }
+
+    // 1) สร้าง/ดึง cartID ของผู้ใช้  2) เพิ่มสินค้า  3) ไปหน้า cart
+    this.cartService.getOrCreateCart(userId).subscribe({
+      next: (cartId) => {
+        this.cartService.addItem(cartId, this.product!.productID!, 1).subscribe({
+          next: () => this.router.navigate(['/cart']),
+          error: (err) => console.error('Add item failed:', err)
+        });
+      },
+      error: (err) => console.error('Get/Create cart failed:', err)
+    });
   }
 
-    if (this.images && this.images[index]) {
-    this.selectedImage = this.images[index];
-  }
-  }
-
-  addToCart() {
-    if (this.product) {
-      // ดึง UserID จาก AuthService
-      const validUserId = this.authService.currentUser.value?.id ?? 0;  // ถ้า currentUser ไม่มีค่าให้ใช้ 0 (guest)
-
-      // ส่งข้อมูลไปยัง backend เพื่อเพิ่มสินค้าในตะกร้า
-      this.cartService.addToCart(this.product.productID ?? 0, validUserId).subscribe(
-        (response) => {
-          console.log('Product added to cart:', response);
-          this.router.navigate(['/cart']);  // ไปยังหน้าตะกร้า
-        },
-        (error) => {
-          console.error('Error adding to cart:', error);
-        }
-      );
-    }
-  }
-  confirmDelete(){
-    console.log ("hello del");
-  }
-  toggleFavorite(){
-    console.log ("hello favor");
-  }
+  confirmDelete(){ /* ... */ }
+  toggleFavorite(){ this.isFavorite = !this.isFavorite; }
 }
