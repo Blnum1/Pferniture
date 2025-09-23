@@ -1,0 +1,40 @@
+.card {
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+  object-fit: cover;
+  height: 200px;
+}
+
+.card-body {
+  padding: 1.25rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1rem;
+}
+
+.d-flex {
+  gap: 10px;
+}
+
+button {
+  font-size: 0.9rem;
+}
+
+.btn-outline-secondary {
+  background-color: #f8f9fa;
+  border-color: #ced4da;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}

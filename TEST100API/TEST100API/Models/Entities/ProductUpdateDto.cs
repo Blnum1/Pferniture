@@ -11,7 +11,7 @@ namespace TEST100API.Models.Entities
     public string? PDescription3 { get; set; }
     public decimal? Price { get; set; }
     public decimal? Price_Discount { get; set; }
-    public int? CategoryID { get; set; }   // ถ้าเปลี่ยนหมวด ให้ส่ง id ใหม่
+    public int? CategoryID { get; set; }   
     public string? Image_Url1 { get; set; }
     public string? Image_Url2 { get; set; }
     public string? Image_Url3 { get; set; }

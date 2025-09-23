@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Product, ProductService } from '../../services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CartService } from '../../services/cart.service';
+import { AuthService } from '../../services/auth.service';
 
 declare const bootstrap: any; 
 
@@ -11,6 +13,7 @@ declare const bootstrap: any;
 })
 export class ProductDetailComponent implements OnInit {
   product: Product | null = null; 
+  userId: number | null = null;
   isFavorite: false | undefined;
 
   // รูปที่เกี่ยวข้อง
@@ -20,7 +23,9 @@ export class ProductDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private router: Router
+    private cartService: CartService,
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -31,6 +36,7 @@ export class ProductDetailComponent implements OnInit {
         this.buildImages();
       });
     }
+    this.authService.loadCurrentUser();
   }
 
   private buildImages(): void {
@@ -80,8 +86,22 @@ export class ProductDetailComponent implements OnInit {
   }
   }
 
-  addToCart(){
-    console.log ("hello add");
+  addToCart() {
+    if (this.product) {
+      // ดึง UserID จาก AuthService
+      const validUserId = this.authService.currentUser.value?.id ?? 0;  // ถ้า currentUser ไม่มีค่าให้ใช้ 0 (guest)
+
+      // ส่งข้อมูลไปยัง backend เพื่อเพิ่มสินค้าในตะกร้า
+      this.cartService.addToCart(this.product.productID ?? 0, validUserId).subscribe(
+        (response) => {
+          console.log('Product added to cart:', response);
+          this.router.navigate(['/cart']);  // ไปยังหน้าตะกร้า
+        },
+        (error) => {
+          console.error('Error adding to cart:', error);
+        }
+      );
+    }
   }
   confirmDelete(){
     console.log ("hello del");

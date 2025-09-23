@@ -25,8 +25,8 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 builder.Services.AddDbContext<ProductDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDbContext<OrderDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 
 
 // เพิ่ม CORS services และนโยบาย "AllowOrigin"

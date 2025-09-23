@@ -37,6 +37,7 @@ import { Pd7Component } from './page/pd-7/pd-7.component';
 import { Pd8Component } from './page/pd-8/pd-8.component';
 import { CartComponent } from './page/cart/cart.component';
 import { ProductDetailComponent } from './page/product-detail/product-detail.component';
+import { PaymentComponent } from './page/payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { ProductDetailComponent } from './page/product-detail/product-detail.com
     Pd7Component,
     Pd8Component,
     CartComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,

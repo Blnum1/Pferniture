@@ -1,5 +1,37 @@
 [
   {
+    "ContainingType": "CartController",
+    "Method": "AddItemToCart",
+    "RelativePath": "api/Cart/AddItemToCart",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cartItem",
+        "Type": "TEST100API.Models.Entities.CartItem",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CartController",
+    "Method": "CreateCart",
+    "RelativePath": "api/Cart/CreateCart",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cart",
+        "Type": "TEST100API.Models.Entities.Cart",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TEST100API.Controllers.EmployeesController",
     "Method": "GetAllEmployees",
     "RelativePath": "api/Employees",
@@ -26,9 +58,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "TEST100API.Controllers.OrderController",
-    "Method": "Create",
-    "RelativePath": "api/Order/CreateOrder",
+    "ContainingType": "OrderController",
+    "Method": "CreateOrderFromCart",
+    "RelativePath": "api/Order/CreateOrderFromCart",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
