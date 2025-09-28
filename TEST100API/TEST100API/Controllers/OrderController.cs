@@ -1,271 +1,161 @@
+// OrderController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TEST100API.Data;
 using TEST100API.Models.Entities;
-using Microsoft.Data.SqlClient;
 
 [Route("api/[controller]")]
 [ApiController]
 public class OrderController : ControllerBase
 {
   private readonly AppDbContext _context;
-
-  public OrderController(AppDbContext context)
-  {
-    _context = context;
-  }
+  public OrderController(AppDbContext context) { _context = context; }
 
   [HttpPost("CreateOrderFromCart")]
-  public IActionResult CreateOrderFromCart([FromBody] Order order)
+  public async Task<IActionResult> CreateOrderFromCart([FromBody] CreateOrderRequest req)
   {
-    // Step 1: ตรวจสอบว่า CartID มีอยู่ในระบบ
-    var cart = _context.Carts.Include(c => c.CartItems)  // ใช้ Include เพื่อนำ CartItems มาด้วย
-        .FirstOrDefault(c => c.CartID == order.CartID);
+    if (req == null) return BadRequest("Body is required.");
+    if (req.CartID <= 0) return BadRequest("CartID is required.");
+    if (req.UserID <= 0) return BadRequest("UserID is required.");
+    if (req.ShippingInfoID <= 0) return BadRequest("ShippingInfoID is required.");
+    if (req.Payment == null) return BadRequest("Payment is required.");
 
-    if (cart == null)
+    var cart = await _context.Carts
+        .Include(c => c.CartItems)
+        .FirstOrDefaultAsync(c => c.CartID == req.CartID);
+
+    if (cart == null) return NotFound("Cart not found.");
+    if (cart.UserID != req.UserID) return Forbid();
+    if (cart.CartItems == null || cart.CartItems.Count == 0) return BadRequest("Cart is empty.");
+
+    var ship = await _context.ShippingInfos.FirstOrDefaultAsync(s => s.ShippingInfoID == req.ShippingInfoID);
+    if (ship == null) return NotFound("ShippingInfo not found.");
+    if (ship.UserID != req.UserID) return Forbid();
+
+    var total = 0.0m;
+    var orderItems = new List<OrderItem>(); // สร้าง List สำหรับเก็บ OrderItem
+
+    foreach (var cartItem in req.CartItems)
     {
-      return NotFound("Cart not found.");
-    }
-
-    // Step 2: คำนวณ TotalAmount จาก CartItems
-    decimal totalAmount = 0;
-
-    var cartItems = _context.CartItems
-        .FromSqlRaw("SELECT * FROM CartItems WHERE CartID = {0}", order.CartID)
-        .ToList();
-
-    if (cartItems.Count == 0)
-    {
-      return BadRequest("Cart is empty.");
-    }
-
-    foreach (var cartItem in cartItems)
-    {
-      var product = _context.Products
-          .FromSqlRaw("SELECT * FROM Products WHERE ProductID = {0}", cartItem.ProductID)
-          .FirstOrDefault();
-
-      if (product == null)
+      var item = cart.CartItems.FirstOrDefault(ci => ci.CartItemID == cartItem.CartItemID);
+      if (item != null)
       {
-        return BadRequest("Product not found in CartItem.");
+        total += item.PriceAmount * cartItem.Quantity;
+        item.Quantity -= cartItem.Quantity; // ลดจำนวนใน CartItem
+
+        var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductID == item.ProductID);
+        if (product != null)
+        {
+          if (product.Stock >= cartItem.Quantity)
+          {
+            product.Stock -= cartItem.Quantity; // ลด Stock
+            _context.Products.Update(product); // อัปเดต Product ในฐานข้อมูล
+          }
+          else
+          {
+            return BadRequest("Not enough stock for product " + product.Product_Name);
+          }
+        }
+
+        if (item.Quantity == 0)
+        {
+          _context.CartItems.Remove(item); // ถ้าจำนวนเหลือ 0 ลบ CartItem
+        }
+
+        // เพิ่ม OrderItem ไปยัง list
+        orderItems.Add(new OrderItem
+        {
+          ProductID = item.ProductID,
+          Quantity = cartItem.Quantity,
+          PriceAmount = item.PriceAmount
+        });
+      }
+    }
+
+    // เริ่มต้นการทำ Transaction
+    await using var tx = await _context.Database.BeginTransactionAsync();
+    try
+    {
+      // สร้าง Order
+      var order = new Order
+      {
+        CartID = req.CartID,
+        Status = string.IsNullOrWhiteSpace(req.Status) ? "waitpay" : req.Status,
+        Order_date = (req.Order_date == default ? DateTime.Now : req.Order_date),
+        TotalAmount = total,
+        ShippingInfoID = req.ShippingInfoID
+      };
+
+      _context.Orders.Add(order);
+      await _context.SaveChangesAsync();
+
+      // เพิ่ม OrderItem
+      foreach (var orderItem in orderItems)
+      {
+        orderItem.OrderID = order.OrderID; // ตั้งค่า OrderID ให้ตรงกัน
+        _context.OrderItems.Add(orderItem); // เพิ่ม OrderItem ลงในฐานข้อมูล
       }
 
-      totalAmount += cartItem.PriceAmount * cartItem.Quantity; // คำนวณยอดรวม
+      // สร้าง Payment
+      var pay = new Payment
+      {
+        OrderID = order.OrderID,
+        Payment_Amount = total,
+        Payment_Method = string.IsNullOrWhiteSpace(req.Payment.Payment_Method) ? "QR" : req.Payment.Payment_Method,
+        Payment_Status = string.IsNullOrWhiteSpace(req.Payment.Payment_Status) ? "Pending" : req.Payment.Payment_Status,
+        Payment_date = (req.Payment.Payment_date == default ? DateTime.Now : req.Payment.Payment_date)
+      };
+      _context.Payments.Add(pay);
+
+      await _context.SaveChangesAsync();
+      await tx.CommitAsync();
+
+      return Ok(new
+      {
+        message = "Order created successfully",
+        orderID = order.OrderID,
+        totalAmount = total,
+        shippingInfoID = order.ShippingInfoID,
+        status = order.Status
+      });
     }
-
-    order.TotalAmount = totalAmount;
-
-    // Step 3: สร้าง Order จาก Cart โดยใช้ SCOPE_IDENTITY() เพื่อดึง OrderID ที่สร้างใหม่
-    var orderIdQuery = "INSERT INTO Orders (CartID, Status, Order_date, TotalAmount) " +
-                       "VALUES ({0}, {1}, {2}, {3}); SELECT CAST(SCOPE_IDENTITY() AS INT);";
-    var orderId = _context.Database.ExecuteSqlRaw(orderIdQuery, order.CartID, order.Status, order.Order_date, order.TotalAmount);
-
-    if (orderId == 0)
+    catch (DbUpdateException dbEx)
     {
-      return BadRequest("Failed to create order.");
+      await tx.RollbackAsync();
+      return StatusCode(500, "Database update failed: " + dbEx.Message);
     }
-
-    order.OrderID = orderId;
-
-    // Step 4: เพิ่ม ShippingInfo สำหรับ Order
-    var shippingInfoSql = "INSERT INTO ShippingInfos (OrderID, Address, Shipping_Method) " +
-                          "VALUES ({0}, {1}, {2})";
-    _context.Database.ExecuteSqlRaw(shippingInfoSql, order.OrderID, order.ShippingInfo.Address, order.ShippingInfo.Shipping_Method);
-
-    // Step 5: เพิ่ม Payment สำหรับ Order
-    var paymentSql = "INSERT INTO Payments (OrderID, Payment_Amount, Payment_Method, Payment_Status, Payment_date) " +
-                     "VALUES ({0}, {1}, {2}, {3}, {4})";
-    _context.Database.ExecuteSqlRaw(paymentSql, order.OrderID, order.TotalAmount, order.Payment.Payment_Method, order.Payment.Payment_Status, DateTime.Now);
-
-    return Ok("Order created successfully.");
+    catch (Exception ex)
+    {
+      await tx.RollbackAsync();
+      return BadRequest(ex.Message);
+    }
   }
 }
 
 
+public class CreateOrderRequest
+{
+  public int CartID { get; set; }
+  public int UserID { get; set; }
+  public int ShippingInfoID { get; set; }
+  public PaymentDto? Payment { get; set; }
+  public string? Status { get; set; }
+  public DateTime Order_date { get; set; }
 
+  public List<CartItemDto> CartItems { get; set; }
+}
 
+public class CartItemDto
+{
+  public int CartItemID { get; set; }
+  public int ProductID { get; set; }
+  public int Quantity { get; set; }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //[AllowAnonymous]
-    //[HttpPost("CreateOrder")]
-    //public IActionResult Create(Order order)
-    //{
-    //  order.Order_date = DateTime.Now;
-    //  _context.Orders.Add(order);
-    //  _context.SaveChanges();
-    //  return Ok("Success");
-    //}
-
-
-
-    //[AllowAnonymous]
-    //[HttpGet("GetOrderAll")]
-    //public async Task<IActionResult> GetOrderAll()
-    //{
-    //  var rows = await _context.Orders
-    //      .FromSqlRaw(@"
-    //        select 
-    //        o.OrderID ,
-    //        o.UserID ,
-    //        o.ProductID ,
-    //        o.Status ,
-    //        o.Price_amount,
-    //        o.Order_date,
-    //        o.Total_amount 
-    //        from Orders o
-    //        join Users u on o.UserID = u.UserID 
-    //        join Products p on o.ProductID = p.ProductID 
-    //        join Payments p2 on o.OrderID = p2.OrderID 
-    //        join ShippingInfos si on o.OrderID = si.OrderID ;")
-    //      .AsNoTracking()
-    //      .ToListAsync();
-
-    //  return Ok(rows);
-    //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //[AllowAnonymous]
-    //[HttpGet("GetOrderDetail")]
-    //public async Task<IActionResult> GetOrderDetail()
-    //{
-    //  var rows = await _context.OrderDto
-    //      .FromSqlRaw(@"
-    //        select 
-    //        o.OrderID ,
-    //        o.UserID ,
-    //        u.Email ,
-    //        u.FirstName ,
-    //        u.LastName ,
-    //        o.ProductID ,
-    //        p.Product_Name ,
-    //        o.Status ,
-    //        o.Price_amount,
-    //        o.Order_date,
-    //        o.Total_amount ,
-    //        si.Address ,
-    //        si.Shipping_Method ,
-    //        p2.Payment_Method ,
-    //        p2.Payment_Status ,
-    //        p2.Payment_date ,
-    //        p2.Payment_Amount 
-    //        from Orders o
-    //        join Users u on o.UserID = u.UserID 
-    //        join Products p on o.ProductID = p.ProductID 
-    //        join Payments p2 on o.OrderID = p2.OrderID 
-    //        join ShippingInfos si on o.OrderID = si.OrderID ;")
-    //      .AsNoTracking()
-    //      .ToListAsync();
-
-    //  return Ok(rows);
-    //}
-
-    //[AllowAnonymous]
-    //[HttpGet("GetOrderCart")]
-    //public async Task<IActionResult> GetOrderCart([FromQuery] int userID)
-    //{
-    //  var rows = await _context.OrderDto
-    //      .FromSqlRaw(@"
-    //        select 
-    //        o.OrderID ,
-    //        o.UserID ,
-    //        u.Email ,
-    //        u.FirstName ,
-    //        u.LastName ,
-    //        o.ProductID ,
-    //        p.Product_Name ,
-    //        o.Status ,
-    //        o.Price_amount,
-    //        o.Order_date,
-    //        o.Total_amount ,
-    //        si.Address ,
-    //        si.Shipping_Method ,
-    //        p2.Payment_Method ,
-    //        p2.Payment_Status ,
-    //        p2.Payment_date ,
-    //        p2.Payment_Amount 
-    //        from Orders o
-    //        join Users u on o.UserID = u.UserID 
-    //        join Products p on o.ProductID = p.ProductID 
-    //        join Payments p2 on o.OrderID = p2.OrderID 
-    //        join ShippingInfos si on o.OrderID = si.OrderID
-    //        WHERE o.UserID = @UserID",
-    //          new SqlParameter("@UserID", userID)
-    //      )
-    //      .AsNoTracking()
-    //      .ToListAsync();
-
-    //  return Ok(rows);
-    //}
-
-    //[HttpPost("AddToCart")]
-    //public async Task<IActionResult> AddToCart([FromBody] AddToCartDto addToCartDto)
-    //{
-    //  // ตรวจสอบว่า product มีอยู่จริงหรือไม่
-    //  var product = await _context.Products.FindAsync(addToCartDto.ProductID);
-    //  if (product == null)
-    //  {
-    //    return NotFound("Product not found");
-    //  }
-
-    //  // สร้าง order ที่มี status เป็น "In-cart"
-    //  var order = new Order
-    //  {
-    //    UserID = addToCartDto.UserID,  // ถ้าเป็น guest ใช้ null
-    //    ProductID = addToCartDto.ProductID,
-    //    Status = "In-cart",  // ตะกร้าอยู่ในสถานะ In-cart
-    //    Price_amount = product.Price,  // ราคาเมื่อเพิ่มลงตะกร้า
-    //    Total_amount = product.Price,  // ถ้ามีแค่สินค้าเดียว
-    //    Order_date = DateTime.UtcNow,
-    //    ShippingInfo = null,  // ยังไม่ระบุที่อยู่
-    //    Payment = null  // ยังไม่ชำระเงิน
-    //  };
-
-    //  _context.Orders.Add(order);
-    //  await _context.SaveChangesAsync();
-
-    //  return Ok(new { message = "Product added to cart successfully", orderId = order.OrderID });
-    //}
-
-
-
-
-
-
-
-
-
-
+public class PaymentDto
+{
+  public decimal? Payment_Amount { get; set; }
+  public DateTime Payment_date { get; set; }
+  public string? Payment_Method { get; set; }
+  public string? Payment_Status { get; set; }
+}

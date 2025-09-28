@@ -95,6 +95,32 @@ namespace TEST100API.Migrations.AppDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "ShippingInfos",
+                columns: table => new
+                {
+                    ShippingInfoID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Region = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Postal_Code = table.Column<int>(type: "int", nullable: true),
+                    Shipping_Method = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Shipping_Phone = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShippingInfos", x => x.ShippingInfoID);
+                    table.ForeignKey(
+                        name: "FK_ShippingInfos_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CartItems",
                 columns: table => new
                 {
@@ -129,6 +155,7 @@ namespace TEST100API.Migrations.AppDb
                     OrderID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CartID = table.Column<int>(type: "int", nullable: false),
+                    ShippingInfoID = table.Column<int>(type: "int", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Order_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
@@ -142,6 +169,12 @@ namespace TEST100API.Migrations.AppDb
                         principalTable: "Carts",
                         principalColumn: "CartID",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_ShippingInfos_ShippingInfoID",
+                        column: x => x.ShippingInfoID,
+                        principalTable: "ShippingInfos",
+                        principalColumn: "ShippingInfoID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -161,31 +194,6 @@ namespace TEST100API.Migrations.AppDb
                     table.PrimaryKey("PK_Payments", x => x.PaymentID);
                     table.ForeignKey(
                         name: "FK_Payments_Orders_OrderID",
-                        column: x => x.OrderID,
-                        principalTable: "Orders",
-                        principalColumn: "OrderID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ShippingInfos",
-                columns: table => new
-                {
-                    ShippingInfoID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderID = table.Column<int>(type: "int", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Postal_Code = table.Column<int>(type: "int", nullable: true),
-                    Shipping_Method = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Shipping_Phone = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShippingInfos", x => x.ShippingInfoID);
-                    table.ForeignKey(
-                        name: "FK_ShippingInfos_Orders_OrderID",
                         column: x => x.OrderID,
                         principalTable: "Orders",
                         principalColumn: "OrderID");
@@ -212,6 +220,11 @@ namespace TEST100API.Migrations.AppDb
                 column: "CartID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_ShippingInfoID",
+                table: "Orders",
+                column: "ShippingInfoID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Payments_OrderID",
                 table: "Payments",
                 column: "OrderID",
@@ -224,11 +237,9 @@ namespace TEST100API.Migrations.AppDb
                 column: "CategoryID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShippingInfos_OrderID",
+                name: "IX_ShippingInfos_UserID",
                 table: "ShippingInfos",
-                column: "OrderID",
-                unique: true,
-                filter: "[OrderID] IS NOT NULL");
+                column: "UserID");
         }
 
         /// <inheritdoc />
@@ -241,9 +252,6 @@ namespace TEST100API.Migrations.AppDb
                 name: "Payments");
 
             migrationBuilder.DropTable(
-                name: "ShippingInfos");
-
-            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
@@ -254,6 +262,9 @@ namespace TEST100API.Migrations.AppDb
 
             migrationBuilder.DropTable(
                 name: "Carts");
+
+            migrationBuilder.DropTable(
+                name: "ShippingInfos");
 
             migrationBuilder.DropTable(
                 name: "Users");

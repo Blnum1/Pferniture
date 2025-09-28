@@ -146,8 +146,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "order",
-        "Type": "TEST100API.Models.Entities.Order",
+        "Name": "req",
+        "Type": "CreateOrderRequest",
         "IsRequired": true
       }
     ],
@@ -318,16 +318,100 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "TEST100API.Controllers.ShippingInfoController",
+    "ContainingType": "ShippingInfoController",
     "Method": "Create",
-    "RelativePath": "api/ShippingInfo/CreateShippingInfo",
+    "RelativePath": "api/ShippingInfo/CreateShipping",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "shippingInfo",
-        "Type": "TEST100API.Models.Entities.ShippingInfo",
+        "Name": "dto",
+        "Type": "TEST100API.Models.Entities.ShippingInfoCreateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShippingInfoController",
+    "Method": "Delete",
+    "RelativePath": "api/ShippingInfo/DeleteShipping/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShippingInfoController",
+    "Method": "GetOne",
+    "RelativePath": "api/ShippingInfo/GetShipping/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShippingInfoController",
+    "Method": "GetByUser",
+    "RelativePath": "api/ShippingInfo/GetUserShippings/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShippingInfoController",
+    "Method": "Update",
+    "RelativePath": "api/ShippingInfo/UpdateShipping/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "dto",
+        "Type": "TEST100API.Models.Entities.ShippingInfoUpdateDto",
         "IsRequired": true
       }
     ],

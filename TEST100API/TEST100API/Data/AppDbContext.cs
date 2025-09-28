@@ -14,9 +14,12 @@ namespace TEST100API.Data
     public DbSet<Cart> Carts { get; set; }
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<ShippingInfo> ShippingInfos { get; set; }
     public DbSet<Payment> Payments { get; set; }
+
+
 
     public DbSet<ProductDto> ProductDto { get; set; }
 
@@ -52,13 +55,34 @@ namespace TEST100API.Data
           .WithMany(c => c.Orders)
           .HasForeignKey(o => o.CartID);
 
+      modelBuilder.Entity<OrderItem>()
+       .HasKey(oi => oi.OrderItemID);
+
+      modelBuilder.Entity<OrderItem>()
+          .HasOne(oi => oi.Order)
+          .WithMany(o => o.OrderItems)
+          .HasForeignKey(oi => oi.OrderID);
+
+      modelBuilder.Entity<OrderItem>()
+          .HasOne(oi => oi.Product)
+          .WithMany(p => p.OrderItems)
+          .HasForeignKey(oi => oi.ProductID);
+
+
       modelBuilder.Entity<ShippingInfo>()
           .HasKey(s => s.ShippingInfoID);
 
-      modelBuilder.Entity<ShippingInfo>()
-          .HasOne(s => s.Order)
-          .WithOne(o => o.ShippingInfo)
-          .HasForeignKey<ShippingInfo>(s => s.OrderID);
+      modelBuilder.Entity<User>()
+           .HasMany(u => u.ShippingInfos)
+           .WithOne(s => s.User)
+           .HasForeignKey(s => s.UserID)
+           .OnDelete(DeleteBehavior.Cascade);
+
+      modelBuilder.Entity<Order>()
+          .HasOne(o => o.ShippingInfo)
+          .WithMany()
+          .HasForeignKey(o => o.ShippingInfoID)
+          .OnDelete(DeleteBehavior.Restrict);
 
       modelBuilder.Entity<Payment>()
           .HasKey(p => p.PaymentID);
@@ -67,6 +91,10 @@ namespace TEST100API.Data
           .HasOne(p => p.Order)
           .WithOne(o => o.Payment)
           .HasForeignKey<Payment>(p => p.OrderID);
+
+      modelBuilder.Entity<Payment>()
+          .HasIndex(p => p.OrderID)
+          .IsUnique();
 
       modelBuilder.Entity<ProductDto>().HasNoKey().ToView(null);
     }

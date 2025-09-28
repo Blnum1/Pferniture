@@ -5,10 +5,14 @@ namespace TEST100API.Models.Entities
     public int OrderID { get; set; }
     public int CartID { get; set; }
     public Cart? Cart { get; set; }
+    public int? ShippingInfoID { get; set; }
     public ShippingInfo? ShippingInfo { get; set; }
     public Payment? Payment { get; set; }
     public string? Status { get; set; }
     public DateTime Order_date { get; set; }
     public decimal TotalAmount { get; set; }
+
+    public ICollection<OrderItem>? OrderItems { get; set; }
+
   }
 }

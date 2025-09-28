@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TEST100API.Data;
 
@@ -11,9 +12,11 @@ using TEST100API.Data;
 namespace TEST100API.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250927144822_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,35 +119,6 @@ namespace TEST100API.Migrations.AppDb
                     b.HasIndex("ShippingInfoID");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("TEST100API.Models.Entities.OrderItem", b =>
-                {
-                    b.Property<int>("OrderItemID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemID"));
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PriceAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ProductID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrderItemID");
-
-                    b.HasIndex("OrderID");
-
-                    b.HasIndex("ProductID");
-
-                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.Payment", b =>
@@ -415,25 +389,6 @@ namespace TEST100API.Migrations.AppDb
                     b.Navigation("ShippingInfo");
                 });
 
-            modelBuilder.Entity("TEST100API.Models.Entities.OrderItem", b =>
-                {
-                    b.HasOne("TEST100API.Models.Entities.Order", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TEST100API.Models.Entities.Product", "Product")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("TEST100API.Models.Entities.Payment", b =>
                 {
                     b.HasOne("TEST100API.Models.Entities.Order", "Order")
@@ -477,16 +432,12 @@ namespace TEST100API.Migrations.AppDb
 
             modelBuilder.Entity("TEST100API.Models.Entities.Order", b =>
                 {
-                    b.Navigation("OrderItems");
-
                     b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.Product", b =>
                 {
                     b.Navigation("CartItems");
-
-                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.User", b =>

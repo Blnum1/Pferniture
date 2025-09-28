@@ -12,8 +12,8 @@ using TEST100API.Data;
 namespace TEST100API.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250919142459_Initial")]
-    partial class Initial
+    [Migration("20250928184832_AddOrderItems")]
+    partial class AddOrderItems
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -103,6 +103,9 @@ namespace TEST100API.Migrations.AppDb
                     b.Property<DateTime>("Order_date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("ShippingInfoID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
@@ -113,7 +116,38 @@ namespace TEST100API.Migrations.AppDb
 
                     b.HasIndex("CartID");
 
+                    b.HasIndex("ShippingInfoID");
+
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("TEST100API.Models.Entities.OrderItem", b =>
+                {
+                    b.Property<int>("OrderItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemID"));
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PriceAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderItemID");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.Payment", b =>
@@ -280,9 +314,6 @@ namespace TEST100API.Migrations.AppDb
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrderID")
-                        .HasColumnType("int");
-
                     b.Property<int?>("Postal_Code")
                         .HasColumnType("int");
 
@@ -295,11 +326,12 @@ namespace TEST100API.Migrations.AppDb
                     b.Property<string>("Shipping_Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("ShippingInfoID");
 
-                    b.HasIndex("OrderID")
-                        .IsUnique()
-                        .HasFilter("[OrderID] IS NOT NULL");
+                    b.HasIndex("UserID");
 
                     b.ToTable("ShippingInfos");
                 });
@@ -376,7 +408,33 @@ namespace TEST100API.Migrations.AppDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TEST100API.Models.Entities.ShippingInfo", "ShippingInfo")
+                        .WithMany()
+                        .HasForeignKey("ShippingInfoID")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Cart");
+
+                    b.Navigation("ShippingInfo");
+                });
+
+            modelBuilder.Entity("TEST100API.Models.Entities.OrderItem", b =>
+                {
+                    b.HasOne("TEST100API.Models.Entities.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TEST100API.Models.Entities.Product", "Product")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.Payment", b =>
@@ -399,11 +457,13 @@ namespace TEST100API.Migrations.AppDb
 
             modelBuilder.Entity("TEST100API.Models.Entities.ShippingInfo", b =>
                 {
-                    b.HasOne("TEST100API.Models.Entities.Order", "Order")
-                        .WithOne("ShippingInfo")
-                        .HasForeignKey("TEST100API.Models.Entities.ShippingInfo", "OrderID");
+                    b.HasOne("TEST100API.Models.Entities.User", "User")
+                        .WithMany("ShippingInfos")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Order");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.Cart", b =>
@@ -420,19 +480,23 @@ namespace TEST100API.Migrations.AppDb
 
             modelBuilder.Entity("TEST100API.Models.Entities.Order", b =>
                 {
-                    b.Navigation("Payment");
+                    b.Navigation("OrderItems");
 
-                    b.Navigation("ShippingInfo");
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.Product", b =>
                 {
                     b.Navigation("CartItems");
+
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.User", b =>
                 {
                     b.Navigation("Carts");
+
+                    b.Navigation("ShippingInfos");
                 });
 #pragma warning restore 612, 618
         }

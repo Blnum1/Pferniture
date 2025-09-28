@@ -11,5 +11,7 @@ namespace TEST100API.Models.Entities
     public string? Role { get; set; }
     public DateTime MemberSince { get; set; }
     public ICollection<Cart>? Carts { get; set; }
+
+    public ICollection<ShippingInfo>? ShippingInfos { get; set; }
   }
 }

@@ -1,50 +1,69 @@
-// src/app/page/cart/cart.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CartService, CartItemDto } from '../../services/cart.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-export class CartComponent implements OnInit {
-  userID = 1;                // ดึงมาจาก AuthService.currentUser.id ในโปรเจกต์จริง
-  cartID!: number;           // ได้มาจาก getOrCreate
+export class CartComponent implements OnInit, OnDestroy {
+  userID = 1;
+  cartID!: number;
   cartItems: CartItemDto[] = [];
   loading = true;
   errorMsg = '';
   allSelected = false;
   selectedTotal = 0;
 
+  private sub = new Subscription();
 
   constructor(private cartSvc: CartService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loadCart();
+    this.sub.add(
+      this.cartSvc.currentCartId$.subscribe(id => {
+        if (id && id > 0) {
+          this.loadCartItems(id);
+        } else {
+          this.loadOrCreate();
+        }
+      })
+    );
+    this.loadOrCreate();
   }
 
-  private loadCart(): void {
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+
+  private loadOrCreate(): void {
     this.loading = true;
-    this.errorMsg = '';
     this.cartSvc.getOrCreateCart(this.userID).subscribe({
       next: (cartId) => {
         this.cartID = cartId;
-        this.cartSvc.getItems(cartId).subscribe({
-          next: (items) => {
-            this.cartItems = items ?? [];
-            this.loading = false;
-          },
-          error: (err) => {
-            this.errorMsg = 'โหลดรายการตะกร้าไม่สำเร็จ';
-            console.error(err);
-            this.loading = false;
-          }
-        });
+        this.cartSvc.setCurrentCartId(cartId);
       },
       error: (err) => {
         this.errorMsg = 'สร้าง/ดึงตะกร้าไม่สำเร็จ';
-        console.error(err);
+        this.loading = false;
+      }
+    });
+  }
+
+  private loadCartItems(cartId: number): void {
+    this.loading = true;
+    this.errorMsg = '';
+    this.cartID = cartId;
+    this.cartSvc.getItems(cartId).subscribe({
+      next: (items) => {
+        this.cartItems = (items ?? []).map(it => ({ ...it, selected: false }));
+        this.loading = false;
+        this.updateSelection();
+      },
+      error: (err) => {
+        this.errorMsg = 'โหลดรายการตะกร้าไม่สำเร็จ';
         this.loading = false;
       }
     });
@@ -79,7 +98,7 @@ export class CartComponent implements OnInit {
   }
 
   updateSelection() {
-    this.allSelected = this.cartItems.every(i => i.selected);
+    this.allSelected = this.cartItems.length > 0 && this.cartItems.every(i => i.selected);
     this.selectedTotal = this.cartItems
       .filter(i => i.selected)
       .reduce((sum, i) => sum + (i.price_amount * i.quantity), 0);
@@ -90,12 +109,24 @@ export class CartComponent implements OnInit {
     this.cartItems.forEach(i => i.selected = this.allSelected);
     this.updateSelection();
   }
+
   hasSelection(): boolean {
     return this.cartItems.some(i => i.selected);
   }
+
   checkout() {
     const selected = this.cartItems.filter(i => i.selected);
-    console.log('Selected items for checkout:', selected);
+    if (!selected.length) {
+      alert('กรุณาเลือกรายการที่จะชำระเงิน');
+      return;
+    }
+    const subtotal = selected.reduce((sum, i) => sum + (i.price_amount * i.quantity), 0);
+    this.router.navigate(['/payment'], {
+      state: {
+        cartID: this.cartID,
+        items: selected,
+        subtotal
+      }
+    });
   }
-  
 }
