@@ -25,6 +25,7 @@ import { Pd8Component } from './page/pd-8/pd-8.component';
 import { CartComponent } from './page/cart/cart.component';
 import { ProductDetailComponent } from './page/product-detail/product-detail.component';
 import { PaymentComponent } from './page/payment/payment.component';
+import { ProfileComponent } from './page/profile/profile.component';
 
 const routes: Routes = [
   { path: '', 
@@ -108,6 +109,9 @@ const routes: Routes = [
   },
   { path: 'payment',
     component: PaymentComponent
+  },
+  { path: 'profile',
+    component: ProfileComponent
   }
 
 ];
