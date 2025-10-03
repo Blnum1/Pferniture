@@ -27,18 +27,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CrudCreateComponent } from './admin-page/crud-create/crud-create.component';
 import { CrudDetailComponent } from './admin-page/crud-detail/crud-detail.component';
 import { NavAppheaderComponent } from './nav-appheader/nav-appheader.component';
-import { Pd1Component } from './page/pd-1/pd-1.component';
-import { Pd2Component } from './page/pd-2/pd-2.component';
-import { Pd3Component } from './page/pd-3/pd-3.component';
-import { Pd4Component } from './page/pd-4/pd-4.component';
-import { Pd5Component } from './page/pd-5/pd-5.component';
-import { Pd6Component } from './page/pd-6/pd-6.component';
-import { Pd7Component } from './page/pd-7/pd-7.component';
-import { Pd8Component } from './page/pd-8/pd-8.component';
+import { Pd1Component } from './page/sort-page/pd-1/pd-1.component';
+import { Pd2Component } from './page/sort-page/pd-2/pd-2.component';
+import { Pd3Component } from './page/sort-page/pd-3/pd-3.component';
+import { Pd4Component } from './page/sort-page/pd-4/pd-4.component';
+import { Pd5Component } from './page/sort-page/pd-5/pd-5.component';
+import { Pd6Component } from './page/sort-page/pd-6/pd-6.component';
+import { Pd7Component } from './page/sort-page/pd-7/pd-7.component';
+import { Pd8Component } from './page/sort-page/pd-8/pd-8.component';
 import { CartComponent } from './page/cart/cart.component';
 import { ProductDetailComponent } from './page/product-detail/product-detail.component';
 import { PaymentComponent } from './page/payment/payment.component';
-import { ProfileComponent } from './page/profile/profile.component';
+import { ProfileComponent } from './profile-page/profile/profile.component';
+import { NavProfileComponent } from './nav-profile/nav-profile.component';
+import { Pf1Component } from './profile-page/pf-1/pf-1.component';
+import { Pf2Component } from './profile-page/pf-2/pf-2.component';
+import { Pf3Component } from './profile-page/pf-3/pf-3.component';
+import { Pf4Component } from './profile-page/pf-4/pf-4.component';
+import { Pf5Component } from './profile-page/pf-5/pf-5.component';
+import { Pd9Component } from './page/sort-page/pd-9/pd-9.component';
+import { Pd10Component } from './page/sort-page/pd-10/pd-10.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +78,15 @@ import { ProfileComponent } from './page/profile/profile.component';
     CartComponent,
     ProductDetailComponent,
     PaymentComponent,
-    ProfileComponent
+    ProfileComponent,
+    NavProfileComponent,
+    Pf1Component,
+    Pf2Component,
+    Pf3Component,
+    Pf4Component,
+    Pf5Component,
+    Pd9Component,
+    Pd10Component
   ],
   imports: [
     BrowserModule,

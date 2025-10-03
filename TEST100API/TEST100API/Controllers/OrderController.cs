@@ -41,15 +41,15 @@ public class OrderController : ControllerBase
       if (item != null)
       {
         total += item.PriceAmount * cartItem.Quantity;
-        item.Quantity -= cartItem.Quantity; // ลดจำนวนใน CartItem
+        item.Quantity -= cartItem.Quantity; 
 
         var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductID == item.ProductID);
         if (product != null)
         {
           if (product.Stock >= cartItem.Quantity)
           {
-            product.Stock -= cartItem.Quantity; // ลด Stock
-            _context.Products.Update(product); // อัปเดต Product ในฐานข้อมูล
+            product.Stock -= cartItem.Quantity; 
+            _context.Products.Update(product); 
           }
           else
           {
@@ -59,7 +59,7 @@ public class OrderController : ControllerBase
 
         if (item.Quantity == 0)
         {
-          _context.CartItems.Remove(item); // ถ้าจำนวนเหลือ 0 ลบ CartItem
+          _context.CartItems.Remove(item); 
         }
 
         // เพิ่ม OrderItem ไปยัง list

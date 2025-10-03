@@ -1,0 +1,69 @@
+<app-nav-header></app-nav-header>
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light p-0 border-bottom">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav w-100">
+          <li class="nav-item-select">
+            <div class="nav-block" [routerLink]="['/pf-1']">All</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['/pf-2']">ที่ต้องชำระ</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['/pf-3']">ที่ต้องจัดส่ง</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['/pf-4']">ที่ต้องได้รับ</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['/pf-5']">สำเร็จแล้ว</div>
+          </li>
+        </ul>
+        <br />
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div class="order-container">
+<div *ngIf="groupedOrders.length; else noOrders">
+  <div *ngFor="let orderGroup of groupedOrders" class="order-card">
+    <div class="customer-info">
+      <h5>Order ID: {{ orderGroup.orderID }}</h5>
+      
+      <div class="order-items">
+        <div *ngFor="let item of orderGroup.items" class="order-item">
+          <div class="order-item">
+            <img *ngIf="item.image_Url1" [src]="item.image_Url1" alt="{{ item.product_Name }}" width="50" />
+            <div>{{ item.product_Name }} ({{ item.size }} - {{ item.color }})</div>
+            <div>จำนวน: {{ item.quantity }}</div>
+            <div>ราคา: {{ item.priceAmount }}</div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- <div class="shipping-info">
+        <p>การจัดส่ง: {{ orderGroup.items[0]?.shipping_Method }}</p>
+        <p>เบอร์โทร: {{ orderGroup.items[0]?.shipping_Phone }}</p>
+      </div> -->
+      
+      <div class="payment-info">
+  <div class="payment-info-left">
+    <div>สถานะ: {{ orderGroup.status }}</div>
+    <div>วันที่: {{ orderGroup.order_date | date }}</div>
+  </div>
+  <div class="payment-info-right">
+    <p>วิธีการชำระเงิน: {{ orderGroup.items[0]?.payment_Method }}</p>
+    <p>ยอดรวม: ฿{{ orderGroup.items[0]?.payment_Amount }}</p>
+  </div>
+</div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noOrders>
+  <div class="alert alert-info">ไม่มีคำสั่งซื้อในสถานะที่เลือก</div>
+</ng-template>
+</div>

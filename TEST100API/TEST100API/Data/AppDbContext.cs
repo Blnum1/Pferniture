@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using TEST100API.Models.Entities;
 
 namespace TEST100API.Data
@@ -18,7 +19,6 @@ namespace TEST100API.Data
     public DbSet<Category> Categories { get; set; }
     public DbSet<ShippingInfo> ShippingInfos { get; set; }
     public DbSet<Payment> Payments { get; set; }
-
 
 
     public DbSet<ProductDto> ProductDto { get; set; }
@@ -97,6 +97,8 @@ namespace TEST100API.Data
           .IsUnique();
 
       modelBuilder.Entity<ProductDto>().HasNoKey().ToView(null);
+      modelBuilder.Entity<ShowOrderDto>().HasNoKey().ToView(null);
+
     }
   }
 }

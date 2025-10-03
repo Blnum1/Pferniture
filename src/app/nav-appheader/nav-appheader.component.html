@@ -1,42 +1,139 @@
+<!-- <div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light p-0 border-bottom">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav w-100">
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['']">หน้าหลัก</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['/pd-1']">HOT Price</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['/pd-2']">โต๊ะ</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['/pd-3']">เก้าอี้</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['/pd-4']">ตู้และชั้น</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['/pd-5']">ตู้เซฟ</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['/pd-6']">อุปกรณ์เครื่องใช้สำนักงาน</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['/pd-7']">เบ็ดเตล็ด</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['/pd-8']">ชิ้นส่วนประกอบเฟอร์นิเจอร์</div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-block" [routerLink]="['/cart']">Cart</div>
+          </li>
+        </ul>
+        <br />
+      </div>
+    </div>
+  </nav>
+</div> -->
 
-<div class="container-fluid">
-<nav class="navbar navbar-expand-lg navbar-light bg-light p-0 border-bottom">
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom p-0">
   <div class="container-fluid">
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav w-100">
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+      aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav align-items-stretch ms-0 w-100">
+
         <li class="nav-item">
-          <div class="nav-block" [routerLink]="['']">หน้าหลัก</div>
+          <a class="nav-link nav-block" [routerLink]="['/']" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact:true}">
+            หน้าหลัก
+          </a>
+        </li>
+
+        <li class="nav-item ms-lg-auto">
+          <a class="nav-link nav-block" [routerLink]="['/hotprice']" routerLinkActive="active">Hot Price</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-block dropdown-toggle" href="#" id="deskDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            โต๊ะ
+          </a>
+          <ul class="dropdown-menu p-3" aria-labelledby="deskDropdown">
+            <div class="dropdown-links">
+              <a class="dropdown-link" [routerLink]="['/pd-2']">โต๊ะทำงาน</a>
+              <a class="dropdown-link" [routerLink]="['/pd-1']">โต๊ะกินข้าว</a>
+            </div>
+          </ul>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-block dropdown-toggle" href="#" id="chairDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            เก้าอี้
+          </a>
+          <ul class="dropdown-menu p-3" aria-labelledby="chairDropdown">
+            <div class="dropdown-links">
+              <a class="dropdown-link" [routerLink]="['/pd-3']">เก้าอี้เล็ก</a>
+              <a class="dropdown-link" [routerLink]="['/pd-4']">เก้าอี้ไม้แท้</a>
+              <a class="dropdown-link" [routerLink]="['/pd-5']">เก้าอี้นุ่มๆ</a>
+            </div>
+          </ul>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-block dropdown-toggle" href="#" id="cabDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            ตู้และชั้น
+          </a>
+          <ul class="dropdown-menu p-3" aria-labelledby="cabDropdown">
+            <div class="dropdown-links">
+              <a class="dropdown-link" [routerLink]="['/pd-6']">ตู้เสื้อผ้า</a>
+            </div>
+          </ul>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-block dropdown-toggle" href="#" id="sofaDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            โซฟา
+          </a>
+          <ul class="dropdown-menu p-3" aria-labelledby="sofaDropdown">
+            <div class="dropdown-links">
+              <a class="dropdown-link" [routerLink]="['/pd-7']">โซฟา2ที่นั่ง</a>
+              <a class="dropdown-link" [routerLink]="['/pd-8']">โซฟา3ที่นั่ง</a>
+              <a class="dropdown-link" [routerLink]="['/pd-9']">โซฟา4ที่นั่ง</a>
+            </div>
+          </ul>
         </li>
         <li class="nav-item">
-          <div class="nav-block" [routerLink]="['/pd-1']">HOT Price</div>
+          <a class="nav-link nav-block" [routerLink]="['/pd-10']" routerLinkActive="active">เตียง</a>
         </li>
+
         <li class="nav-item">
-          <div class="nav-block" [routerLink]="['/pd-2']">โต๊ะ</div>
+          <a class="nav-link nav-block" [routerLink]="['/pd-11']" routerLinkActive="active">เบ็ดเตล็ด</a>
         </li>
+
         <li class="nav-item">
-          <div class="nav-block" [routerLink]="['/pd-3']">เก้าอี้</div>
+          <a class="nav-link nav-block" [routerLink]="['/pd-12']"
+            routerLinkActive="active">ชิ้นส่วนประกอบเฟอร์นิเจอร์</a>
         </li>
-        <li class="nav-item">
-          <div class="nav-block" [routerLink]="['/pd-4']">ตู้และชั้น</div>
-        </li>
-        <li class="nav-item">
-          <div class="nav-block" [routerLink]="['/pd-5']">ตู้เซฟ</div>
-        </li>
-        <li class="nav-item">
-          <div class="nav-block" [routerLink]="['/pd-6']">อุปกรณ์เครื่องใช้สำนักงาน</div>
-        </li>
-        <li class="nav-item">
-          <div class="nav-block" [routerLink]="['/pd-7']">เบ็ดเตล็ด</div>
-        </li>
-        <li class="nav-item">
-          <div class="nav-block" [routerLink]="['/pd-8']">ชิ้นส่วนประกอบเฟอร์นิเจอร์</div>
-        </li>
-        <li class="nav-item">
-          <div class="nav-block" [routerLink]="['/cart']">Cart</div>
+
+        <li class="nav-item ms-lg-auto">
+          <a class="nav-link nav-block" [routerLink]="['/cart']" routerLinkActive="active">Cart</a>
         </li>
       </ul>
-      <br />
     </div>
   </div>
 </nav>
-</div>

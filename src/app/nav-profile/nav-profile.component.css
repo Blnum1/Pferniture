@@ -1,0 +1,32 @@
+.nav-item {
+  display: block;           
+  width: 175px;              
+  padding-top: 30px;   
+  padding-bottom: 10px;  
+  font-size: 18px;         
+  text-align: center;       
+  background-color: #f8f9fa;
+  border: 2px solid transparent; 
+  cursor: pointer;         
+  border-radius: 5px;      
+  transition: all 0.3s;     
+}
+.nav-item-select {
+  display: block;           
+  width: 175px;              
+  padding-top: 30px;   
+  padding-bottom: 10px;  
+  font-size: 18px;         
+  text-align: center;       
+  background-color: #0080ff;
+  border: 2px solid transparent; 
+  cursor: pointer;         
+  border-radius: 5px;      
+  transition: all 0.3s;     
+}
+
+.nav-item:hover {
+  background-color: #393a3b;
+  color: white;               
+  border-color: #393a3b;      
+}

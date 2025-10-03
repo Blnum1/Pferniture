@@ -14,18 +14,25 @@ import { LoginComponent } from './page/login/login.component';
 import { RegisterComponent } from './page/register/register.component';
 import { AuthGuard } from './services/auth.guard';
 import { CrudCreateComponent } from './admin-page/crud-create/crud-create.component';
-import { Pd1Component } from './page/pd-1/pd-1.component';
-import { Pd2Component } from './page/pd-2/pd-2.component';
-import { Pd3Component } from './page/pd-3/pd-3.component';
-import { Pd4Component } from './page/pd-4/pd-4.component';
-import { Pd5Component } from './page/pd-5/pd-5.component';
-import { Pd6Component } from './page/pd-6/pd-6.component';
-import { Pd7Component } from './page/pd-7/pd-7.component';
-import { Pd8Component } from './page/pd-8/pd-8.component';
+import { Pd1Component } from './page/sort-page/pd-1/pd-1.component';
+import { Pd2Component } from './page/sort-page/pd-2/pd-2.component';
+import { Pd3Component } from './page/sort-page/pd-3/pd-3.component';
+import { Pd4Component } from './page/sort-page/pd-4/pd-4.component';
+import { Pd5Component } from './page/sort-page/pd-5/pd-5.component';
+import { Pd6Component } from './page/sort-page/pd-6/pd-6.component';
+import { Pd7Component } from './page/sort-page/pd-7/pd-7.component';
+import { Pd8Component } from './page/sort-page/pd-8/pd-8.component';
 import { CartComponent } from './page/cart/cart.component';
 import { ProductDetailComponent } from './page/product-detail/product-detail.component';
 import { PaymentComponent } from './page/payment/payment.component';
-import { ProfileComponent } from './page/profile/profile.component';
+import { ProfileComponent } from './profile-page/profile/profile.component';
+import { Pf1Component } from './profile-page/pf-1/pf-1.component';
+import { Pf2Component } from './profile-page/pf-2/pf-2.component';
+import { Pf3Component } from './profile-page/pf-3/pf-3.component';
+import { Pf4Component } from './profile-page/pf-4/pf-4.component';
+import { Pf5Component } from './profile-page/pf-5/pf-5.component';
+import { Pd9Component } from './page/sort-page/pd-9/pd-9.component';
+import { Pd10Component } from './page/sort-page/pd-10/pd-10.component';
 
 const routes: Routes = [
   { path: '', 
@@ -101,6 +108,12 @@ const routes: Routes = [
   { path: 'pd-8', 
     component: Pd8Component 
   },
+  { path: 'pd-9', 
+    component: Pd9Component 
+  },
+  { path: 'pd-10', 
+    component: Pd10Component 
+  },
   { path: 'cart', 
     component: CartComponent 
   },
@@ -112,8 +125,22 @@ const routes: Routes = [
   },
   { path: 'profile',
     component: ProfileComponent
-  }
-
+  },
+  { path: 'pf-1',
+    component: Pf1Component
+  },
+  { path: 'pf-2',
+    component: Pf2Component
+  },
+  { path: 'pf-3',
+    component: Pf3Component
+  },
+  { path: 'pf-4',
+    component: Pf4Component
+  },
+  { path: 'pf-5',
+    component: Pf5Component
+  },
 ];
 
 @NgModule({

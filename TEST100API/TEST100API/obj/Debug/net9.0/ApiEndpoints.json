@@ -418,6 +418,27 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "TEST100API.Controllers.ShowOrderController",
+    "Method": "GetShowOrder",
+    "RelativePath": "api/ShowOrder/GetShowOrder",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "userid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TEST100API.Controllers.UserController",
     "Method": "Create",
     "RelativePath": "api/User/CreateUser",
