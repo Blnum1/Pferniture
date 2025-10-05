@@ -33,6 +33,7 @@ import { Pf4Component } from './profile-page/pf-4/pf-4.component';
 import { Pf5Component } from './profile-page/pf-5/pf-5.component';
 import { Pd9Component } from './page/sort-page/pd-9/pd-9.component';
 import { Pd10Component } from './page/sort-page/pd-10/pd-10.component';
+import { LocationComponent } from './profile-page/location/location.component';
 
 const routes: Routes = [
   { path: '', 
@@ -125,6 +126,9 @@ const routes: Routes = [
   },
   { path: 'profile',
     component: ProfileComponent
+  },
+  { path: 'location',
+    component: LocationComponent
   },
   { path: 'pf-1',
     component: Pf1Component

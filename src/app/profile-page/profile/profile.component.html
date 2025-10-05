@@ -1,3 +1,23 @@
 <app-nav-header></app-nav-header>
-<app-nav-profile></app-nav-profile>
-<p>profile works!</p>
+<div class="container-xxl page with-tabs-offset">
+  <div class="row g-3">
+
+    <!-- Sidebar (Sticky) -->
+    <div class="col-12 col-lg-3">
+      <nav class="side-nav">
+        <a class="side-link" [routerLink]="['/pf-1']" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact:true}">
+          การสั่งซื้อของฉัน
+        </a>
+        <a class="side-link" [routerLink]="['/profile']" routerLinkActive="active">บัญชีของฉัน</a>
+        <a class="side-link" [routerLink]="['/location']" routerLinkActive="active">ที่อยู่</a>
+      </nav>
+    </div>
+
+    <!-- Main content -->
+    <div class="col-12 col-lg-9">
+
+      
+
+  </div>
+</div>

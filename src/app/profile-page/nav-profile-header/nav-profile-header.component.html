@@ -1,0 +1,10 @@
+
+<!-- ชื่อ-นามสกุล -->
+<span *ngIf="user$ | async as u">
+  {{ u.firstName }} {{ u.lastName }}
+</span>
+
+<!-- หรือใช้ service ตรง ๆ ก็ได้ ถ้าประกาศ public -->
+<span *ngIf="auth.currentUser | async as u">
+  {{ u.firstName }} {{ u.lastName }}
+</span>

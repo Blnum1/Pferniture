@@ -1,0 +1,17 @@
+.side-nav{
+  position: sticky;
+  top: calc(var(--header-h) + 8px + 48px); /* + ระยะคร่าวๆ ของแถบแท็บ ถ้าต้องการเว้น */
+  z-index: 1020;
+}
+.side-link {
+  display: block;
+  color: #111;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 8px;
+  border-radius: 6px;
+  transition: background .2s, color .2s;
+}
+.side-link + .side-link { margin-top: 8px; }
+.side-link:hover { background: rgba(0,0,0,.06); }
+.side-link.active { background: rgba(0,0,0,.1); }

@@ -64,7 +64,9 @@ namespace TEST100API.Controllers
                         @status = 'All' AND o.Status IN ('waitpay', 'musttranfer', 'mustrecieve', 'finish') 
                         OR o.Status = @status
                     )
-                    AND u.UserID = @userid",
+                    AND u.UserID = @userid
+                    ORDER BY 
+                        o.OrderID DESC",
               new SqlParameter("@status", status),
                new SqlParameter("@userid", userid))
           .AsNoTracking()

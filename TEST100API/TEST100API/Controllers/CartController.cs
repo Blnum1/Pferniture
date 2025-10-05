@@ -102,7 +102,7 @@ public class CartController : ControllerBase
                          cartID = ci.CartID,
                          productID = ci.ProductID,
                          product_Name = p.Product_Name,
-                         price_amount = ci.PriceAmount,     // ราคาต่อชิ้น
+                         price_amount = ci.PriceAmount,     
                          quantity = ci.Quantity,
                          image_Url1 = p.Image_Url1
                        }).ToListAsync();
