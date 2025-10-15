@@ -130,7 +130,51 @@ public class OrderController : ControllerBase
       return BadRequest(ex.Message);
     }
   }
+
+  [HttpPost("UpdateOrderStatus")]
+  public async Task<IActionResult> UpdateOrderStatus([FromBody] UpdateOrderStatusRequest req)
+  {
+    if (req.OrderID <= 0) return BadRequest("OrderID is required.");
+    if (string.IsNullOrEmpty(req.OrderStatus)) return BadRequest("OrderStatus is required.");
+    if (string.IsNullOrEmpty(req.PaymentStatus)) return BadRequest("PaymentStatus is required.");
+
+    // ค้นหาคำสั่งซื้อ
+    var order = await _context.Orders
+        .Include(o => o.Payment) // รวมข้อมูล Payment ที่เกี่ยวข้อง
+        .FirstOrDefaultAsync(o => o.OrderID == req.OrderID);
+
+    if (order == null) return NotFound("Order not found.");
+
+    // อัพเดตสถานะของ Order
+    order.Status = req.OrderStatus;
+
+    // อัพเดตสถานะของ Payment
+    var payment = order.Payment;
+    if (payment != null)
+    {
+      payment.Payment_Status = req.PaymentStatus;
+    }
+
+    // บันทึกการเปลี่ยนแปลง
+    _context.Orders.Update(order);
+    if (payment != null)
+    {
+      _context.Payments.Update(payment);
+    }
+
+    await _context.SaveChangesAsync();
+
+    return Ok(new { message = "Order status and payment status updated successfully." });
+  }
 }
+
+public class UpdateOrderStatusRequest
+{
+  public int OrderID { get; set; }
+  public string OrderStatus { get; set; }   
+  public string PaymentStatus { get; set; } 
+}
+
 
 
 public class CreateOrderRequest

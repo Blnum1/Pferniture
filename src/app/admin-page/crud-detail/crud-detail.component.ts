@@ -13,6 +13,8 @@ export class CrudDetailComponent implements OnInit {
   isEditMode: boolean = false;     // กำหนดว่าอยู่ในโหมดแก้ไขหรือไม่
   isDeleteConfirmed: boolean = false;  // สำหรับการยืนยันการลบ
 
+   showModal: boolean = false;
+  selectedImage: string | null = null
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
@@ -58,4 +60,35 @@ export class CrudDetailComponent implements OnInit {
       }
     }
   }
+
+   openModal(imageUrl: string): void {
+    this.selectedImage = imageUrl;
+    this.showModal = true;
+  }
+
+  // Function to close the modal
+  closeModal(): void {
+    this.showModal = false;
+    this.selectedImage = null;
+  }
+
+  onImageUpload(event: any) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.product!.image_Url1 = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      console.error('No file selected');
+    }
+  }
 }
+
+
+
+
+
+

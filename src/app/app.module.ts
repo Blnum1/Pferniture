@@ -49,6 +49,8 @@ import { Pd9Component } from './page/sort-page/pd-9/pd-9.component';
 import { Pd10Component } from './page/sort-page/pd-10/pd-10.component';
 import { NavProfileHeaderComponent } from './profile-page/nav-profile-header/nav-profile-header.component';
 import { LocationComponent } from './profile-page/location/location.component';
+import { DeliveryNoteComponent } from './admin-page/delivery-note/delivery-note.component';
+import { OrderManageDetailComponent } from './admin-page/order-manage-detail/order-manage-detail.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +92,9 @@ import { LocationComponent } from './profile-page/location/location.component';
     Pd9Component,
     Pd10Component,
     NavProfileHeaderComponent,
-    LocationComponent
+    LocationComponent,
+    DeliveryNoteComponent,
+    OrderManageDetailComponent
   ],
   imports: [
     BrowserModule,

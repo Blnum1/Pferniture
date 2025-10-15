@@ -12,7 +12,7 @@
 
 <header class="p-3 bg-dark" style="height: 110px;">
     <div class="naveiei">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"> 
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <!-- <a href="/"
                 class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"> <svg class="bi me-2"
                     width="40" height="32" role="img" aria-label="Bootstrap">
@@ -21,7 +21,9 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li>
                     <div class="headerlogo">
-                    <a routerLink="/">Pferniture</a>
+                        <a routerLink="/" class="logo-link">
+                            <img src="assets/image/logo.png" alt="Pferniture Logo" class="image-logo">
+                        </a>
                     </div>
                 </li>
                 <li><a routerLink="/dashboard" class="nav-link px-2 text-white">dashboard</a></li>
@@ -29,19 +31,27 @@
                 <li><a href="#" class="nav-link px-2 text-white">About</a></li>
             </ul>
 
-            <div class="text-end">
-                <button type="button" class="btn btn-outline-light me-2" [routerLink]="'/pf-1'">profile</button>
-            </div>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search"> 
-                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="ค้นหาเฟอร์นิเจอร์ที่คุณต้องการ"
+                    aria-label="Search">
             </form>
 
             <div class="text-end">
-                <button type="button" class="btn btn-outline-light me-2" [routerLink]="'/login'">Login</button>
-                <button type="button" class="btn btn-warning me-2" [routerLink]="'/register'">Sign-up</button>
-                <button type="button" class="btn btn-primary"(click)="logout()">Logout</button>
+                <a *ngIf="isLoggedIn()" type="button" class="btn  me-2"
+                    [routerLink]="'/pf-1'">
+                    <img src="assets/image/github-logos.png" alt="profile Logo" class="profile-logo">
+                </a>
+
+                <button *ngIf="!isLoggedIn()" type="button" class="btn btn-outline-light me-2"
+                    [routerLink]="'/login'">Login</button>
+                <button *ngIf="!isLoggedIn()" type="button" class="btn btn-warning me-2"
+                    [routerLink]="'/register'">Sign-up</button>
+
+                <button *ngIf="isLoggedIn()" type="button" class="btn btn-primary" (click)="logout()">Logout</button>
             </div>
+
         </div>
     </div>
 </header>

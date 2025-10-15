@@ -1,5 +1,115 @@
 <app-nav-header></app-nav-header>
 <app-nav-appheader></app-nav-appheader>
+
+<div class="product-slider-page">
+    
+     <div class="main-image-area">
+        <button class="slider-button prev" (click)="prevImage()" 
+            [disabled]="slides.length <= 1">&lt;</button>
+        
+        <img [src]="currentSlide.mainImageUrl" 
+             alt="Main View (Click to Zoom)" 
+             class="main-image-fixed clickable" 
+             (click)="openZoomModal()">
+        
+        <button class="slider-button next" (click)="nextImage()" 
+            [disabled]="slides.length <= 1">&gt;</button>
+    </div>
+    <div class="lightbox-modal-overlay" *ngIf="isZoomModalOpen" (click)="closeZoomModal()">
+    <div class="lightbox-modal-content" (click)="$event.stopPropagation()">
+        
+        <button class="lightbox-close-btn" (click)="closeZoomModal()">
+            &times;
+        </button>
+        
+        <img [src]="currentSlide.mainImageUrl" alt="Zoomed View" class="lightbox-zoom-image">
+        
+    </div>
+</div>
+    <div class="product-list-container">
+        <div class="product-list-viewport">
+            
+            <div class="product-scroll-list">
+                <div 
+                    *ngFor="let product of currentSlide.thumbnails; let i = index" 
+                    class="product-item"
+                    (click)="selectProductImage(i)" 
+                    >
+                    <div class="product-image-wrapper">
+                        <img [src]="product.imageUrl" [alt]="product.productName" class="product-thumbnail">
+                    </div>
+                    
+                    <div class="product-details">
+                        <p class="product-name">{{ product.productName }}</p>
+                        <p class="product-category">{{ product.categoryName }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+</div>
+
+<div class="homepage-container">
+  <!-- สินค้าหมวดหมู่ที่ 1 -->
+  <div class="category-section">
+    <h2>โต๊ะกินข้าว</h2>
+    <div class="product-scroll-container">
+      <div *ngFor="let product of category1Products" class="product-item">
+        <div class="product-card">
+          <img [src]="product.image_Url1" class="img-fluid" alt="Image Preview" />
+          <div class="product-info">
+            <h5>{{ product.product_Name }}</h5>
+            <p>{{ product.category_Name }}</p>
+            <p class="price">Price: {{ product.price | currency }}</p>
+            <p class="price-discount">Discounted: {{ product.price_Discount | currency }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- สินค้าหมวดหมู่ที่ 2 -->
+  <div class="category-section">
+    <h2>โต๊ะทำงาน</h2>
+    <div class="product-scroll-container">
+      <div *ngFor="let product of category2Products" class="product-item">
+        <div class="product-card">
+          <img [src]="product.image_Url1" class="img-fluid" alt="Image Preview" />
+          <div class="product-info">
+            <h5>{{ product.product_Name }}</h5>
+            <p>{{ product.category_Name }}</p>
+            <p class="price">Price: {{ product.price | currency }}</p>
+            <p class="price-discount">Discounted: {{ product.price_Discount | currency }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- สินค้าหมวดหมู่ที่ 3 -->
+  <div class="category-section">
+    <h2>เก้าอี้โซฟา</h2>
+    <div class="product-scroll-container">
+      <div *ngFor="let product of category3Products" class="product-item">
+        <div class="product-card">
+          <img [src]="product.image_Url1" class="img-fluid" alt="Image Preview" />
+          <div class="product-info">
+            <h5>{{ product.product_Name }}</h5>
+            <p>{{ product.category_Name }}</p>
+            <p class="price">Price: {{ product.price | currency }}</p>
+            <p class="price-discount">Discounted: {{ product.price_Discount | currency }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 <div class="form-sort">
     <form class="form"><input type="search" placeholder="ค้นหา"></form>
 </div>

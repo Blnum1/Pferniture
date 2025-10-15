@@ -16,3 +16,204 @@
   color: white;               /* เปลี่ยนสีตัวอักษรเมื่อ hover */
   border-color: #393a3b;      /* เปลี่ยนสีขอบเมื่อ hover */
 }
+
+/* src/app/page/homepage/homepage.component.css */
+
+/* 📌 NEW/CHECK: Style สำหรับ Container หลัก */
+.product-slider-page {
+    display: flex; /* 👈 ทำให้องค์ประกอบย่อยเรียงกันในแนวนอน */
+    max-width: 1600px; /* กำหนดความกว้างรวม */
+    height: 700px; /* กำหนดความสูงรวมเพื่อให้ List ด้านข้างเต็ม */
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    overflow: hidden; 
+}
+
+/* 📌 NEW/CHECK: Style สำหรับพื้นที่รูปภาพใหญ่ (ซ้าย) */
+.main-image-area {
+    flex: 3; /* ให้รูปภาพหลักใช้พื้นที่เยอะกว่า (เช่น 75%) */
+    position: relative; /* สำหรับจัดตำแหน่งปุ่มเลื่อน */
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.main-image-fixed {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ครอบคลุมพื้นที่แต่รักษาสัดส่วน */
+    display: block;
+    transition: opacity 0.3s; 
+}
+
+/* 📌 NEW/CHECK: Style สำหรับปุ่มเลื่อน (เพื่อให้ปุ่มอยู่บนรูปใหญ่) */
+.slider-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    /* ... Style อื่นๆ ... */
+    z-index: 10; /* ให้ปุ่มอยู่ด้านบนรูปภาพ */
+}
+
+/* 📌 ตรวจสอบตำแหน่งของปุ่ม PREV (ซ้าย) */
+.slider-button.prev {
+    left: 10px;
+    /* ... */
+}
+
+/* 📌 สำคัญ: ตรวจสอบตำแหน่งของปุ่ม NEXT (ขวา) */
+.slider-button.next {
+    right: 10px; /* 👈 ต้องมี right: [ค่า] เพื่อให้อยู่ด้านขวา */
+    /* ... */
+}
+
+/* 📌 CHECK: Style สำหรับพื้นที่ List ด้านข้าง (ขวา) */
+.product-list-container {
+    flex: 1; /* ให้ List ด้านข้างใช้พื้นที่ที่เหลือ (เช่น 25%) */
+    background-color: #f0f0f0; 
+    border-left: 1px solid #ccc;
+    position: relative; 
+    padding: 0 10px; 
+}
+
+.product-image-wrapper {
+    /* ลดขนาดลงจาก 70px/70px เป็น 60px/60px หรือตามที่คุณต้องการ */
+    width: 60px; 
+    height: 60px;
+    border-radius: 4px; /* ทำให้มุมมน */
+    overflow: hidden;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.product-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ทำให้รูปเต็มกรอบโดยรักษาสัดส่วน */
+}
+
+.product-item {
+    height: 50%; /* ยังคง 25% เพื่อให้แสดงได้ 4 รายการ */
+    /* ลด padding ในแนวตั้งลงเพื่อให้รายการดูไม่หนาเกินไป */
+    padding: 5px 10px; 
+    margin: 0;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 5px; 
+    
+    /* 📌 สำคัญ: ให้รายการจัดเรียงแนวตั้งเสมอ */
+    display: flex; 
+    align-items: center; /* จัดให้อยู่กลางตามแนวตั้ง */
+}
+
+/*... (Style อื่นๆ ของ .product-list-viewport, .product-scroll-list, .product-item) ...*/
+.main-image-fixed.clickable {
+    cursor: zoom-in; /* เปลี่ยน Cursor เมื่อชี้ */
+}
+
+/* src/app/page/homepage/homepage.component.css */
+
+/* --- Style สำหรับ Lightbox Modal --- */
+
+/* พื้นหลัง Overlay (มืด) */
+.lightbox-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* สีดำโปร่งแสง */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 📌 สำคัญ: ให้ Modal อยู่บนสุด */
+}
+
+/* คอนเทนเนอร์ของรูปภาพ */
+.lightbox-modal-content {
+    max-width: 90%;
+    max-height: 90%;
+    position: relative;
+    /* ป้องกันการคลิก Modal ปิดตัวเอง เมื่อคลิกบน Content */
+    cursor: default; 
+}
+
+/* รูปภาพที่ซูม */
+.lightbox-zoom-image {
+    display: block;
+    max-width: 100%;
+    max-height: 100vh; /* ความสูงเต็มจอ */
+    object-fit: contain; /* รักษาสัดส่วน ไม่ให้ถูกตัด */
+}
+
+/* ปุ่มปิด (X) */
+.lightbox-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    background: none;
+    border: none;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    z-index: 1001;
+}
+
+.lightbox-close-btn:hover {
+    opacity: 1;
+}
+
+.product-carousel {
+  padding: 10px;
+}
+
+.product-scroll-container {
+  display: flex;
+  overflow-x: auto; /* ทำให้สามารถเลื่อนในแนวนอนได้ */
+  gap: 15px;
+  padding-bottom: 20px;
+}
+
+.product-item {
+  flex: 0 0 auto; /* ให้สินค้าไม่หดตัว */
+  width: 250px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.product-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.product-info {
+  margin-top: 10px;
+}
+
+.product-info h5 {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.product-info p {
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+.price {
+  font-weight: bold;
+  color: #333;
+}
+
+.price-discount {
+  text-decoration: line-through;
+  color: red;
+}

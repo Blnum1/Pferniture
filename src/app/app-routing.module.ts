@@ -34,6 +34,8 @@ import { Pf5Component } from './profile-page/pf-5/pf-5.component';
 import { Pd9Component } from './page/sort-page/pd-9/pd-9.component';
 import { Pd10Component } from './page/sort-page/pd-10/pd-10.component';
 import { LocationComponent } from './profile-page/location/location.component';
+import { DeliveryNoteComponent } from './admin-page/delivery-note/delivery-note.component';
+import { OrderManageDetailComponent } from './admin-page/order-manage-detail/order-manage-detail.component';
 
 const routes: Routes = [
   { path: '', 
@@ -63,8 +65,16 @@ const routes: Routes = [
     component: OnOffStatusComponent,
     canActivate:[AuthGuard] 
   },
-  { path: 'oder-manage', 
+  { path: 'order-manage', 
     component: OrderManageComponent,
+    canActivate:[AuthGuard] 
+  },
+  { path: 'order-manage-detail/:orderID', 
+    component: OrderManageDetailComponent,
+    canActivate:[AuthGuard] 
+  },
+  { path: 'delivery-note/:orderID', 
+    component: DeliveryNoteComponent,
     canActivate:[AuthGuard] 
   },
   { path: 'payment-manage', 

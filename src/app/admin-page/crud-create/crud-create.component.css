@@ -1,0 +1,10 @@
+.main-container {
+  padding-left: 7%;  
+  padding-right: 7%;
+  padding-top: 40px;
+  margin-top: 10px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin-left: 150px;  
+}

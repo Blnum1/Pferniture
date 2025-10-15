@@ -57,7 +57,6 @@ public class ShippingInfoController : ControllerBase
       Region = dto.Region,
       Country = dto.Country,
       Postal_Code = dto.Postal_Code,
-      Shipping_Method = dto.Shipping_Method,
       Shipping_Phone = dto.Shipping_Phone
     };
 
@@ -83,7 +82,6 @@ public class ShippingInfoController : ControllerBase
     if (dto.Region != null) s.Region = dto.Region;
     if (dto.Country != null) s.Country = dto.Country;
     if (dto.Postal_Code.HasValue) s.Postal_Code = dto.Postal_Code;
-    if (dto.Shipping_Method != null) s.Shipping_Method = dto.Shipping_Method;
     if (dto.Shipping_Phone != null) s.Shipping_Phone = dto.Shipping_Phone;
 
     await _context.SaveChangesAsync();

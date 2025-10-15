@@ -20,6 +20,59 @@ position: fixed;
      margin-left: 1rem; 
 } 
 
-.naveiei{
-  padding-top: 20px;
+/* .naveiei{
+  padding-top: px;
+} */
+
+.headerlogo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-link {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.image-logo {
+  width: 85px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.image-logo:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.profile-logo {
+  width: 65px;
+  height: auto;
+  background-color: white;
+}
+
+form {
+  width: 100%; 
+  max-width: 400px; 
+  margin: 0 auto; 
+}
+
+.form-control {
+  width: 100%; 
+  padding: 10px 15px; 
+  border-radius: 50px; 
+  font-size: 1rem; 
+}
+
+.form-control-dark {
+  background-color: #eaf4ff; 
+  color: rgb(0, 0, 0); 
+  border: 1px solid #495057;
+}
+
+.form-control-dark:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25); 
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TEST100API.Data;
 
@@ -11,9 +12,11 @@ using TEST100API.Data;
 namespace TEST100API.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251007104852_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +40,7 @@ namespace TEST100API.Migrations.AppDb
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.CartItem", b =>
@@ -66,7 +69,7 @@ namespace TEST100API.Migrations.AppDb
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("CartItems", (string)null);
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.Category", b =>
@@ -83,7 +86,7 @@ namespace TEST100API.Migrations.AppDb
 
                     b.HasKey("CategoryID");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.Order", b =>
@@ -118,7 +121,7 @@ namespace TEST100API.Migrations.AppDb
 
                     b.HasIndex("ShippingInfoID");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.OrderItem", b =>
@@ -147,7 +150,7 @@ namespace TEST100API.Migrations.AppDb
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.Payment", b =>
@@ -179,7 +182,7 @@ namespace TEST100API.Migrations.AppDb
                         .IsUnique()
                         .HasFilter("[OrderID] IS NOT NULL");
 
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.Product", b =>
@@ -239,7 +242,7 @@ namespace TEST100API.Migrations.AppDb
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.ProductDto", b =>
@@ -336,7 +339,7 @@ namespace TEST100API.Migrations.AppDb
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("ShippingInfos", (string)null);
+                    b.ToTable("ShippingInfos");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.ShippingTransfer", b =>
@@ -368,7 +371,7 @@ namespace TEST100API.Migrations.AppDb
                     b.HasIndex("OrderID")
                         .IsUnique();
 
-                    b.ToTable("ShippingTransfers", (string)null);
+                    b.ToTable("ShippingTransfers");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.ShowOrderDto", b =>
@@ -478,7 +481,7 @@ namespace TEST100API.Migrations.AppDb
 
                     b.HasKey("UserID");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("TEST100API.Models.Entities.Cart", b =>

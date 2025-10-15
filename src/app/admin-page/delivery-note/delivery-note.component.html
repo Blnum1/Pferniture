@@ -1,0 +1,63 @@
+<div class="container" *ngIf="orderGroup">
+    <h1>ใบส่งสินค้า</h1>
+
+    <div class="header">
+        <div class="left">
+            <div><strong>จาก Blue-Furniture</strong></div>
+            <div>61/11หมู่บ้านอัคคีพ้นไฟ อ.ศรีราชา ต.บางพระ 20110</div>
+        </div>
+        <div class="right">
+            <div><strong>วันที่สั่งซื้อ:</strong> {{ orderGroup.order_date | date }}</div>
+            <div><strong>เลขที่ใบส่งสินค้า:</strong> {{ orderGroup.orderID }}</div>
+        </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="header">
+        <div class="left">
+            <div><strong>ชื่อผู้ซื้อ:</strong> {{ orderGroup.items[0]?.userFirstName }} {{
+                orderGroup.items[0]?.userLastName }}</div>
+            <div><strong>ที่อยู่จัดส่ง:</strong> {{ orderGroup.items[0]?.address || 'ไม่ระบุ' }} {{
+                orderGroup.items[0]?.city }} {{ orderGroup.items[0]?.region }} {{ orderGroup.items[0]?.country }} {{
+                orderGroup.items[0]?.postal_Code }}</div>
+        </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ลำดับ</th>
+                <th>สินค้า</th>
+                <th>จำนวน</th>
+                <th>ราคา</th>
+                <th>รวม</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of orderGroup.items">
+                <td>{{ item.orderItemID }}</td>
+                <td>{{ item.product_Name }} ({{ item.size }} - {{ item.color }})</td>
+                <td>{{ item.quantity }}</td>
+                <td>฿{{ item.priceAmount }}</td>
+                <td>฿{{ item.quantity * item.priceAmount }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="separator"></div>
+
+    <div class="total">
+        <div><strong>ยอดรวม:</strong> ฿{{ orderGroup.items.length > 0 ? orderGroup.items[0]?.payment_Amount : '0' }}
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="date">วันที่: {{ orderGroup.order_date | date }}</div>
+        <div>ขอบคุณที่ใช้บริการของเรา</div>
+    </div>
+
+    <!-- <button (click)="print()">ปริ้นใบส่งสินค้า</button> -->
+</div>

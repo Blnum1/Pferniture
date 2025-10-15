@@ -30,8 +30,8 @@ namespace TEST100API.Controllers
           .FromSqlRaw(@"
                     SELECT 
                         u.UserID, 
-                        u.FirstName, 
-                        u.LastName, 
+                        u.FirstName AS UserFirstName,  
+                        u.LastName AS UserLastName,   
                         o.OrderID, 
                         o.ShippingInfoID, 
                         o.CartID, 
@@ -45,8 +45,14 @@ namespace TEST100API.Controllers
                         p.Color, 
                         p.Size,
                         p.Image_Url1,
-                        si.Shipping_Method,
                         si.Shipping_Phone,
+                        si.firstname AS ShippingFirstName, 
+                        si.LastName AS ShippingLastName,
+                        si.Address,
+                        si.City,
+                        si.Region,
+                        si.Country,
+                        si.Postal_Code,
                         pm.PaymentID,
                         pm.Payment_Method,
                         pm.Payment_Status,
@@ -74,6 +80,122 @@ namespace TEST100API.Controllers
 
       return Ok(rows);
     }
+
+
+    [AllowAnonymous]
+    [HttpGet("GetShowAllOrder")]
+    public async Task<IActionResult> GetShowOrder([FromQuery] string status)
+    {
+      var rows = await _context.Set<ShowOrderDto>()
+          .FromSqlRaw(@"
+            SELECT 
+                u.UserID, 
+                u.FirstName AS UserFirstName,  
+                u.LastName AS UserLastName,    
+                o.OrderID, 
+                o.ShippingInfoID, 
+                o.CartID, 
+                o.Status, 
+                o.Order_date, 
+                oi.OrderItemID, 
+                oi.ProductID,
+                oi.Quantity,
+                oi.PriceAmount,
+                p.Product_Name, 
+                p.Color, 
+                p.Size,
+                p.Image_Url1,
+                si.Shipping_Phone,
+                si.firstname AS ShippingFirstName, 
+                si.LastName AS ShippingLastName,
+                si.Address,
+                si.City,
+                si.Region,
+                si.Country,
+                si.Postal_Code,
+                pm.PaymentID,
+                pm.Payment_Method,
+                pm.Payment_Status,
+                pm.Payment_Amount,
+                pm.Payment_date
+            FROM Orders o
+            JOIN OrderItems oi ON oi.OrderID = o.OrderID
+            JOIN Products p ON p.ProductID = oi.ProductID
+            JOIN Carts c ON c.CartID = o.CartID
+            JOIN Users u ON u.UserID = c.UserID
+            JOIN ShippingInfos si ON si.ShippingInfoID = o.ShippingInfoID
+            JOIN Payments pm ON pm.OrderID = o.OrderID
+            WHERE 
+              (
+                  @status = 'All' AND o.Status IN ('waitpay', 'musttranfer', 'mustrecieve', 'finish') 
+                  OR o.Status = @status
+              )
+            ORDER BY 
+                o.OrderID DESC",
+              new SqlParameter("@status", status))
+          .AsNoTracking()
+          .ToListAsync();
+
+      return Ok(rows);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("GetShowOrderByID")]
+    public async Task<IActionResult> GetShowOrderbyID([FromQuery] int orderID)
+    {
+      var rows = await _context.Set<ShowOrderDto>()
+          .FromSqlRaw(@"
+            SELECT 
+                u.UserID, 
+                u.FirstName AS UserFirstName,  
+                u.LastName AS UserLastName,    
+                o.OrderID, 
+                o.ShippingInfoID, 
+                o.CartID, 
+                o.Status, 
+                o.Order_date, 
+                oi.OrderItemID, 
+                oi.ProductID,
+                oi.Quantity,
+                oi.PriceAmount,
+                p.Product_Name, 
+                p.Color, 
+                p.Size,
+                p.Image_Url1,
+                si.Shipping_Phone,
+                si.firstname AS ShippingFirstName, 
+                si.LastName AS ShippingLastName,
+                si.Address,
+                si.City,
+                si.Region,
+                si.Country,
+                si.Postal_Code,
+                pm.PaymentID,
+                pm.Payment_Method,
+                pm.Payment_Status,
+                pm.Payment_Amount,
+                pm.Payment_date
+            FROM Orders o
+            JOIN OrderItems oi ON oi.OrderID = o.OrderID
+            JOIN Products p ON p.ProductID = oi.ProductID
+            JOIN Carts c ON c.CartID = o.CartID
+            JOIN Users u ON u.UserID = c.UserID
+            JOIN ShippingInfos si ON si.ShippingInfoID = o.ShippingInfoID
+            JOIN Payments pm ON pm.OrderID = o.OrderID
+            WHERE o.OrderID = @orderID 
+            ORDER BY 
+                o.OrderID DESC", 
+              new SqlParameter("@orderID", orderID)  
+          )
+          .AsNoTracking()
+          .ToListAsync();
+
+      return Ok(rows);
+    }
+
+
+
+
   }
 }
 

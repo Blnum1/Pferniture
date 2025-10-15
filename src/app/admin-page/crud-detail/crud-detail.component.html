@@ -1,115 +1,125 @@
 <app-nav-admin></app-nav-admin>
-<br />
-<br />
+<br>
+<br>
+<br>
 <div class="main-container mb-3">
   <div *ngIf="product" class="row">
 
     <!-- คอลัมน์แรกสำหรับแสดงรูป -->
     <div class="col-md-6 mb-6">
-      <!-- แถวที่ 1 สำหรับ Image 1 และ URL input -->
       <div class="row mb-3">
-        <div class="col-md-6">
+        <!-- Image 1 -->
+        <div class="col-md-4" *ngIf="product.image_Url1" (click)="openModal(product.image_Url1)">
           <label>Image 1:</label>
-          <div *ngIf="product.image_Url1">
-            <img [src]="product.image_Url1" alt="Image Preview" width="200" height="200" class="img-thumbnail" />
-          </div>
+          <img [src]="product.image_Url1" alt="Image Preview" class="img-thumbnail" />
         </div>
-        <div class="col-md-6">
-          <input [(ngModel)]="product.image_Url1" name="image_Url1" [readonly]="!isEditMode" class="form-control" />
-        </div>
-      </div>
 
-      <!-- แถวที่ 2 สำหรับ Image 2 และ URL input -->
-      <div class="row mb-3">
-        <div class="col-md-6">
+        <!-- Image 2 -->
+        <div class="col-md-4" *ngIf="product.image_Url2" (click)="openModal(product.image_Url2)">
           <label>Image 2:</label>
-          <div *ngIf="product.image_Url2">
-            <img [src]="product.image_Url2" alt="Image Preview" width="200" height="200" class="img-thumbnail" />
-          </div>
+          <img [src]="product.image_Url2" alt="Image Preview" class="img-thumbnail" />
         </div>
-        <div class="col-md-6">
-          <input [(ngModel)]="product.image_Url2" name="image_Url2" [readonly]="!isEditMode" class="form-control" />
+
+        <!-- Image 3 -->
+        <div class="col-md-4" *ngIf="product.image_Url3" (click)="openModal(product.image_Url3)">
+          <label>Image 3:</label>
+          <img [src]="product.image_Url3" alt="Image Preview" class="img-thumbnail" />
         </div>
+
       </div>
 
-      <!-- แถวที่ 3 สำหรับ Image 3 และ URL input -->
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <label>Image 3:</label>
-          <div *ngIf="product.image_Url3">
-            <img [src]="product.image_Url3" alt="Image Preview" width="200" height="200" class="img-thumbnail" />
+      <!-- เพิ่มรูปภาพใหม่ -->
+      <div class="row">
+        <div class="col-12">
+          <div class="upload-new-img">
+            <label>Upload Image</label>
+            <input type="file" (change)="onImageUpload($event)" />
           </div>
-        </div>
-        <div class="col-md-6">
-          <input [(ngModel)]="product.image_Url3" name="image_Url3" [readonly]="!isEditMode" class="form-control" />
         </div>
       </div>
     </div>
 
-
     <!-- คอลัมน์ที่สองสำหรับแสดงข้อมูลสินค้า -->
     <div class="col-md-6 mb-6">
-      <div class="d-flex justify-content-end align-items-end mb-1">
-        <h1>ข้อมูลสินค้า</h1>
+      <div class="d-flex justify-content-between mb-3">
+        <h1>{{ product.product_Name }}</h1>
         <button type="button" (click)="toggleEditMode()" class="btn btn-secondary">
           {{ isEditMode ? 'Save Changes' : 'Edit' }}
         </button>
         <button type="button" (click)="handleDelete()" class="btn btn-danger">Delete</button>
       </div>
 
-      <h2>{{ product.product_Name }}</h2>
       <form #productForm="ngForm">
-        <div>
+        <div class="form-group">
+          <label>Product Stock</label>
+          <input [(ngModel)]="product.stock" name="product_Stock" [readonly]="!isEditMode" class="form-control" />
+        </div>
+        <div class="form-group">
           <label>Product Name:</label>
           <input [(ngModel)]="product.product_Name" name="product_Name" [readonly]="!isEditMode" class="form-control" />
         </div>
-        <div>
-          <label>Product ID:</label>
-          <input [(ngModel)]="product.productID" name="productID" [readonly]="!isEditMode" class="form-control" />
-        </div>
-        <div>
+        <div class="form-group">
           <label>Category Name:</label>
           <input [(ngModel)]="product.category_Name" name="category_Name" readonly class="form-control" />
         </div>
-        <div>
+        <div class="form-group">
           <label>Category ID:</label>
           <input [(ngModel)]="product.categoryID" name="categoryID" [readonly]="!isEditMode" class="form-control" />
         </div>
-        <div>
+        <div class="form-group">
           <label>Size:</label>
           <input [(ngModel)]="product.size" name="size" [readonly]="!isEditMode" class="form-control" />
         </div>
-        <div>
+        <div class="form-group">
           <label>Color:</label>
-          <input [(ngModel)]="product.color" name="color" [readonly]="!isEditMode" class="form-control" />  
+          <input [(ngModel)]="product.color" name="color" [readonly]="!isEditMode" class="form-control" />
         </div>
-
-        <div>
+        <div class="form-group">
           <label>Price:</label>
           <input [(ngModel)]="product.price" name="price" [readonly]="!isEditMode" class="form-control" />
         </div>
-        <div>
+        <div class="form-group">
           <label>Price Discount:</label>
           <input [(ngModel)]="product.price_Discount" name="price_Discount" [readonly]="!isEditMode"
             class="form-control" />
         </div>
-        <div>
-          <label>Description:</label>
+      </form>
+    </div>
+
+    <div class="col-md-12 mb-12">
+      <form #productForm="ngForm">
+        <div class="form-group">
+          <label>Description 1:</label>
           <textarea [(ngModel)]="product.pDescription1" name="description1" [readonly]="!isEditMode"
             class="form-control"></textarea>
         </div>
-        <div>
-          <label>Description:</label>
+        <div class="form-group">
+          <label>Description 2:</label>
           <textarea [(ngModel)]="product.pDescription2" name="description2" [readonly]="!isEditMode"
             class="form-control"></textarea>
         </div>
-        <div>
-          <label>Description:</label>
+        <div class="form-group">
+          <label>Description 3:</label>
           <textarea [(ngModel)]="product.pDescription3" name="description3" [readonly]="!isEditMode"
             class="form-control"></textarea>
         </div>
-
       </form>
+    </div>
+
+  </div>
+</div>
+
+<!-- Image Preview Modal -->
+<div class="modal" tabindex="-1" [ngClass]="{'show': showModal}" (click)="closeModal()">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Image Preview</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <img [src]="selectedImage" class="img-fluid" alt="Image Preview" />
+      </div>
     </div>
   </div>
 </div>

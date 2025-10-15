@@ -8,6 +8,10 @@ import { Router } from '@angular/router';
   styleUrl: './nav-header.component.css'
 })
 export class NavHeaderComponent {
+
+  isLoggedIn(): boolean {
+    return localStorage.getItem('access_token') !== null;
+  }
   
   constructor(private authService: AuthService, private router: Router) { }
   logout() {

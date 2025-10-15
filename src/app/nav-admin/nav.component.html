@@ -1,22 +1,16 @@
 <nav class="navbar justify-content-between">
-  <div class="hamburger-menu" (click)="toggleMenu()">
-    <div class="line" [class.open]="isMenuOpen"></div>
-    <div class="line" [class.open]="isMenuOpen"></div>
-    <div class="line" [class.open]="isMenuOpen"></div>
-  </div>
-  <button class="btn btn-primary"(click)="logout()">Logout</button>
-  <div class="menu" [class.open]="isMenuOpen">
+  <button class="btn btn-primary" (click)="logout()">Logout</button>
+  <div class="menu">
     <ul>
       <li><a routerLink="/" (click)="closeMenu()">Home</a></li>
       <li><a routerLink="/dashboard" (click)="closeMenu()">Dashboard</a></li>
-      <li><a routerLink="/crud" (click)="closeMenu()">CRUDFerniture</a></li>
-      <li><a routerLink="/onoff" (click)="closeMenu()">On-Off status</a></li>
-      <li><a routerLink="/checkstock" (click)="closeMenu()">Check Stock</a></li>
+      <li><a routerLink="/crud" (click)="closeMenu()">CRUDFurniture</a></li>
+      <!-- <li><a routerLink="/onoff" (click)="closeMenu()">On-Off status</a></li> -->
+      <!-- <li><a routerLink="/checkstock" (click)="closeMenu()">Check Stock</a></li> -->
       <li><a routerLink="/order-manage" (click)="closeMenu()">Order manage</a></li>
-      <li><a routerLink="/payment-manage" (click)="closeMenu()">Payment mange</a></li>
+      <li><a routerLink="/payment-manage" (click)="closeMenu()">Payment manage</a></li>
       <li><a routerLink="/promotion" (click)="closeMenu()">Marketing Promotion</a></li>
-      <li><a routerLink="/userinfo" (click)="closeMenu()">User info</a></li>
-
+      <!-- <li><a routerLink="/userinfo" (click)="closeMenu()">User info</a></li> -->
     </ul>
   </div>
 </nav>

@@ -154,6 +154,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "OrderController",
+    "Method": "UpdateOrderStatus",
+    "RelativePath": "api/Order/UpdateOrderStatus",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "UpdateOrderStatusRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TEST100API.Controllers.PaymentController",
     "Method": "Create",
     "RelativePath": "api/Payment/CreatePayment",
@@ -420,6 +436,22 @@
   {
     "ContainingType": "TEST100API.Controllers.ShowOrderController",
     "Method": "GetShowOrder",
+    "RelativePath": "api/ShowOrder/GetShowAllOrder",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TEST100API.Controllers.ShowOrderController",
+    "Method": "GetShowOrder",
     "RelativePath": "api/ShowOrder/GetShowOrder",
     "HttpMethod": "GET",
     "IsController": true,
@@ -432,6 +464,22 @@
       },
       {
         "Name": "userid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TEST100API.Controllers.ShowOrderController",
+    "Method": "GetShowOrderbyID",
+    "RelativePath": "api/ShowOrder/GetShowOrderByID",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderID",
         "Type": "System.Int32",
         "IsRequired": false
       }

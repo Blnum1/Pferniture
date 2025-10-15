@@ -34,13 +34,11 @@
 .menu {
   position: fixed;
   top: 0;
-  left: -250px; /* Hidden off-screen */
-  height: 100vh;
+  left: 0; /* อยู่ด้านซ้ายตลอด */
+  height: 100vh; /* ให้เมนูเต็มความสูงหน้าจอ */
   width: 250px;
   background-color: #444;
   padding-top: 50px;
-  transition: transform 0.3s ease-in-out;
-  transform: translateX(0); /* Default state */
   z-index: 999;
 
   ul {
@@ -60,21 +58,4 @@
       }
     }
   }
-}
-
-.menu.open {
-  transform: translateX(250px); /* Slides into view */
-}
-
-/* Hamburger icon animation when open */
-.hamburger-menu .line:nth-child(1).open {
-  transform: translateY(10px) rotate(45deg);
-}
-
-.hamburger-menu .line:nth-child(2).open {
-  opacity: 0;
-}
-
-.hamburger-menu .line:nth-child(3).open {
-  transform: translateY(-10px) rotate(-45deg);
 }
