@@ -16,6 +16,7 @@ export class ProductDetailComponent implements OnInit {
   images: string[] = [];
   selectedImage: string | null = null;
   isFavorite = false;
+  quantity = 1;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,7 +24,7 @@ export class ProductDetailComponent implements OnInit {
     private cartService: CartService,
     private router: Router,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // โหลดสินค้า
@@ -63,7 +64,7 @@ export class ProductDetailComponent implements OnInit {
         const inst = bootstrap.Carousel.getInstance(el) ?? new bootstrap.Carousel(el);
         inst.to(index);
         return;
-      } catch {}
+      } catch { }
     }
     if (this.images[index]) this.selectedImage = this.images[index];
   }
@@ -90,6 +91,52 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  confirmDelete(){ /* ... */ }
-  toggleFavorite(){ this.isFavorite = !this.isFavorite; }
+  increaseQty() {
+    this.quantity++;
+  }
+
+  decreaseQty() {
+    if (this.quantity > 1) this.quantity--;
+  }
+
+  buyNow(): void {
+  if (!this.product?.productID) return;
+
+  const userId = this.authService.currentUser.value?.id;
+  if (!userId) {
+    this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+    return;
+  }
+
+  // 1) สร้างหรือดึง cart ของ user
+  this.cartService.getOrCreateCart(userId).subscribe({
+    next: (cartId) => {
+      // 2) เพิ่มสินค้าเข้าตะกร้า
+      this.cartService.addItem(cartId, this.product!.productID!, this.quantity).subscribe({
+        next: () => {
+          // 3) ดึงข้อมูลสินค้าในตะกร้า แล้วส่งไปหน้า payment
+          this.cartService.getItems(cartId).subscribe({
+            next: (items) => {
+              const subtotal = items.reduce((s: number, i: any) => s + i.price_amount * i.quantity, 0);
+              this.router.navigate(['/payment'], {
+                state: {
+                  cartID: cartId,
+                  items,
+                  subtotal
+                }
+              });
+            },
+            error: (err) => console.error('โหลดสินค้าในตะกร้าไม่สำเร็จ:', err)
+          });
+        },
+        error: (err) => console.error('เพิ่มสินค้าไม่สำเร็จ:', err)
+      });
+    },
+    error: (err) => console.error('สร้าง/ดึง cart ไม่สำเร็จ:', err)
+  });
+}
+
+
+  confirmDelete() { /* ... */ }
+  toggleFavorite() { this.isFavorite = !this.isFavorite; }
 }

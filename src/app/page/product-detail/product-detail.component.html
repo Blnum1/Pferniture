@@ -5,7 +5,7 @@
     <div class="row g-4">
         <div class="col-12 col-lg-5">
             <div class="card">
-                <div class="card-body py-2" >
+                <div class="card-body py-2">
                     <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-indicators" *ngIf="images.length > 1">
                             <button *ngFor="let img of images; let i = index" type="button"
@@ -55,9 +55,12 @@
                 </div>
 
                 <div class="d-flex gap-2">
-                    <button class="btn btn-outline-danger" (click)="toggleFavorite()">
-                        <i class="bi bi-heart" [ngClass]="isFavorite ? 'bi-heart-fill' : 'bi-heart'"></i>
+                    <button class="btn btn-outline-light" (click)="toggleFavorite()">
+                        <img [src]="isFavorite ? 'assets/image/heartpink.png' : 'assets/image/heartwhite.png'"
+                            alt="Favorite Icon" class="heart-icon" />
                     </button>
+
+
                 </div>
             </div>
 
@@ -96,10 +99,19 @@
             </div>
 
             <div class="d-flex gap-2 mt-3">
+                <div class="input-group" style="width: 140px;">
+    <button class="btn btn-outline-secondary" type="button" (click)="decreaseQty()">−</button>
+    <input type="text" class="form-control text-center" [value]="quantity" readonly>
+    <button class="btn btn-outline-secondary" type="button" (click)="increaseQty()">+</button>
+  </div>
+  
                 <button class="btn btn-primary btn-lg" (click)="addToCart()">
                     <i class="bi bi-cart-plus me-2"></i> เพิ่มลงตะกร้า
                 </button>
 
+                <button class="btn btn-danger btn-lg" (click)="buyNow()">
+                    🛒 สั่งซื้อทันที
+                </button>
                 <!-- <button class="btn btn-outline-danger btn-lg ms-auto" (click)="confirmDelete()">
                     <i class="bi bi-trash me-2"></i> ลบสินค้า
                 </button> -->

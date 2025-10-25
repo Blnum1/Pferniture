@@ -1,11 +1,13 @@
+<app-nav-header></app-nav-header>
+
 <div class="container my-4" *ngIf="items?.length; else noitems">
+  <h3>ชำระเงิน</h3>
   <div class="card mb-3">
     <div class="card-body">
       <div class="d-flex align-items-center gap-3 mb-3">
         <i class="bi bi-geo-alt fs-5"></i>
         <div class="fw-bold">{{ customerName || 'ชื่อผู้รับ' }}</div>
         <div class="text-muted ms-3">{{ phone || 'เบอร์โทร' }}</div>
-        <button class="btn btn-link ms-auto p-0" (click)="openAddAddress()">เพิ่มที่อยู่ใหม่</button>
       </div>
 
       <label class="form-label d-flex align-items-center justify-content-between">
@@ -81,14 +83,39 @@
       </ul>
 
       <div *ngIf="payMethod==='QR'">
-        <img src="assets/promptpay.png" height="36" alt="PromptPay">
+        <img src="assets/image/promptpay-logo.png" height="64" alt="PromptPay">
         <div class="small text-muted mt-2">สแกนหลังจากกดสั่งซื้อสำเร็จ</div>
       </div>
       <div *ngIf="payMethod==='COD'"><div class="small">ชำระเงินกับพนักงานจัดส่ง</div></div>
-      <div *ngIf="payMethod==='BANK'">
-        <div class="small mb-2">โอนเข้าบัญชี • แนบเลขอ้างอิง:</div>
-        <input class="form-control" placeholder="เลขอ้างอิง/หมายเหตุ" [(ngModel)]="bankNote" name="bankNote">
+      <div *ngIf="payMethod === 'BANK'">
+  <div class="small mb-2">โอนเข้าบัญชี • เลือกธนาคารและแนบเลขอ้างอิง:</div>
+
+  <div class="bank-list">
+    <label class="bank-item" *ngFor="let b of banks">
+      <input type="radio"
+             name="selectedBank"
+             [value]="b.id"
+             [(ngModel)]="selectedBank">
+      <img [src]="b.img" [alt]="b.name + ' logo'">
+      <div class="bank-meta">
+        <div class="bank-name">{{ b.name }}</div>
+        <div class="bank-account">{{ b.account }}</div>
       </div>
+      <div class="radio-faux" [class.checked]="selectedBank === b.id"></div>
+    </label>
+  </div>
+
+  <div class="mb-2 mt-3">
+    <input class="form-control"
+           placeholder="เลขอ้างอิง/หมายเหตุ"
+           [(ngModel)]="bankNote"
+           name="bankNote">
+  </div>
+
+  <div *ngIf="selectedBank" class="mt-2 chosen">
+    เลือก: <strong>{{ getBankName(selectedBank) }}</strong>
+  </div>
+</div>
     </div>
   </div>
 

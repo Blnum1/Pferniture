@@ -2,21 +2,63 @@
 <div class="container-xxl page with-tabs-offset">
   <div class="row g-3">
 
-    <!-- Sidebar (Sticky) -->
     <div class="col-12 col-lg-3">
       <nav class="side-nav">
+        <div class="profile-header">
+        <div class="avatar"></div>
+        <div class="info">
+          <div class="name-row">
+            <div class="field">
+              <div class="label"></div>
+              <div class="value">จิรยุทธ์ พรมจีน</div>
+            </div>
+          </div>
+          <div class="phone-row">
+            <div class="label th">เบอร์โทร</div>
+            <div class="value">088-8888888</div>
+          </div>
+        </div>
+      </div>
         <a class="side-link" [routerLink]="['/pf-1']" routerLinkActive="active"
           [routerLinkActiveOptions]="{exact:true}">
           การสั่งซื้อของฉัน
         </a>
-        <a class="side-link" [routerLink]="['/profile']" routerLinkActive="active">บัญชีของฉัน</a>
+        <a class="side-link" [routerLink]="['/profile']" routerLinkActive="active">ข้อมูลส่วนตัว</a>
         <a class="side-link" [routerLink]="['/location']" routerLinkActive="active">ที่อยู่</a>
       </nav>
     </div>
 
     <!-- Main content -->
     <div class="col-12 col-lg-9">
+      <div class="col-12 col-lg-9">
+      <div class="profile-content">
+        <div class="section-title">
+          <h2>ข้อมูลส่วนตัว</h2>
+        </div>
 
+        <!-- Personal Information -->
+        <div class="section-content">
+          <div class="row">
+            <div class="col-md-6">
+              <label class="form-label">ชื่อ</label>
+              <input type="text" class="form-control" value="จิรยุทธ์" readonly>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">นามสกุล</label>
+              <input type="text" class="form-control" value="พรมจีน" readonly>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <label class="form-label">เบอร์โทร</label>
+              <input type="tel" class="form-control" value="088-8888888" readonly>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">อีเมล</label>
+              <input type="email" class="form-control" value="jirayut@example.com" readonly>
+            </div>
+          </div>
+        </div>
       
 
   </div>

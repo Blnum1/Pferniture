@@ -216,7 +216,44 @@ namespace TEST100API.Controllers
       return NoContent();
     }
 
-  
+    [AllowAnonymous]
+    [HttpGet("SearchProducts")]
+    public async Task<IActionResult> SearchProducts([FromQuery] string query)
+    {
+      if (string.IsNullOrEmpty(query))
+      {
+        return BadRequest("Search query cannot be empty.");
+      }
+      query = query.Replace("\n", "").Trim();
+      var rows = await _context.ProductDto
+          .FromSqlRaw(@"
+            SELECT
+                p.ProductID, 
+                p.Product_Name, 
+                p.Price,
+                p.Price_Discount,
+                p.Size,
+                p.Color,
+                p.PDescription1,
+                p.PDescription2,
+                p.PDescription3,
+                c.CategoryID,
+                c.Category_Name,
+                p.Image_Url1,
+                p.Image_Url2,
+                p.Image_Url3, 
+                p.Is_Active,
+                p.Stock
+            FROM dbo.Products p
+            JOIN dbo.Categories c ON p.CategoryID = c.CategoryID
+            WHERE p.Product_Name LIKE '%' + @Query + '%'
+            ORDER BY p.Product_Name",
+              new SqlParameter("@Query", query))
+          .AsNoTracking()
+          .ToListAsync();
+
+      return Ok(rows);
+    }
 
 
   }

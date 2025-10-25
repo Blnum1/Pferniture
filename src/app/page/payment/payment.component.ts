@@ -55,6 +55,9 @@ export class PaymentComponent implements OnInit {
   addError = '';
   newAddr = { house: '', subdistrict: '', district: '', province: '', postal: '', note: '' };
 
+  selectedBank: string | null = null;
+
+
   constructor(
     private router: Router,
     private orderSvc: OrderService,
@@ -82,6 +85,16 @@ export class PaymentComponent implements OnInit {
     }
 
     if (this.userId) this.fetchShippingList(this.userId);
+  }
+
+   banks = [
+    { id: 'bbl', name: 'ธนาคารกสิกรไทย(BBL)', account: 'xxx-x-xxxx', img: 'assets/image/kbank.png' },
+    { id: 'scb', name: 'ธนาคารไทยพาณิชย์ (SCB)', account: 'xxx-x-xxxx', img: 'assets/image/scb.png' },
+    { id: 'ktb', name: 'ธนาคารกรุงไทย (KTB)', account: 'xxx-x-xxxx', img: 'assets/image/ktb.png' }
+  ];
+
+  getBankName(id: string | null) {
+    return this.banks.find(b => b.id === id)?.name ?? '';
   }
 
   private normalizeApiItem(item: any): UiShipping {

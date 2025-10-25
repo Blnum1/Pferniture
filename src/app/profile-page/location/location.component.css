@@ -69,3 +69,122 @@
 .link.delete:hover {
   text-decoration: underline;
 }
+
+.text-orange { color: #fd7e14 !important; } /* ส้มแบบ Bootstrap Orange */
+
+:root{
+  /* ความสูงของ header ด้านบน ปรับให้ตรงของจริง */
+  --header-h: 64px;
+}
+
+/* แท็บสถานะ: อยู่ใน flow ปกติ แล้วค่อยติดเมื่อชน top */
+.tabs-sticky{
+  position: sticky;
+  top: var(--header-h);
+  z-index: 1030;                /* เหนือคอนเทนต์ */
+  background: #f8f9fa;          /* ทึบเพื่ออ่านง่ายตอนทับ */
+  border-bottom: 1px solid #dee2e6;
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+}
+
+/* แถวแท็บ (เดิมของคุณ) */
+.tabs-row{
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+  flex-wrap: wrap;
+  padding: 8px 8px;
+}
+.tab-item{ display:block; }
+.tab-block{
+  display:block; min-width:160px; padding:18px 12px 10px; text-align:center;
+  text-decoration:none; border-radius:6px; background:#f8f9fa; color:#111;
+  border:1px solid transparent; font-weight:600; transition:.2s;
+}
+.tab-block:hover{ background:#393a3b; color:#fff; border-color:#393a3b; }
+.tab-block.active{ background:#0080ff; color:#fff; border-color:#0080ff; }
+
+/* สำคัญ: พาเรนต์ของ sticky ต้องไม่ตัดการเลื่อน */
+.container-fluid, .container-xxl {
+  overflow: visible;          /* ห้าม hidden/auto ตัด sticky */
+  transform: none;            /* ห้ามมี transform บนพาเรนต์ของ sticky */
+}
+
+/* Sidebar sticky ใต้ header+แท็บ (ถ้าต้องการ) */
+.side-nav{
+  position: sticky;
+  top: calc(var(--header-h) + 8px + 48px); /* + ระยะคร่าวๆ ของแถบแท็บ ถ้าต้องการเว้น */
+  z-index: 1020;
+}
+.side-link {
+  display: block;
+  color: #111;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 8px;
+  border-radius: 6px;
+  transition: background .2s, color .2s;
+}
+.side-link + .side-link { margin-top: 8px; }
+.side-link:hover { background: rgba(0,0,0,.06); }
+.side-link.active { background: rgba(0,0,0,.1); }
+
+/* ======================
+   PAGE / CONTENT
+====================== */
+.page { min-height: 60vh; }
+
+/* Profile header */
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 8px 0 16px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 16px;
+}
+.avatar {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: #d9d9d9;
+  flex: 0 0 56px;
+}
+.info { display: grid; gap: 6px; min-width: 0; }
+.name-row { display: flex; align-items: baseline; gap: 28px; flex-wrap: wrap; }
+.field { display: grid; gap: 2px; min-width: 140px; }
+.label { font-weight: 600; font-size: 16px; line-height: 1.1; }
+.value { font-size: 16px; line-height: 1.2; }
+.phone-row { display: flex; align-items: baseline; gap: 10px; }
+.label.th { font-weight: 600; }
+
+/* Order cards */
+.order-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.order-items { display: grid; gap: 8px; margin-top: 8px; }
+.order-item {
+  display: grid;
+  grid-template-columns: 50px 1fr auto auto;
+  gap: 8px 12px;
+  align-items: center;
+}
+.payment-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  margin-top: 8px;
+  border-top: 1px solid #eee;
+}
+
+/* ======================
+   SAFETY OVERRIDES
+====================== */
+/* กันกรณีพาเรนต์มี overflow/transform ที่ทำ sticky/fixed เพี้ยน */
+.container-xxl, .container-fluid {
+  transform: none !important;
+  overflow: visible !important;
+}

@@ -36,10 +36,14 @@ import { Pd10Component } from './page/sort-page/pd-10/pd-10.component';
 import { LocationComponent } from './profile-page/location/location.component';
 import { DeliveryNoteComponent } from './admin-page/delivery-note/delivery-note.component';
 import { OrderManageDetailComponent } from './admin-page/order-manage-detail/order-manage-detail.component';
+import { SearchComponent } from './page/search/search.component';
 
 const routes: Routes = [
   { path: '', 
     component: HomepageComponent
+  },
+  { path: 'search', 
+    component: SearchComponent
   },
   { path: 'dashboard', 
     component: DashboardComponent,

@@ -293,6 +293,22 @@
   },
   {
     "ContainingType": "TEST100API.Controllers.ProductController",
+    "Method": "SearchProducts",
+    "RelativePath": "api/Product/SearchProducts",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "query",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TEST100API.Controllers.ProductController",
     "Method": "UpdateCategory",
     "RelativePath": "api/Product/UpdateCategory/{id}",
     "HttpMethod": "PUT",

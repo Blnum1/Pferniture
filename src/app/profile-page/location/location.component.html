@@ -3,10 +3,25 @@
 <div class="container-xxl page with-tabs-offset">
   <div class="row g-3">
 
-    <!-- Sidebar (Left) -->
     <div class="col-12 col-lg-3">
       <nav class="side-nav">
-        <a class="side-link" [routerLink]="['/pf-1']" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <div class="profile-header">
+        <div class="avatar"></div>
+        <div class="info">
+          <div class="name-row">
+            <div class="field">
+              <div class="label"></div>
+              <div class="value">จิรยุทธ์ พรมจีน</div>
+            </div>
+          </div>
+          <div class="phone-row">
+            <div class="label th">เบอร์โทร</div>
+            <div class="value">088-8888888</div>
+          </div>
+        </div>
+      </div>
+        <a class="side-link" [routerLink]="['/pf-1']" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact:true}">
           การสั่งซื้อของฉัน
         </a>
         <a class="side-link" [routerLink]="['/profile']" routerLinkActive="active">บัญชีของฉัน</a>
@@ -76,8 +91,8 @@
         <div class="col-md-6"><input class="form-control" placeholder="รหัสไปรษณีย์" [(ngModel)]="newAddr.postal" inputmode="numeric"></div>
       </div>
       <div class="mt-3">
-        <img src="assets/google-map-placeholder.png" alt="map"
-             style="width:100%;max-height:180px;object-fit:cover;border-radius:12px;">
+        <img src="assets/image/google-map.png" alt="map"
+             style="width:100%;max-height:180px;object-fit:contain;border-radius:12px;">
       </div>
       <div class="mt-3">
         <input class="form-control" placeholder="บันทึก/ปักหมุด (ไม่บังคับ)" [(ngModel)]="newAddr.note">
@@ -114,8 +129,8 @@
       </div>
 
       <div class="mt-3">
-        <img src="assets/google-map-placeholder.png" alt="map"
-             style="width:100%;max-height:180px;object-fit:cover;border-radius:12px;">
+        <img src="assets/image/google-map.png" alt="map"
+             style="width:100%;max-height:180px;object-fit:contain;border-radius:12px;">
       </div>
 
       <div class="mt-3">

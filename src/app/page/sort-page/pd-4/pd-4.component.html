@@ -1,10 +1,20 @@
 <app-nav-header></app-nav-header>
 <app-nav-appheader></app-nav-appheader>
-<div class="form-sort">
-    <form class="form"><input type="search" placeholder="ค้นหา"></form>
-</div>
-
 <div class="container my-3">
+    <div class="d-flex align-items-center justify-content-end gap-2 bg-light p-3 rounded shadow-sm">
+  <div class="sort fw-semibold">เรียงโดย</div>
+  <div class="dropdown">
+    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" 
+            type="button" id="sortMenuButton"
+            data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-sort-down"></i> {{ sortLabel }}
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortMenuButton">
+      <li><a class="dropdown-item" (click)="setSortOrder('asc')">ราคา: จากน้อยไปมาก</a></li>
+      <li><a class="dropdown-item" (click)="setSortOrder('desc')">ราคา: จากมากไปน้อย</a></li>
+    </ul>
+  </div>
+</div>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3">
         <div class="col" *ngFor="let p of product">
             <a class="text-decoration-none text-dark h-100 d-block" [routerLink]="['/product-detail', p.productID]">

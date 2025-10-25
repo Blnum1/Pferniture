@@ -47,12 +47,6 @@ position: fixed;
   filter: brightness(1.1);
 }
 
-.profile-logo {
-  width: 65px;
-  height: auto;
-  background-color: white;
-}
-
 form {
   width: 100%; 
   max-width: 400px; 
@@ -75,4 +69,57 @@ form {
 .form-control-dark:focus {
   border-color: #007bff;
   box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25); 
+}
+
+.search-container {
+    position: relative; /* ทำให้สามารถควบคุมตำแหน่งของผลลัพธ์ในช่องค้นหา */
+}
+
+.search-results-list {
+    position: absolute;  /* ให้ผลลัพธ์อยู่ใต้ช่องค้นหา */
+    top: 100%;           /* ให้ผลลัพธ์อยู่ด้านล่างช่องค้นหา */
+    left: 0;
+    width: 110%;        /* ให้กว้างเท่ากับช่องค้นหา */
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* เพิ่มเงา */
+    max-height: 300px;   /* กำหนดความสูงสูงสุด */
+    overflow-y: auto;    /* เพิ่มเลื่อนถ้าผลลัพธ์เยอะ */
+    z-index: 10;         /* ให้ผลลัพธ์การค้นหาปรากฏอยู่ด้านบน */
+    padding: 10px;
+    margin-top: 10px;    /* ระยะห่างระหว่างช่องค้นหากับผลลัพธ์ */
+}
+
+.search-result-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.search-result-item:hover {
+    background-color: #f1f1f1;  /* เปลี่ยนพื้นเมื่อ hover */
+}
+
+.product-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.product-name {
+    font-size: 0.9rem;  /* ขนาดฟอนต์เล็ก */
+    font-weight: bold;
+}
+.product-category {
+    font-size: 0.8rem;  /* ฟอนต์เล็กลงอีก */
+    color: gray;
+}
+.product-color{
+  margin-left: 10px;
+}
+.profile-logo {
+  width: 64px;
+  height: 64px;
+  filter: brightness(0) invert(1);
 }

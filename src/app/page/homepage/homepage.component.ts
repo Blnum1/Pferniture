@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product, ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
+import { CartService } from '../../services/cart.service';
 
 interface ProductThumbnail {
   id: number;
@@ -21,7 +22,14 @@ interface MainSlide {
 })
 export class HomepageComponent implements OnInit{
   product: Product[] = [];
-    category1Products: Product[] = []; // Products for category 1
+  sortOrder: 'asc' | 'desc' = 'asc';
+  sortLabel = 'ราคา';
+  searchResults: any[] = [];
+  quantity = 1;
+  selectedProduct: any = null;
+  showModal = false;
+  showToast = false;
+  category1Products: Product[] = []; // Products for category 1
   category2Products: Product[] = []; // Products for category 2
   category3Products: Product[] = []; // Products for category 3
 
@@ -59,7 +67,7 @@ export class HomepageComponent implements OnInit{
     },
 
   ];
-  constructor(private productService: ProductService,private router: Router) { }
+  constructor(private productService: ProductService,private router: Router,private cartService: CartService) { }
 
   ngOnInit(): void {
     this.loadProducts();
@@ -107,7 +115,60 @@ export class HomepageComponent implements OnInit{
           console.error("Product ID not found for the selected thumbnail.");
       }
     }
+    setSortOrder(order: 'asc' | 'desc') {
+  this.sortOrder = order;
+  this.sortLabel = order === 'asc' ? 'ราคา: จากน้อยไปมาก' : 'ราคา: จากมากไปน้อย';
+  this.applySort();
+}
 
+applySort() {
+  this.searchResults.sort((a, b) => {
+    const priceA = Number(a.price ?? 0);
+    const priceB = Number(b.price ?? 0);
+    return this.sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
+  });
+}
 
+openCartModal(product: any, event: MouseEvent) {
+  event.preventDefault();       
+  event.stopPropagation();     
+  this.selectedProduct = product;
+  this.quantity = 1;
+  this.showModal = true;        
+}
 
+  closeModal() {
+    this.showModal = false;
+  }
+
+  increaseQty() {
+    this.quantity++;
+  }
+
+  decreaseQty() {
+    if (this.quantity > 1) this.quantity--;
+  }
+
+  addToCart() {
+    if (!this.selectedProduct) return;
+    const userId = 1; // สมมติล็อกอินอยู่
+    this.cartService.getOrCreateCart(userId).subscribe({
+      next: (cartId) => {
+        this.cartService.addItem(cartId, this.selectedProduct.productID, this.quantity).subscribe({
+          next: () => {
+            this.closeModal();
+            this.showAddToCartToast();
+          },
+          error: (err) => console.error('เพิ่มสินค้าลงตะกร้าไม่สำเร็จ', err)
+        });
+      },
+      error: (err) => console.error('ไม่สามารถสร้าง/ดึง cart ได้', err)
+    });
+  }
+  showAddToCartToast() {
+  this.showToast = true;
+  setTimeout(() => {
+    this.showToast = false;
+  }, 3000); // แสดง 3 วินาที
+}
 }

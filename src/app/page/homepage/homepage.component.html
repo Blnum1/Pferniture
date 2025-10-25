@@ -1,53 +1,51 @@
 <app-nav-header></app-nav-header>
 <app-nav-appheader></app-nav-appheader>
+<br>
+<div class="welcome-container">
+  <div class="welcome">ยินดีต้อนรับเข้าสู่ Blue Furniture</div>
+  <div class="welcome-detail">แหล่งรวมของตกแต่งบ้านไว้เพื่อคุณ</div>
+</div>
 
 <div class="product-slider-page">
-    
-     <div class="main-image-area">
-        <button class="slider-button prev" (click)="prevImage()" 
-            [disabled]="slides.length <= 1">&lt;</button>
-        
-        <img [src]="currentSlide.mainImageUrl" 
-             alt="Main View (Click to Zoom)" 
-             class="main-image-fixed clickable" 
-             (click)="openZoomModal()">
-        
-        <button class="slider-button next" (click)="nextImage()" 
-            [disabled]="slides.length <= 1">&gt;</button>
-    </div>
-    <div class="lightbox-modal-overlay" *ngIf="isZoomModalOpen" (click)="closeZoomModal()">
+
+  <div class="main-image-area">
+    <button class="slider-button prev" (click)="prevImage()" [disabled]="slides.length <= 1">&lt;</button>
+
+    <img [src]="currentSlide.mainImageUrl" alt="Main View (Click to Zoom)" class="main-image-fixed clickable"
+      (click)="openZoomModal()">
+
+    <button class="slider-button next" (click)="nextImage()" [disabled]="slides.length <= 1">&gt;</button>
+  </div>
+  <div class="lightbox-modal-overlay" *ngIf="isZoomModalOpen" (click)="closeZoomModal()">
     <div class="lightbox-modal-content" (click)="$event.stopPropagation()">
-        
-        <button class="lightbox-close-btn" (click)="closeZoomModal()">
-            &times;
-        </button>
-        
-        <img [src]="currentSlide.mainImageUrl" alt="Zoomed View" class="lightbox-zoom-image">
-        
+
+      <button class="lightbox-close-btn" (click)="closeZoomModal()">
+        &times;
+      </button>
+
+      <img [src]="currentSlide.mainImageUrl" alt="Zoomed View" class="lightbox-zoom-image">
+
     </div>
-</div>
-    <div class="product-list-container">
-        <div class="product-list-viewport">
-            
-            <div class="product-scroll-list">
-                <div 
-                    *ngFor="let product of currentSlide.thumbnails; let i = index" 
-                    class="product-item"
-                    (click)="selectProductImage(i)" 
-                    >
-                    <div class="product-image-wrapper">
-                        <img [src]="product.imageUrl" [alt]="product.productName" class="product-thumbnail">
-                    </div>
-                    
-                    <div class="product-details">
-                        <p class="product-name">{{ product.productName }}</p>
-                        <p class="product-category">{{ product.categoryName }}</p>
-                    </div>
-                </div>
-            </div>
+  </div>
+  <div class="product-list-container">
+    <div class="product-list-viewport">
+
+      <div class="product-scroll-list">
+        <div *ngFor="let product of currentSlide.thumbnails; let i = index" class="product-item-list"
+          (click)="selectProductImage(i)">
+          <div class="product-image-wrapper">
+            <img [src]="product.imageUrl" [alt]="product.productName" class="product-thumbnail">
+          </div>
+
+          <div class="product-details">
+            <p class="product-name">{{ product.productName }}</p>
+            <p class="product-category">{{ product.categoryName }}</p>
+          </div>
         </div>
-        
-        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <div class="homepage-container">
@@ -106,38 +104,68 @@
   </div>
 </div>
 
-
-
-
-
-<div class="form-sort">
-    <form class="form"><input type="search" placeholder="ค้นหา"></form>
-</div>
-<!-- ใช้ Bootstrap row-cols เพื่อให้ 5 คอลัมน์บนจอใหญ่ -->
 <div class="container my-3">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3">
-        <div class="col" *ngFor="let p of product">
-            <!-- ใช้ <a> ครอบทั้งบล็อกเพื่อให้คลิกได้ทั้งกล่อง -->
-            <a class="text-decoration-none text-dark h-100 d-block" [routerLink]="['/product-detail', p.productID]">
-                <div class="card h-100">
-                    <img *ngIf="p.image_Url1" [src]="p.image_Url1" class="card-img-top" [alt]="p.product_Name"
-                        style="object-fit:cover; height:250px;" />
-                    <div class="card-body d-flex flex-column">
-                        <h6 class="card-title mb-1 text-truncate">{{ p.product_Name }}</h6>
-                        <p class="mb-1 text-muted small text-truncate">{{ p.category_Name }}</p>
-
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="fw-bold">{{ p.price | number:'1.0-0' }} ฿</div>
-                                <div *ngIf="p.price_Discount" class="text-decoration-line-through text-muted small">
-                                    {{ p.price_Discount | number:'1.0-0' }} ฿
-                                </div>
-                            </div>
-                            <!-- ถ้าต้องการไอคอน/ปุ่มเล็กๆ ให้ใส่ที่นี่ แต่เป็นลิงก์หลักแล้ว -->
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
+  <div class="d-flex align-items-center justify-content-end gap-2 bg-light p-3 rounded shadow-sm">
+    <div class="sort fw-semibold">เรียงโดย</div>
+    <div class="dropdown">
+      <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="sortMenuButton"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-sort-down"></i> {{ sortLabel }}
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortMenuButton">
+        <li><a class="dropdown-item" (click)="setSortOrder('asc')">ราคา: จากน้อยไปมาก</a></li>
+        <li><a class="dropdown-item" (click)="setSortOrder('desc')">ราคา: จากมากไปน้อย</a></li>
+      </ul>
     </div>
+  </div>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3">
+    <div class="col" *ngFor="let p of product">
+      <!-- ใช้ <a> ครอบทั้งบล็อกเพื่อให้คลิกได้ทั้งกล่อง -->
+      <a class="text-decoration-none text-dark h-100 d-block" [routerLink]="['/product-detail', p.productID]">
+        <div class="card h-100">
+          <img *ngIf="p.image_Url1" [src]="p.image_Url1" class="card-img-top" [alt]="p.product_Name"
+            style="object-fit:cover; height:250px;" />
+          <div class="card-body d-flex flex-column">
+            <h6 class="card-title mb-1 text-truncate">{{ p.product_Name }}</h6>
+            <p class="mb-1 text-muted small text-truncate">{{ p.category_Name }}</p>
+
+            <div class="mt-auto d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-bold">{{ p.price | number:'1.0-0' }} ฿</div>
+                  <div *ngIf="p.price_Discount" class="text-decoration-line-through text-muted small">
+                    {{ p.price_Discount | number:'1.0-0' }} ฿
+                  </div>
+                </div>
+
+                <button class="btn btn-outline-primary btn-sm" (click)="openCartModal(p, $event)">
+                  <img src="assets/image/add-to-cart.png" alt="Add to cart" class="cart-icon">
+                </button>
+              </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <button class="btn-close" (click)="closeModal()">×</button>
+
+    <img [src]="selectedProduct?.image_Url1" alt="Product" class="modal-img" *ngIf="selectedProduct?.image_Url1">
+    <h6 class="mt-3">{{ selectedProduct?.product_Name }}</h6>
+    <p class="text-muted">{{ selectedProduct?.category_Name }}</p>
+    <p class="fw-bold">{{ selectedProduct?.price | number:'1.0-0' }} ฿</p>
+
+    <div class="qty-control">
+      <button (click)="decreaseQty()">−</button>
+      <span>{{ quantity }}</span>
+      <button (click)="increaseQty()">+</button>
+    </div>
+
+    <div class="d-flex justify-content-center gap-2 mt-3">
+      <button class="btn btn-secondary" (click)="closeModal()">ยกเลิก</button>
+      <button class="btn btn-primary" (click)="addToCart()">เพิ่มลงตะกร้า</button>
+    </div>
+  </div>
 </div>

@@ -1,219 +1,565 @@
-.nav-block {
-  display: block;           /* ให้กล่องกว้างเต็มความกว้างของตัว container */
-  width: 175px;              /* ทำให้กล่องมีความกว้างเต็มหน้าจอ */
-  padding: 20px 20px;       /* เพิ่ม padding ภายในกล่อง */
-  font-size: 18px;          /* เพิ่มขนาดตัวอักษร */
-  text-align: center;       /* ทำให้ข้อความอยู่กลาง */
-  background-color: #f8f9fa;/* สีพื้นหลังเมื่อปกติ */
-  border: 2px solid transparent; /* เส้นขอบโปร่งใสเมื่อไม่ hover */
-  cursor: pointer;         /* เปลี่ยน cursor เมื่อ hover */
-  border-radius: 5px;       /* มุมมน */
-  transition: all 0.3s;     /* เพิ่ม transition ให้คลิกดูนุ่มนวล */
+:root {
+  --primary-blue: #2c5f8d;
+  --secondary-blue: #4a90c5;
+  --light-blue: #e8f4f8;
+  --accent-gold: #d4af37;
+  --dark-text: #2c3e50;
+  --light-gray: #f5f7fa;
+  --warm-white: #fefefe;
+  --border-color: #ede0e0;
 }
 
-.nav-block:hover {
-  background-color: #393a3b; /* เปลี่ยนสีพื้นหลังเมื่อ hover */
-  color: white;               /* เปลี่ยนสีตัวอักษรเมื่อ hover */
-  border-color: #393a3b;      /* เปลี่ยนสีขอบเมื่อ hover */
+/* ========== Welcome Section ========== */
+.welcome-container {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+  padding: 10px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1px;
 }
 
-/* src/app/page/homepage/homepage.component.css */
+.welcome-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
 
-/* 📌 NEW/CHECK: Style สำหรับ Container หลัก */
+.welcome-container::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -5%;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+}
+
+.welcome {
+  font-size: 42px;
+  font-weight: 700;
+  color: #1722bb;
+  margin-bottom: 1px;
+  position: relative;
+  z-index: 1;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.welcome-detail {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.95);
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.5px;
+}
+
+/* ========== Product Slider Section ========== */
 .product-slider-page {
-    display: flex; /* 👈 ทำให้องค์ประกอบย่อยเรียงกันในแนวนอน */
-    max-width: 1600px; /* กำหนดความกว้างรวม */
-    height: 700px; /* กำหนดความสูงรวมเพื่อให้ List ด้านข้างเต็ม */
-    margin: 20px auto;
-    border: 1px solid #ccc;
-    overflow: hidden; 
+  background: var(--light-gray);
+  padding: 10px 10px;
+  margin-bottom: 10px;
 }
 
-/* 📌 NEW/CHECK: Style สำหรับพื้นที่รูปภาพใหญ่ (ซ้าย) */
 .main-image-area {
-    flex: 3; /* ให้รูปภาพหลักใช้พื้นที่เยอะกว่า (เช่น 75%) */
-    position: relative; /* สำหรับจัดตำแหน่งปุ่มเลื่อน */
-    background-color: #fff;
-    overflow: hidden;
+  position: relative;
+  max-width: 100%;
+  margin: 0 auto 10px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(44, 95, 141, 0.15);
 }
 
 .main-image-fixed {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* ครอบคลุมพื้นที่แต่รักษาสัดส่วน */
-    display: block;
-    transition: opacity 0.3s; 
+  width: 100%;
+  height: 700px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
 }
 
-/* 📌 NEW/CHECK: Style สำหรับปุ่มเลื่อน (เพื่อให้ปุ่มอยู่บนรูปใหญ่) */
+.main-image-fixed:hover {
+  transform: scale(1.02);
+}
+
 .slider-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    /* ... Style อื่นๆ ... */
-    z-index: 10; /* ให้ปุ่มอยู่ด้านบนรูปภาพ */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0);
+  color: rgb(0, 0, 0);
+  border: none;
+  width: 30px;
+  height: 900px;
+  border-radius: 10%;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+  backdrop-filter: blur(10px);
 }
 
-/* 📌 ตรวจสอบตำแหน่งของปุ่ม PREV (ซ้าย) */
+.slider-button:hover:not(:disabled) {
+  background: var(--primary-blue);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.slider-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
 .slider-button.prev {
-    left: 10px;
-    /* ... */
+  left: 20px;
 }
 
-/* 📌 สำคัญ: ตรวจสอบตำแหน่งของปุ่ม NEXT (ขวา) */
 .slider-button.next {
-    right: 10px; /* 👈 ต้องมี right: [ค่า] เพื่อให้อยู่ด้านขวา */
-    /* ... */
+  right: 20px;
 }
 
-/* 📌 CHECK: Style สำหรับพื้นที่ List ด้านข้าง (ขวา) */
-.product-list-container {
-    flex: 1; /* ให้ List ด้านข้างใช้พื้นที่ที่เหลือ (เช่น 25%) */
-    background-color: #f0f0f0; 
-    border-left: 1px solid #ccc;
-    position: relative; 
-    padding: 0 10px; 
-}
-
-.product-image-wrapper {
-    /* ลดขนาดลงจาก 70px/70px เป็น 60px/60px หรือตามที่คุณต้องการ */
-    width: 60px; 
-    height: 60px;
-    border-radius: 4px; /* ทำให้มุมมน */
-    overflow: hidden;
-    margin-right: 10px;
-    flex-shrink: 0;
-}
-
-.product-thumbnail {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* ทำให้รูปเต็มกรอบโดยรักษาสัดส่วน */
-}
-
-.product-item {
-    height: 50%; /* ยังคง 25% เพื่อให้แสดงได้ 4 รายการ */
-    /* ลด padding ในแนวตั้งลงเพื่อให้รายการดูไม่หนาเกินไป */
-    padding: 5px 10px; 
-    margin: 0;
-    cursor: pointer;
-    border-radius: 4px;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    margin-bottom: 5px; 
-    
-    /* 📌 สำคัญ: ให้รายการจัดเรียงแนวตั้งเสมอ */
-    display: flex; 
-    align-items: center; /* จัดให้อยู่กลางตามแนวตั้ง */
-}
-
-/*... (Style อื่นๆ ของ .product-list-viewport, .product-scroll-list, .product-item) ...*/
-.main-image-fixed.clickable {
-    cursor: zoom-in; /* เปลี่ยน Cursor เมื่อชี้ */
-}
-
-/* src/app/page/homepage/homepage.component.css */
-
-/* --- Style สำหรับ Lightbox Modal --- */
-
-/* พื้นหลัง Overlay (มืด) */
+/* ========== Lightbox Modal ========== */
 .lightbox-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* สีดำโปร่งแสง */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* 📌 สำคัญ: ให้ Modal อยู่บนสุด */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
 }
 
-/* คอนเทนเนอร์ของรูปภาพ */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .lightbox-modal-content {
-    max-width: 90%;
-    max-height: 90%;
-    position: relative;
-    /* ป้องกันการคลิก Modal ปิดตัวเอง เมื่อคลิกบน Content */
-    cursor: default; 
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
 }
 
-/* รูปภาพที่ซูม */
 .lightbox-zoom-image {
-    display: block;
-    max-width: 100%;
-    max-height: 100vh; /* ความสูงเต็มจอ */
-    object-fit: contain; /* รักษาสัดส่วน ไม่ให้ถูกตัด */
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
-/* ปุ่มปิด (X) */
 .lightbox-close-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    color: white;
-    background: none;
-    border: none;
-    font-size: 30px;
-    font-weight: bold;
-    cursor: pointer;
-    opacity: 0.8;
-    transition: opacity 0.2s;
-    z-index: 1001;
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  background: var(--accent-gold);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 28px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .lightbox-close-btn:hover {
-    opacity: 1;
+  transform: rotate(90deg);
+  background: #b8941f;
 }
 
-.product-carousel {
-  padding: 10px;
+/* ========== Product List Container ========== */
+.product-list-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.product-scroll-list {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 15px 0;
+  scroll-behavior: smooth;
+}
+
+.product-scroll-list::-webkit-scrollbar {
+  height: 8px;
+}
+
+.product-scroll-list::-webkit-scrollbar-track {
+  background: var(--light-blue);
+  border-radius: 10px;
+}
+
+.product-scroll-list::-webkit-scrollbar-thumb {
+  background: var(--secondary-blue);
+  border-radius: 10px;
+}
+
+.product-item-list {
+  min-width: 200px;
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.product-item-list:hover {
+  border-color: var(--secondary-blue);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(74, 144, 197, 0.2);
+}
+
+.product-thumbnail {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.product-name {
+  font-weight: 600;
+  color: var(--dark-text);
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.product-category {
+  color: #7f8c8d;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* ========== Category Sections ========== */
+.homepage-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.category-section {
+  margin-bottom: 60px;
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.category-section h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--primary-blue);
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--accent-gold);
+  display: inline-block;
 }
 
 .product-scroll-container {
   display: flex;
-  overflow-x: auto; /* ทำให้สามารถเลื่อนในแนวนอนได้ */
-  gap: 15px;
-  padding-bottom: 20px;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px 0;
+  scroll-behavior: smooth;
+}
+
+.product-scroll-container::-webkit-scrollbar {
+  height: 10px;
+}
+
+.product-scroll-container::-webkit-scrollbar-track {
+  background: var(--light-gray);
+  border-radius: 10px;
+}
+
+.product-scroll-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+  border-radius: 10px;
 }
 
 .product-item {
-  flex: 0 0 auto; /* ให้สินค้าไม่หดตัว */
-  width: 250px;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  background-color: #fff;
-  text-align: center;
+  min-width: 280px;
+}
+
+.product-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(44, 95, 141, 0.15);
+  border-color: var(--secondary-blue);
 }
 
 .product-card img {
   width: 100%;
-  height: auto;
-  border-radius: 5px;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover img {
+  transform: scale(1.05);
 }
 
 .product-info {
-  margin-top: 10px;
+  padding: 20px;
 }
 
 .product-info h5 {
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dark-text);
+  margin-bottom: 8px;
 }
 
 .product-info p {
-  font-size: 0.9rem;
-  margin: 5px 0;
+  color: #7f8c8d;
+  font-size: 14px;
+  margin-bottom: 5px;
 }
 
 .price {
-  font-weight: bold;
-  color: #333;
+  color: var(--primary-blue);
+  font-weight: 700;
+  font-size: 20px;
+  margin-top: 10px;
 }
 
 .price-discount {
+  color: #e74c3c;
   text-decoration: line-through;
-  color: red;
+  font-size: 16px;
+}
+
+/* ========== Sort Section ========== */
+.container.my-3 .bg-light {
+  background: linear-gradient(135deg, var(--light-blue) 0%, white 100%) !important;
+  border: 1px solid var(--border-color);
+}
+
+.sort {
+  color: var(--primary-blue);
+}
+
+.btn-outline-secondary {
+  border-color: var(--secondary-blue) !important;
+  color: var(--secondary-blue) !important;
+}
+
+.btn-outline-secondary:hover {
+  background: var(--secondary-blue) !important;
+  color: white !important;
+}
+
+/* ========== Product Grid ========== */
+.card {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(44, 95, 141, 0.15);
+  border-color: var(--secondary-blue);
+}
+
+.card-img-top {
+  transition: transform 0.4s ease;
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.08);
+}
+
+.card-title {
+  color: var(--dark-text);
+  font-weight: 600;
+}
+
+.card-body .fw-bold {
+  color: var(--primary-blue);
+  font-size: 20px;
+}
+
+.btn-outline-primary {
+  border-color: var(--secondary-blue) !important;
+  color: var(--secondary-blue) !important;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background: var(--secondary-blue) !important;
+  border-color: var(--secondary-blue) !important;
+  transform: scale(1.1);
+}
+
+.cart-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========== Modal Styling ========== */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.modal-box {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.btn-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: var(--accent-gold);
+  color: white;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-close:hover {
+  transform: rotate(90deg);
+  background: #b8941f;
+}
+
+.modal-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.qty-control button {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--secondary-blue);
+  background: white;
+  color: var(--secondary-blue);
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.qty-control button:hover {
+  background: var(--secondary-blue);
+  color: white;
+  transform: scale(1.1);
+}
+
+.qty-control span {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--dark-text);
+  min-width: 40px;
+  text-align: center;
+}
+
+.btn-secondary {
+  background: #95a5a6 !important;
+  border: none !important;
+}
+
+.btn-secondary:hover {
+  background: #7f8c8d !important;
+}
+
+.btn-primary {
+  background: var(--secondary-blue) !important;
+  border: none !important;
+}
+
+.btn-primary:hover {
+  background: var(--primary-blue) !important;
+  transform: scale(1.05);
+}
+
+/* ========== Responsive Design ========== */
+@media (max-width: 768px) {
+  .welcome {
+    font-size: 32px;
+  }
+  
+  .welcome-detail {
+    font-size: 16px;
+  }
+  
+  .category-section h2 {
+    font-size: 24px;
+  }
+  
+  .main-image-fixed {
+    height: 300px;
+  }
+  
+  .slider-button {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
 }

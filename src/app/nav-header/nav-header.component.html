@@ -31,16 +31,27 @@
                 <li><a href="#" class="nav-link px-2 text-white">About</a></li>
             </ul>
 
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 search-container" role="search" (ngSubmit)="search()">
+                <input type="search" class="form-control form-control-dark text-bg-dark"
+                    placeholder="ค้นหาเฟอร์นิเจอร์ที่คุณต้องการ" aria-label="Search" [(ngModel)]="searchQuery"
+                    name="searchQuery" (input)="onSearchInput($event)" (keydown.enter)="search()">
 
-
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="ค้นหาเฟอร์นิเจอร์ที่คุณต้องการ"
-                    aria-label="Search">
+                <div *ngIf="searchResults.length > 0" class="search-results-list">
+                    <ul>
+                        <li *ngFor="let product of searchResults" class="search-result-item" (click)="goToProductDetail(product.productID)">
+                            <img *ngIf="product.image_Url1" [src]="product.image_Url1" alt="Product Image"
+                                class="product-image" />
+                            <span class="product-name">{{ product.product_Name }}</span>
+                            <span class="product-color">{{ product.color }}</span>
+                            <span class="product-category">{{ product.category_Name }}</span>
+                        </li>
+                    </ul>
+                
+                </div>
             </form>
 
             <div class="text-end">
-                <a *ngIf="isLoggedIn()" type="button" class="btn  me-2"
-                    [routerLink]="'/pf-1'">
+                <a *ngIf="isLoggedIn()" class="btn btn-dark me-2" [routerLink]="'/pf-1'">
                     <img src="assets/image/github-logos.png" alt="profile Logo" class="profile-logo">
                 </a>
 

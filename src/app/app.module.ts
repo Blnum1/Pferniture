@@ -51,6 +51,7 @@ import { NavProfileHeaderComponent } from './profile-page/nav-profile-header/nav
 import { LocationComponent } from './profile-page/location/location.component';
 import { DeliveryNoteComponent } from './admin-page/delivery-note/delivery-note.component';
 import { OrderManageDetailComponent } from './admin-page/order-manage-detail/order-manage-detail.component';
+import { SearchComponent } from './page/search/search.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +95,8 @@ import { OrderManageDetailComponent } from './admin-page/order-manage-detail/ord
     NavProfileHeaderComponent,
     LocationComponent,
     DeliveryNoteComponent,
-    OrderManageDetailComponent
+    OrderManageDetailComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

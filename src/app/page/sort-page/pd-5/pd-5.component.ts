@@ -8,7 +8,9 @@ import { Product, ProductService } from '../../../services/product.service';
 })
 export class Pd5Component implements OnInit{
   product: Product[] = [];
-
+  sortOrder: 'asc' | 'desc' = 'asc';
+  sortLabel = 'ราคา';
+  searchResults: any[] = [];
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
@@ -29,5 +31,18 @@ export class Pd5Component implements OnInit{
       this.product = [];
     });
   }
+  setSortOrder(order: 'asc' | 'desc') {
+  this.sortOrder = order;
+  this.sortLabel = order === 'asc' ? 'ราคา: จากน้อยไปมาก' : 'ราคา: จากมากไปน้อย';
+  this.applySort();
+}
+
+applySort() {
+  this.searchResults.sort((a, b) => {
+    const priceA = Number(a.price ?? 0);
+    const priceB = Number(b.price ?? 0);
+    return this.sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
+  });
+}
 }
 
