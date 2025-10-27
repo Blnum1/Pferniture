@@ -12,62 +12,52 @@
     <ng-container *ngIf="cartItems?.length; else noItems">
 
       <div class="list-group">
-        <div 
-          class="list-group-item d-flex align-items-center"
-          *ngFor="let item of cartItems">
-          
-          <!-- Checkbox -->
-          <input 
-            type="checkbox" 
-            class="form-check-input me-3"
-            [(ngModel)]="item.selected"
-            (change)="updateSelection()">
+  <div class="list-group-item d-flex align-items-center" *ngFor="let item of cartItems">
+    <!-- Checkbox -->
+    <input type="checkbox" class="form-check-input me-3" [(ngModel)]="item.selected" (change)="updateSelection()">
 
-          <!-- Image -->
-          <img *ngIf="item.image_Url1" 
-               [src]="item.image_Url1" 
-               alt="product" 
-               class="img-thumbnail me-3" 
-               style="width: 80px; height: 80px; object-fit: cover;">
+    <!-- Image -->
+    <img *ngIf="item.image_Url1" [src]="item.image_Url1" alt="product" class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover;">
 
-          <!-- Content -->
-          <div class="flex-grow-1">
-            <h5 class="mb-1">{{ item.product_Name }}</h5>
-            <div class="text-muted small">รหัสสินค้า: {{ item.productID }}</div>
-            <div>ราคาต่อชิ้น: <b>{{ item.price_amount | number:'1.0-0' }}</b> ฿</div>
+    <!-- Content -->
+    <div class="flex-grow-1" (click)="goToProductDetail(item.productID)" style="cursor: pointer;">
+  <h5 class="mb-1">{{ item.product_Name }}</h5>
+  <div class="text-muted small">รหัสสินค้า: {{ item.productID }}</div>
+  <div>ราคาต่อชิ้น: <b>{{ item.price_amount | number:'1.0-0' }}</b> ฿</div>
 
-            <div class="d-flex align-items-center gap-2 mt-2">
-              <button class="btn btn-outline-secondary btn-sm" (click)="decreaseQuantity(item)">−</button>
-              <span class="px-3">{{ item.quantity }}</span>
-              <button class="btn btn-outline-secondary btn-sm" (click)="increaseQuantity(item)">+</button>
+  <div class="d-flex align-items-center gap-2 mt-2">
+    <button class="btn btn-outline-secondary btn-sm" (click)="decreaseQuantity(item); $event.stopPropagation()">−</button>
+    <span class="px-3">{{ item.quantity }}</span>
+    <button class="btn btn-outline-secondary btn-sm" (click)="increaseQuantity(item); $event.stopPropagation()">+</button>
+    <button class="btn btn-outline-danger btn-sm " (click)="remove(item); $event.stopPropagation()">
+      <img src="assets/image/delete.png" alt="ลบ" class="trash-icon" />
+    </button>
+  </div>
+</div>
 
-              <button class="btn btn-outline-danger btn-sm ms-auto" (click)="remove(item)">ลบ</button>
-            </div>
-          </div>
+    <!-- Subtotal -->
+    <div class="ms-3 text-end" style="min-width: 120px;">
+      <div class="fw-bold">{{ (item.price_amount * item.quantity) | number:'1.0-0' }} ฿</div>
+    </div>
+  </div>
+</div>
 
-          <!-- Subtotal -->
-          <div class="ms-3 text-end" style="min-width: 120px;">
-            <div class="fw-bold">
-              {{ (item.price_amount * item.quantity) | number:'1.0-0' }} ฿
-            </div>
-          </div>
-        </div>
+      <div class="fixed-bottom-bar">
+  <div class="d-flex justify-content-between align-items-center mt-4 p-3 border-top">
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" [checked]="allSelected" (change)="toggleSelectAll($event)">
+      <label class="form-check-label">เลือกทั้งหมด</label>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <div class="me-3 fs-5">
+        รวมที่เลือก: <b>{{ selectedTotal | number:'1.0-0' }}</b> ฿
       </div>
+      <button class="btn btn-primary btn-lg" [disabled]="!hasSelection()" (click)="checkout()">ดำเนินการสั่งซื้อ</button>
+    </div>
+  </div>
+</div>
 
-      <!-- Summary -->
-      <div class="d-flex justify-content-between align-items-center mt-4 p-3 border-top">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" [checked]="allSelected" (change)="toggleSelectAll($event)">
-          <label class="form-check-label">เลือกทั้งหมด</label>
-        </div>
-
-        <div class="d-flex align-items-center">
-          <div class="me-3 fs-5">
-            รวมที่เลือก: <b>{{ selectedTotal | number:'1.0-0' }}</b> ฿
-          </div>
-          <button class="btn btn-primary btn-lg" [disabled]="!hasSelection()" (click)="checkout()">ดำเนินการสั่งซื้อ</button>
-        </div>
-      </div>
 
     </ng-container>
 
@@ -75,4 +65,19 @@
       <div class="alert alert-info">ตะกร้าของคุณว่างเปล่า</div>
     </ng-template>
   </ng-container>
+</div>
+
+
+<div class="modal-backdrop-custom" *ngIf="showDeleteModal"></div>
+<div class="modal-custom" *ngIf="showDeleteModal">
+  <div class="modal-card modal-md">
+    <div class="modal-header">
+      <div class="fw-semibold">คุณต้องการลบสินค้าออกจากตะกร้าหรือไม่?</div>
+      <button class="btn-close" (click)="closeDeleteModal()"></button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline-secondary" (click)="cancelDelete()">ยกเลิก</button>
+      <button class="btn btn-danger" (click)="confirmDelete()">ลบสินค้า</button>
+    </div>
+  </div>
 </div>

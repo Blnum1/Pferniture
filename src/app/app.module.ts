@@ -52,6 +52,7 @@ import { LocationComponent } from './profile-page/location/location.component';
 import { DeliveryNoteComponent } from './admin-page/delivery-note/delivery-note.component';
 import { OrderManageDetailComponent } from './admin-page/order-manage-detail/order-manage-detail.component';
 import { SearchComponent } from './page/search/search.component';
+import { PfDetailComponent } from './profile-page/pf-detail/pf-detail.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +97,8 @@ import { SearchComponent } from './page/search/search.component';
     LocationComponent,
     DeliveryNoteComponent,
     OrderManageDetailComponent,
-    SearchComponent
+    SearchComponent,
+    PfDetailComponent
   ],
   imports: [
     BrowserModule,

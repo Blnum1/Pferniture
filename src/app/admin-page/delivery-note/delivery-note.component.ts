@@ -24,6 +24,13 @@ export class DeliveryNoteComponent implements OnInit {
   ngOnInit(): void {
     this.orderID = +this.route.snapshot.paramMap.get('orderID')!;
     this.loadOrderDetails();
+
+    this.route.queryParams.subscribe(params => {
+    if (params['autoPrint'] === 'true') {
+      // หน่วงเล็กน้อยเพื่อรอข้อมูลโหลดก่อนพิมพ์
+      setTimeout(() => this.print(), 800);
+    }
+  });
   }
 
   loadOrderDetails(): void {

@@ -16,7 +16,8 @@ export class CartComponent implements OnInit, OnDestroy {
   errorMsg = '';
   allSelected = false;
   selectedTotal = 0;
-
+  showDeleteModal = false;
+   itemToRemove: CartItemDto | null = null;
   private sub = new Subscription();
 
   constructor(private cartSvc: CartService, private router: Router) { }
@@ -78,12 +79,16 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   decreaseQuantity(ci: CartItemDto): void {
-    if (ci.quantity <= 1) return;
-    const newQty = ci.quantity - 1;
-    this.cartSvc.updateItemQuantity(ci.cartItemID, newQty).subscribe({
-      next: () => ci.quantity = newQty,
-      error: (err) => console.error(err)
-    });
+    if (ci.quantity <= 1) {
+      this.itemToRemove = ci;  
+      this.showDeleteModal = true;  
+    } else {
+      const newQty = ci.quantity - 1;
+      this.cartSvc.updateItemQuantity(ci.cartItemID, newQty).subscribe({
+        next: () => ci.quantity = newQty,
+        error: (err) => console.error(err)
+      });
+    }
   }
 
   remove(ci: CartItemDto): void {
@@ -91,6 +96,20 @@ export class CartComponent implements OnInit, OnDestroy {
       next: () => this.cartItems = this.cartItems.filter(x => x.cartItemID !== ci.cartItemID),
       error: (err) => console.error(err)
     });
+  }
+   confirmDelete(): void {
+    if (this.itemToRemove) {
+      this.remove(this.itemToRemove);
+      this.closeDeleteModal(); // ปิด modal หลังจากลบสินค้า
+    }
+  }
+
+  cancelDelete(): void {
+    this.closeDeleteModal();  // ปิด modal เมื่อยกเลิกการลบสินค้า
+  }
+
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;  // ปิด modal
   }
 
   get total(): number {
@@ -129,4 +148,8 @@ export class CartComponent implements OnInit, OnDestroy {
       }
     });
   }
+  goToProductDetail(productID: number): void {
+  this.router.navigate(['/product-detail', productID]);
+}
+
 }

@@ -10,30 +10,35 @@
 
     <!-- Sidebar (Sticky) -->
     <div class="col-12 col-lg-3">
-      <nav class="side-nav">
-        <div class="profile-header">
-        <div class="avatar"></div>
-        <div class="info">
-          <div class="name-row">
-            <div class="field">
-              <div class="label"></div>
-              <div class="value">จิรยุทธ์ พรมจีน</div>
-            </div>
-          </div>
-          <div class="phone-row">
-            <div class="label th">เบอร์โทร</div>
-            <div class="value">088-8888888</div>
-          </div>
+  <nav class="side-nav">
+    <div class="profile-header">
+      <div class="avatar">
+        <div class="headerlogo">
+          <a routerLink="/profile" class="logo-link">
+            <img src="assets/image/github-logos.png" alt="Pferniture Logo" class="image-logo">
+          </a>
         </div>
       </div>
-        <a class="side-link" [routerLink]="['/pf-1']" routerLinkActive="active"
-          [routerLinkActiveOptions]="{exact:true}">
-          การสั่งซื้อของฉัน
-        </a>
-        <a class="side-link" [routerLink]="['/profile']" routerLinkActive="active">บัญชีของฉัน</a>
-        <a class="side-link" [routerLink]="['/location']" routerLinkActive="active">ที่อยู่</a>
-      </nav>
+      <div class="info">
+        <div class="name-row">
+          <div class="field">
+            <div class="label"></div>
+            <div class="value">จิรยุทธ์ พรมจีน</div>
+          </div>
+        </div>
+        <div class="phone-row">
+          <div class="label th">เบอร์โทร</div>
+          <div class="value">088-8888888</div>
+        </div>
+      </div>
     </div>
+    <a class="side-link" [routerLink]="['/pf-1']" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+      การสั่งซื้อของฉัน
+    </a>
+    <a class="side-link" [routerLink]="['/profile']" routerLinkActive="active">บัญชีของฉัน</a>
+    <a class="side-link" [routerLink]="['/location']" routerLinkActive="active">ที่อยู่</a>
+  </nav>
+</div>
 
     <!-- Main content -->
     <div class="col-12 col-lg-9">
@@ -65,45 +70,51 @@
       <!-- รายการออเดอร์ -->
       <div class="order-container">
         <div *ngIf="groupedOrders.length; else noOrders">
-          <div *ngFor="let orderGroup of groupedOrders" class="order-card">
-            <div class="customer-info">
-              <!-- <h5>Order ID: {{ orderGroup.orderID }}</h5> -->
-              <div class="payment-info">
-                <div class="payment-info-left">
-                  <div>สั่งซื้อวันที่: {{ orderGroup.order_date | date }}</div>
-                </div>
-                <div class="payment-info-right">
+  <div *ngFor="let orderGroup of groupedOrders"
+       class="order-card clickable"
+       (click)="goToPfDetail(orderGroup.orderID)">
 
-                  <div class="d-flex align-items-center gap-3 flex-wrap">
-                    <span>วิธีการชำระเงิน: {{ orderGroup.items[0]?.payment_Method }}</span>
-                    <span class="text-orange fw-semibold">
-                      | {{ orderGroup.status }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div class="order-items">
-                <div *ngFor="let item of orderGroup.items" class="order-item">
-                  <img *ngIf="item.image_Url1" [src]="item.image_Url1" alt="{{ item.product_Name }}" width="50" />
-                  <div>{{ item.product_Name }} ({{ item.size }} - {{ item.color }})</div>
-                  <div>x {{ item.quantity }}</div>
-                  <div>ราคา: {{ item.priceAmount }}</div>
-                </div>
-              </div>
-
-              <div class="payment-info">
-                <div class="payment-info-left">
-
-                  <div></div>
-                </div>
-                <div class="payment-info-right">
-
-                  <p>ยอดรวม: ฿{{ orderGroup.items[0]?.payment_Amount }}</p>
-                </div>
-              </div>
-            </div>
+    <div class="customer-info">
+      <div class="payment-info">
+        <div class="payment-info-left">
+          <div>สั่งซื้อวันที่: {{ orderGroup.order_date | date }}</div>
+        </div>
+        <div class="payment-info-right">
+          <div class="d-flex align-items-center gap-3 flex-wrap">
+            <span>วิธีการชำระเงิน: {{ orderGroup.items[0]?.payment_Method }}</span>
+            <span class="text-orange fw-semibold">| {{ orderGroup.status }}</span>
           </div>
         </div>
+      </div>
+
+      <div class="order-items">
+        <div *ngFor="let item of orderGroup.items"
+             class="order-item"
+             (click)="$event.stopPropagation()"><!-- กันไม่ให้คลิกซ้อน -->
+
+          <img *ngIf="item.image_Url1" [src]="item.image_Url1"
+               alt="{{ item.product_Name }}" width="50" />
+          <div>{{ item.product_Name }} ({{ item.size }} - {{ item.color }})</div>
+          <div>x {{ item.quantity }}</div>
+          <div>ราคา: {{ item.priceAmount }}</div>
+
+          <!-- ถ้ามีปุ่มใน item ใส่ stopPropagation ด้วยเสมอ -->
+          <!-- <button class="btn btn-sm btn-outline-secondary"
+                  (click)="doSomething(item); $event.stopPropagation()">ทำอย่างอื่น</button> -->
+        </div>
+      </div>
+
+      <div class="payment-info">
+        <div class="payment-info-left"></div>
+        <div class="payment-info-right">
+          <p>ยอดรวม: ฿{{ orderGroup.items[0]?.payment_Amount }}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
         <ng-template #noOrders>
           <div class="alert alert-info">ไม่มีคำสั่งซื้อในสถานะที่เลือก</div>

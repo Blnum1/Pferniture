@@ -1,0 +1,9 @@
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.product-description {
+  white-space: pre-wrap;
+  line-height: 1.6;
+}

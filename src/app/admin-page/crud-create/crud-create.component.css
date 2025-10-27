@@ -1,10 +1,45 @@
 .main-container {
-  padding-left: 7%;  
-  padding-right: 7%;
-  padding-top: 40px;
-  margin-top: 10px;
-  padding-bottom: 20px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  margin-left: 150px;  
+    padding: 60px 5%; /* ปรับการ padding ซ้าย-ขวา ให้ดีขึ้น */
+    margin-top: 0px;
+    margin-bottom: 20px;
+    margin-left: 190px; /* คงไว้ตามต้นฉบับ หากมี Sidebar */
+    border-radius: 10px; /* มุมโค้งมนมากขึ้น */
+    background-color: #ffffff; /* เปลี่ยนเป็นสีขาว เพื่อความสะอาด */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); /* เงาที่ชัดเจนขึ้น */
+    min-height: 80vh; /* ให้มีความสูงขั้นต่ำ ดูเต็มพื้นที่ */
+}
+
+/* Card Styles: ใช้สำหรับจัดกลุ่มข้อมูล */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e0e0e0; /* เพิ่มเส้นขอบบางๆ */
+}
+
+.card:hover {
+    transform: translateY(-2px); /* เอฟเฟกต์ยกขึ้นเล็กน้อยเมื่อชี้ */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.image-upload-card {
+    background-color: #f7f9fc; /* สีพื้นหลังอ่อนๆ สำหรับส่วนรูปภาพ */
+}
+
+.product-details-card {
+    background-color: #ffffff;
+}
+
+/* Image Preview Styles */
+.preview-image {
+    max-height: 200px; /* จำกัดความสูงของรูปภาพให้ดูดีขึ้น */
+    object-fit: contain; /* รูปภาพไม่บิดเบือน */
+}
+
+/* Input Styles */
+.form-control:focus, .form-select:focus {
+    border-color: #4CAF50; /* เปลี่ยนสีขอบเมื่อ Focus เป็นสีเขียว (หรือสีที่คุณต้องการ) */
+    box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+}
+
+.bg-light {
+    color: #6c757d; /* ทำให้ข้อความในช่อง Readonly ดูจางลง */
 }

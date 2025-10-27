@@ -26,6 +26,7 @@ import { CartComponent } from './page/cart/cart.component';
 import { ProductDetailComponent } from './page/product-detail/product-detail.component';
 import { PaymentComponent } from './page/payment/payment.component';
 import { ProfileComponent } from './profile-page/profile/profile.component';
+import { PfDetailComponent } from './profile-page/pf-detail/pf-detail.component';
 import { Pf1Component } from './profile-page/pf-1/pf-1.component';
 import { Pf2Component } from './profile-page/pf-2/pf-2.component';
 import { Pf3Component } from './profile-page/pf-3/pf-3.component';
@@ -143,6 +144,9 @@ const routes: Routes = [
   },
   { path: 'location',
     component: LocationComponent
+  },
+  { path: 'pf-detail/:orderID',
+    component: PfDetailComponent
   },
   { path: 'pf-1',
     component: Pf1Component

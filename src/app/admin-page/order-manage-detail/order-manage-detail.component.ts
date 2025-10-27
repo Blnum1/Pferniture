@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ShoworderService } from '../../services/showorder.service';
 
 @Component({
@@ -15,10 +15,19 @@ export class OrderManageDetailComponent implements OnInit {
 
   // 💡 เพิ่ม Property นี้เพื่อเก็บข้อมูลกลุ่มเดียวที่จะนำไปใช้ใน template
   orderGroup: any;
+  selectedShipper: string = '';
 
+  // รายชื่อบริษัทขนส่ง
+  shippers = [
+    { id: 'flash', name: 'Flash Express', logo: 'assets/image/flash-express-logo.png' },
+    { id: 'dhl', name: 'Kerry Express', logo: 'assets/image/dhl-Logo.png' },
+    { id: 'jt', name: 'J&T Express', logo: 'assets/image/jnt-logo.png' },
+    { id: 'thpost', name: 'ไปรษณีย์ไทย', logo: 'assets/image/th-post-logo.png' }
+  ];
   constructor(
     private route: ActivatedRoute,
-    private showorderService: ShoworderService
+    private showorderService: ShoworderService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -70,9 +79,13 @@ export class OrderManageDetailComponent implements OnInit {
     }
   }
 
-  print(): void {
-    setTimeout(() => {
-      window.print();
-    }, 100);
+  confirmAndPrint(): void {
+    if (!this.selectedShipper) return;
+    alert(`เลือกขนส่ง: ${this.selectedShipper}`);
+
+    // ไปหน้าใบส่งสินค้า + autoPrint
+    this.router.navigate([`/delivery-note`, this.orderGroup.orderID], {
+      queryParams: { autoPrint: true, shipper: this.selectedShipper }
+    });
   }
 }

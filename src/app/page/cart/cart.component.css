@@ -38,3 +38,92 @@ button {
   background-color: #dc3545;
   color: white;
 }
+
+.fixed-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff; /* หรือสีที่คุณต้องการ */
+  border-top: 1px solid #ccc; /* เพิ่มขอบเพื่อแยกส่วน */
+  z-index: 999; /* ให้มันอยู่เหนือคอนเทนต์อื่น */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* เพิ่มเงาเล็กน้อย */
+  padding: 10px 20px;
+}
+
+.fixed-bottom-bar .form-check {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.fixed-bottom-bar .d-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Backdrop (ส่วนที่มืดในพื้นหลัง) */
+.modal-backdrop-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);  /* สีพื้นหลังมืด */
+  z-index: 1000;  /* ให้ backdrop อยู่ด้านหลัง modal */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal Box */
+.modal-custom {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* ย้ายให้ modal อยู่กลางหน้าจอ */
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 1001;  /* ให้ modal อยู่เหนือ backdrop */
+  width: 80%;
+  max-width: 500px;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* เพิ่ม animation เมื่อ modal แสดง */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Modal Card */
+.modal-card {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+/* ปุ่มปิด */
+.btn-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #000;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-close:hover {
+  color: #f00;
+}

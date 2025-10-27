@@ -1,198 +1,258 @@
 <app-nav-header></app-nav-header>
 
-<div class="container my-4" *ngIf="items?.length; else noitems">
-  <h3>ชำระเงิน</h3>
-  <div class="card mb-3">
+<div class="container py-4" *ngIf="items?.length; else noitems">
+  <h2 class="mb-4 fw-bold text-primary">การชำระเงิน <i class="bi bi-cart-check"></i></h2>
+
+  <div class="card shadow-sm mb-4 border-0">
     <div class="card-body">
-      <div class="d-flex align-items-center gap-3 mb-3">
-        <i class="bi bi-geo-alt fs-5"></i>
-        <div class="fw-bold">{{ customerName || 'ชื่อผู้รับ' }}</div>
-        <div class="text-muted ms-3">{{ phone || 'เบอร์โทร' }}</div>
+      <h5 class="card-title fw-semibold text-dark d-flex align-items-center mb-3">
+        <i class="bi bi-geo-alt-fill text-danger me-2 fs-4"></i> ที่อยู่สำหรับจัดส่ง
+      </h5>
+
+      <div class="d-flex align-items-start gap-3 mb-3 p-3 bg-light rounded-3">
+        <i class="bi bi-person-circle fs-3 text-muted"></i>
+        <div class="flex-grow-1">
+          <div class="fw-bold fs-6">{{ customerName || 'ชื่อผู้รับ' }}</div>
+          <div class="text-secondary small">{{ phone || 'เบอร์โทร' }}</div>
+        </div>
       </div>
 
-      <label class="form-label d-flex align-items-center justify-content-between">
-  <span>เลือกที่อยู่สำหรับจัดส่ง</span>
-  <button type="button" class="btn btn-sm btn-outline-primary" (click)="openAddAddress()">+ เพิ่มที่อยู่ใหม่</button>
-</label>
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <label class="form-label fw-semibold mb-0">เลือกที่อยู่</label>
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="openAddAddress()">
+          <i class="bi bi-plus-circle me-1"></i> เพิ่มที่อยู่ใหม่
+        </button>
+      </div>
 
-<select class="form-select mb-2"
-        [(ngModel)]="selectedShippingId"
-        (ngModelChange)="onShippingChange($event)"
-        name="shippingSelect">
-  <option [ngValue]="null" disabled>— เลือกที่อยู่ —</option>
-  <option *ngFor="let s of shippingList" [ngValue]="s.id">
-    {{ s.id }} • {{ s.address }}{{ s.city ? ', ' + s.city : '' }}{{ s.postal ? ', ' + s.postal : '' }}
-  </option>
-</select>
+      <select class="form-select mb-2 shadow-sm"
+              [(ngModel)]="selectedShippingId"
+              (ngModelChange)="onShippingChange($event)"
+              name="shippingSelect">
+        <option [ngValue]="null" disabled>— เลือกที่อยู่ —</option>
+        <option *ngFor="let s of shippingList" [ngValue]="s.id">
+          {{ s.id }} • {{ s.address }}{{ s.city ? ', ' + s.city : '' }}{{ s.postal ? ', ' + s.postal : '' }}
+        </option>
+      </select>
 
-<div class="form-text" *ngIf="selectedShippingId !== null">ที่อยู่ที่เลือก: {{ selectedShipping?.address }}</div>
-<div *ngIf="selectedShippingId === null" class="small text-danger mt-1">* กรุณาเลือกที่อยู่ก่อนทำการสั่งซื้อ</div>
+      <div class="form-text text-success" *ngIf="selectedShippingId !== null">
+        ที่อยู่ที่เลือก: **{{ selectedShipping?.address }}**
+      </div>
+      <div *ngIf="selectedShippingId === null" class="small text-danger mt-1 fw-bold">
+        <i class="bi bi-exclamation-triangle-fill me-1"></i> กรุณาเลือกที่อยู่ก่อนทำการสั่งซื้อ
+      </div>
 
-      <div class="mt-3">
-        <label class="form-label">เบอร์โทรผู้รับ</label>
+      <!-- <div class="mt-3">
+        <label class="form-label small text-muted">เบอร์โทรผู้รับ (สำหรับติดต่อ)</label>
         <input class="form-control" type="tel" [(ngModel)]="phone" name="phone" placeholder="เบอร์โทรศัพท์">
-      </div>
+      </div> -->
     </div>
   </div>
+  
+  <hr>
 
-  <div class="card mb-3">
-    <div class="card-header bg-light">รายการสินค้า</div>
-    <div class="list-group list-group-flush">
-      <div class="list-group-item d-flex align-items-center" *ngFor="let it of items">
-        <img *ngIf="it.image_Url1" [src]="it.image_Url1" class="me-3" style="width:70px;height:70px;object-fit:cover;border-radius:8px;">
+  <div class="card shadow-sm mb-4 border-0">
+    <div class="card-header bg-light fw-bold text-dark">
+      <i class="bi bi-bag-fill me-2"></i> รายการสินค้า
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item d-flex align-items-center py-3" *ngFor="let it of items">
+        <img *ngIf="it.image_Url1" [src]="it.image_Url1" class="rounded-3 me-3 item-img" alt="Product Image">
         <div class="flex-grow-1">
           <div class="fw-semibold">{{ it.product_Name }}</div>
-          <div class="text-muted small">รหัสสินค้า: {{ it.productID }}</div>
+          <div class="text-muted small">รหัส: {{ it.productID }}</div>
         </div>
-        <div class="text-end me-4 small text-muted">รายการต่อหน่วย</div>
-        <div class="text-end me-4">{{ it.price_amount | number:'1.0-0' }} บาท</div>
-        <div class="text-end" style="min-width:60px;">× {{ it.quantity }}</div>
-      </div>
-    </div>
+        <div class="text-end me-4 small text-muted d-none d-md-block" style="min-width: 100px;">ราคาต่อหน่วย</div>
+        <div class="text-end me-4 fw-semibold text-primary" style="min-width: 80px;">
+          {{ it.price_amount | number:'1.0-0' }}฿
+        </div>
+        <div class="text-end fw-bold" style="min-width:60px;">× {{ it.quantity }}</div>
+      </li>
+    </ul>
   </div>
 
-  <div class="card mb-3">
+  <hr>
+
+  <div class="card shadow-sm mb-4 border-0">
     <div class="card-body">
-      <div class="row g-3">
+      <div class="row g-4">
         <div class="col-12 col-md-6">
-          <div class="fw-semibold mb-2">โค้ดส่วนลด</div>
+          <div class="fw-semibold mb-2"><i class="bi bi-tag-fill me-1 text-info"></i> โค้ดส่วนลด</div>
           <div class="input-group">
             <input class="form-control" placeholder="กรอกโค้ด" [(ngModel)]="coupon" name="coupon">
-            <button class="btn btn-outline-secondary" (click)="applyCoupon()">กดใช้โค้ด</button>
+            <button class="btn btn-info text-white fw-semibold" (click)="applyCoupon()">กดใช้โค้ด</button>
           </div>
-          <div *ngIf="discount>0" class="small text-success mt-1">ลด {{ discount | number:'1.0-0' }} บาท</div>
+          <div *ngIf="discount>0" class="small text-success mt-1 fw-bold">
+            <i class="bi bi-check-circle-fill me-1"></i> ลด **{{ discount | number:'1.0-0' }}** บาท
+          </div>
         </div>
         <div class="col-12 col-md-6">
-          <div class="fw-semibold mb-2">ตัวเลือกการจัดส่ง</div>
+          <div class="fw-semibold mb-2"><i class="bi bi-truck-flatbed me-1 text-secondary"></i> ตัวเลือกการจัดส่ง</div>
           <div class="d-flex gap-2 flex-wrap">
-            <button class="btn" [class.btn-primary]="shipMethod==='ในประเทศ'" [class.btn-outline-primary]="shipMethod!=='ในประเทศ'" (click)="onChangeShip('ในประเทศ')">ส่งด่วนทันใจ - ในประเทศ (ฟรี)</button>
-            <!-- <button class="btn" [class.btn-primary]="shipMethod==='ด่วนพิเศษ'" [class.btn-outline-primary]="shipMethod!=='ด่วนพิเศษ'" (click)="onChangeShip('ด่วนพิเศษ')">ด่วนพิเศษ (฿59)</button> -->
+            <button class="btn btn-lg"
+                    [class.btn-success]="shipMethod==='ในประเทศ'"
+                    [class.btn-outline-secondary]="shipMethod!=='ในประเทศ'"
+                    (click)="onChangeShip('ในประเทศ')">
+              <i class="bi bi-lightning-charge-fill me-1"></i> ส่งด่วนทันใจ - ในประเทศ (ฟรี)
+            </button>
+          </div>
+          <div class="small text-muted mt-2">จัดส่งแบบ **{{ shipMethod }}**</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="card shadow-sm mb-4 border-0">
+    <div class="card-header bg-light fw-bold text-dark"><i class="bi bi-wallet-fill me-2"></i> วิธีการชำระเงิน</div>
+    <div class="card-body">
+      <ul class="nav nav-pills nav-fill mb-3 bg-light p-1 rounded-3">
+        <li class="nav-item"><button class="nav-link fw-semibold" [class.active]="payMethod==='QR'" (click)="payMethod='QR'"><i class="bi bi-qr-code me-1"></i> QR พร้อมเพย์</button></li>
+        <li class="nav-item"><button class="nav-link fw-semibold" [class.active]="payMethod==='COD'" (click)="payMethod='COD'"><i class="bi bi-cash-stack me-1"></i> เก็บเงินปลายทาง</button></li>
+        <li class="nav-item"><button class="nav-link fw-semibold" [class.active]="payMethod==='BANK'" (click)="payMethod='BANK'"><i class="bi bi-bank me-1"></i> บัญชีธนาคาร</button></li>
+      </ul>
+
+      <div class="p-3 border rounded-3 bg-white">
+        <div *ngIf="payMethod==='QR'">
+          <img src="assets/image/promptpay-logo.png" height="48" alt="PromptPay" class="mb-2">
+          <div class="fw-bold text-primary">ชำระด้วย QR พร้อมเพย์</div>
+          <div class="small text-muted mt-1">สแกนหลังจากกดสั่งซื้อสำเร็จเพื่อยืนยันการชำระเงิน</div>
+        </div>
+        <div *ngIf="payMethod==='COD'">
+          <div class="fw-bold text-success"><i class="bi bi-box-seam-fill me-1"></i> ชำระเงินปลายทาง (Cash on Delivery)</div>
+          <div class="small text-muted mt-1">ชำระเงินสดกับพนักงานจัดส่ง เมื่อได้รับสินค้า</div>
+        </div>
+        <div *ngIf="payMethod === 'BANK'">
+          <div class="fw-bold text-info mb-2"><i class="bi bi-credit-card me-1"></i> โอนเข้าบัญชีธนาคาร</div>
+          <div class="small mb-2 text-muted">เลือกธนาคารและระบุเลขอ้างอิงการโอน:</div>
+
+          <div class="bank-list">
+            <label class="bank-item" *ngFor="let b of banks" [class.selected]="selectedBank === b.id">
+              <input type="radio" name="selectedBank" [value]="b.id" [(ngModel)]="selectedBank" class="d-none">
+              <img [src]="b.img" [alt]="b.name + ' logo'" class="bank-logo">
+              <div class="bank-meta flex-grow-1 ms-3">
+                <div class="bank-name fw-semibold">{{ b.name }}</div>
+                <div class="bank-account small text-secondary">เลขที่: **{{ b.account }}**</div>
+              </div>
+              <i class="bi" [class.bi-check-circle-fill]="selectedBank === b.id" [class.bi-circle]="selectedBank !== b.id"></i>
+            </label>
+          </div>
+
+          <div class="mb-2 mt-3">
+            <input class="form-control" placeholder="เลขอ้างอิง/หมายเหตุการโอน" [(ngModel)]="bankNote" name="bankNote">
+          </div>
+
+          <div *ngIf="selectedBank" class="mt-2 small text-primary">
+            เลือก: **{{ getBankName(selectedBank) }}**
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="card mb-3">
-    <div class="card-header bg-light">วิธีการชำระเงิน</div>
+  <hr>
+
+  <div class="card shadow-lg border-danger mb-5">
     <div class="card-body">
-      <ul class="nav nav-tabs mb-3">
-        <li class="nav-item"><button class="nav-link" [class.active]="payMethod==='QR'" (click)="payMethod='QR'">QR พร้อมเพย์</button></li>
-        <li class="nav-item"><button class="nav-link" [class.active]="payMethod==='COD'" (click)="payMethod='COD'">เก็บเงินปลายทาง</button></li>
-        <li class="nav-item"><button class="nav-link" [class.active]="payMethod==='BANK'" (click)="payMethod='BANK'">บัญชีธนาคาร</button></li>
-      </ul>
-
-      <div *ngIf="payMethod==='QR'">
-        <img src="assets/image/promptpay-logo.png" height="64" alt="PromptPay">
-        <div class="small text-muted mt-2">สแกนหลังจากกดสั่งซื้อสำเร็จ</div>
+      <h5 class="fw-bold mb-3 text-danger"><i class="bi bi-currency-dollar me-2"></i> สรุปยอดชำระ</h5>
+      <div class="d-flex justify-content-between mb-1">
+        <div class="text-muted">รวมค่าสินค้า</div>
+        <div>{{ subtotal | number:'1.0-0' }} บาท</div>
       </div>
-      <div *ngIf="payMethod==='COD'"><div class="small">ชำระเงินกับพนักงานจัดส่ง</div></div>
-      <div *ngIf="payMethod === 'BANK'">
-  <div class="small mb-2">โอนเข้าบัญชี • เลือกธนาคารและแนบเลขอ้างอิง:</div>
-
-  <div class="bank-list">
-    <label class="bank-item" *ngFor="let b of banks">
-      <input type="radio"
-             name="selectedBank"
-             [value]="b.id"
-             [(ngModel)]="selectedBank">
-      <img [src]="b.img" [alt]="b.name + ' logo'">
-      <div class="bank-meta">
-        <div class="bank-name">{{ b.name }}</div>
-        <div class="bank-account">{{ b.account }}</div>
+      <div class="d-flex justify-content-between mb-1">
+        <div class="text-muted">ค่าจัดส่ง</div>
+        <div [class.text-success]="shippingFee === 0">฿{{ shippingFee | number:'1.0-0' }}</div>
       </div>
-      <div class="radio-faux" [class.checked]="selectedBank === b.id"></div>
-    </label>
-  </div>
-
-  <div class="mb-2 mt-3">
-    <input class="form-control"
-           placeholder="เลขอ้างอิง/หมายเหตุ"
-           [(ngModel)]="bankNote"
-           name="bankNote">
-  </div>
-
-  <div *ngIf="selectedBank" class="mt-2 chosen">
-    เลือก: <strong>{{ getBankName(selectedBank) }}</strong>
-  </div>
-</div>
+      <div class="d-flex justify-content-between mb-1" *ngIf="discount>0">
+        <div class="text-success fw-semibold">ส่วนลด (คูปอง)</div>
+        <div class="text-success fw-bold">−฿{{ discount | number:'1.0-0' }}</div>
+      </div>
+      <hr class="my-3">
+      <div class="d-flex justify-content-between fw-bolder fs-5">
+        <div>ยอดชำระทั้งหมด</div>
+        <div class="text-danger">฿{{ grandTotal | number:'1.0-0' }}</div>
+      </div>
+      <div class="d-grid mt-4">
+        <button class="btn btn-danger btn-xl" [disabled]="loading || selectedShippingId === null" (click)="placeOrder()">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          {{ loading ? 'กำลังสั่งซื้อ...' : 'ยืนยันการสั่งซื้อสินค้า' }}
+        </button>
+      </div>
+      <div *ngIf="errorMsg" class="alert alert-danger mt-3 fw-bold text-center">{{ errorMsg }}</div>
+      <div *ngIf="success" class="alert alert-success mt-3 fw-bold text-center">สั่งซื้อสำเร็จ! <i class="bi bi-check-all"></i></div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-body">
-      <div class="d-flex justify-content-between"><div>รวมค่าสั่งซื้อ</div><div>{{ subtotal | number:'1.0-0' }} บาท</div></div>
-      <div class="d-flex justify-content-between"><div>ค่าจัดส่ง</div><div>฿{{ shippingFee | number:'1.0-0' }}</div></div>
-      <div class="d-flex justify-content-between" *ngIf="discount>0"><div class="text-success">ส่วนลด</div><div class="text-success">−฿{{ discount | number:'1.0-0' }}</div></div>
-      <hr>
-      <div class="d-flex justify-content-between fw-bold"><div>ยอดชำระทั้งหมด</div><div class="text-danger">฿{{ grandTotal | number:'1.0-0' }}</div></div>
-      <div class="d-grid mt-3"><button class="btn btn-danger btn-lg" [disabled]="loading" (click)="placeOrder()">{{ loading ? 'กำลังสั่งซื้อ...' : 'สั่งซื้อสินค้า' }}</button></div>
-      <div *ngIf="errorMsg" class="alert alert-danger mt-2">{{ errorMsg }}</div>
-      <div *ngIf="success" class="alert alert-success mt-2">สั่งซื้อสำเร็จ!</div>
-    </div>
-  </div>
-
-  <!-- โมดัล “เพิ่มที่อยู่ใหม่” ยังอยู่ได้ -->
   <div class="modal-backdrop-custom" *ngIf="showAddModal"></div>
   <div class="modal-custom" *ngIf="showAddModal" (keydown.escape)="closeAddAddress()">
     <div class="modal-card modal-lg">
       <div class="modal-header">
-        <div class="fw-semibold">เพิ่มที่อยู่ใหม่</div>
+        <div class="fw-semibold fs-5 text-primary"><i class="bi bi-house-door-fill me-1"></i> เพิ่มที่อยู่ใหม่</div>
         <button class="btn-close" (click)="closeAddAddress()"></button>
       </div>
       <div class="modal-body">
-        <div class="mb-3"><input class="form-control" placeholder="บ้านเลขที่ / ถนน / อาคาร *" [(ngModel)]="newAddr.house" name="house"></div>
-        <div class="row g-2">
+        <div class="mb-3"><input class="form-control form-control-lg" placeholder="บ้านเลขที่ / ถนน / อาคาร *" [(ngModel)]="newAddr.house" name="house"></div>
+        <div class="row g-3">
+          <div class="mb-3"><input class="form-control" placeholder="ชื่อ *" [(ngModel)]="newAddr.firstName" name="firstName"></div>
+    <div class="mb-3"><input class="form-control" placeholder="นามสกุล *" [(ngModel)]="newAddr.lastName" name="lastName"></div>
+    <div class="mb-3"><input class="form-control" placeholder="เบอร์โทร *" [(ngModel)]="newAddr.phone" name="phone" inputmode="numeric"></div>
+
           <div class="col-md-6"><input class="form-control" placeholder="ตำบล" [(ngModel)]="newAddr.subdistrict" name="subdistrict"></div>
           <div class="col-md-6"><input class="form-control" placeholder="อำเภอ *" [(ngModel)]="newAddr.district" name="district"></div>
           <div class="col-md-6"><input class="form-control" placeholder="จังหวัด *" [(ngModel)]="newAddr.province" name="province"></div>
           <div class="col-md-6"><input class="form-control" placeholder="รหัสไปรษณีย์" [(ngModel)]="newAddr.postal" name="postal" inputmode="numeric"></div>
         </div>
-        <div class="mt-3"><img src="assets/google-map-placeholder.png" alt="map" style="width:100%;max-height:180px;object-fit:cover;border-radius:12px;"></div>
+        <div class="mt-4 border rounded-3 overflow-hidden bg-light">
+          <img src="assets/image/google-map.png" alt="map" style="width:100%;height:180px;object-fit:cover;">
+        </div>
         <div class="mt-3"><input class="form-control" placeholder="บันทึก/ปักหมุด (ไม่บังคับ)" [(ngModel)]="newAddr.note" name="note"></div>
         <div *ngIf="addError" class="alert alert-danger mt-3">{{ addError }}</div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline-secondary" (click)="closeAddAddress()" [disabled]="addSubmitting">ยกเลิก</button>
-        <button class="btn btn-primary" (click)="saveNewAddress()" [disabled]="addSubmitting">{{ addSubmitting ? 'กำลังบันทึก…' : 'บันทึก' }}</button>
+        <button class="btn btn-primary" (click)="saveNewAddress()" [disabled]="addSubmitting">{{ addSubmitting ? 'กำลังบันทึก…' : 'บันทึกที่อยู่' }}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop-custom" *ngIf="showSelectModal"></div>
+  <div class="modal-custom" *ngIf="showSelectModal">
+    <div class="modal-card modal-md">
+      <div class="modal-header">
+        <div class="fw-semibold fs-5 text-primary"><i class="bi bi-list-columns-reverse me-1"></i> เลือกที่อยู่จัดส่ง</div>
+        <button class="btn-close" (click)="closeSelectAddress()"></button>
+      </div>
+      <div class="modal-body">
+        <label *ngFor="let s of shippingList" class="addr-card-enhanced" [class.addr-selected-enhanced]="tempSelectedShippingId === s.id" (click)="selectTemp(s.id)">
+          <div class="addr-content-enhanced">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="fw-semibold">{{ customerName || 'ผู้รับ' }}</div>
+              <div class="text-muted small">{{ s.phone || phone || '-' }}</div>
+            </div>
+            <div class="text-muted small mt-1">
+              {{ s.address }}<span *ngIf="s.city">, อ.{{ s.city }}</span><span *ngIf="s.region">, {{ s.region }}</span><span *ngIf="s.postal">, {{ s.postal }}</span>
+            </div>
+          </div>
+          <i class="bi check-icon" [class.bi-check-circle-fill]="tempSelectedShippingId === s.id" [class.bi-circle]="tempSelectedShippingId !== s.id"></i>
+        </label>
+        <button type="button" class="addr-add-enhanced" (click)="openAddAddress()">
+          <i class="bi bi-plus-circle-fill me-2"></i> เพิ่มที่อยู่ใหม่
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" (click)="closeSelectAddress()">ยกเลิก</button>
+        <button class="btn btn-primary" [disabled]="tempSelectedShippingId === null" (click)="confirmSelectAddress()">ยืนยันการเลือก</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal-backdrop-custom" *ngIf="showSelectModal"></div>
-<div class="modal-custom" *ngIf="showSelectModal">
-  <div class="modal-card modal-md">
-    <div class="modal-header">
-      <div class="fw-semibold">เลือกที่อยู่</div>
-      <button class="btn-close" (click)="closeSelectAddress()"></button>
-    </div>
-    <div class="modal-body">
-      <label *ngFor="let s of shippingList" class="addr-card" [class.addr-selected]="tempSelectedShippingId === s.id" (click)="selectTemp(s.id)">
-        <input type="radio" name="addrChoice" [value]="s.id" [(ngModel)]="tempSelectedShippingId" [ngModelOptions]="{standalone:true}">
-        <span class="addr-radio-dot"></span>
-        <div class="addr-content">
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="fw-semibold">{{ customerName || 'ผู้รับ' }}</div>
-            <div class="text-muted">{{ s.phone || phone || '-' }}</div>
-          </div>
-          <div class="text-muted small mt-1">
-            {{ s.address }}<span *ngIf="s.city">, อ.{{ s.city }}</span><span *ngIf="s.region">, {{ s.region }}</span><span *ngIf="s.postal">, {{ s.postal }}</span>
-          </div>
-        </div>
-      </label>
-      <button type="button" class="addr-add" (click)="openAddAddress()">
-        <div class="plus">+</div>
-        <div>เพิ่มที่อยู่ใหม่</div>
-      </button>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline-secondary" (click)="closeSelectAddress()">ยกเลิก</button>
-      <button class="btn btn-primary" [disabled]="tempSelectedShippingId === null" (click)="confirmSelectAddress()">ยืนยัน</button>
+<ng-template #noitems>
+  <div class="container my-5 text-center">
+    <div class="alert alert-info py-4 rounded-3 shadow-sm">
+      <i class="bi bi-info-circle-fill fs-3 me-2"></i>
+      <h4 class="alert-heading fw-bold">ไม่มีรายการสำหรับชำระเงิน</h4>
+      <p class="mb-0">กรุณาเพิ่มสินค้าลงในตะกร้าก่อนดำเนินการต่อ</p>
     </div>
   </div>
-</div>
-
-<ng-template #noitems>
-  <div class="container my-5"><div class="alert alert-info">ไม่มีรายการสำหรับชำระเงิน</div></div>
 </ng-template>

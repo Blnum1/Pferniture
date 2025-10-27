@@ -1,66 +1,83 @@
 <app-nav-admin></app-nav-admin>
+
 <div class="main-container" *ngIf="orderGroup">
-  <h1>การจัดส่ง</h1>
+  <h1 class="mb-4 fw-semibold text-center">สรุปคำสั่งซื้อและเลือกการจัดส่ง</h1>
 
-  <!-- ข้อมูลผู้ส่งและข้อมูลคำสั่งซื้อ -->
-  <div class="header">
-    <div class="left">
-      <div><strong>จาก Blue-Furniture</strong></div>
-      <div>61/11หมู่บ้านอัคคีพ้นไฟ อ.ศรีราชา ต.บางพระ 20110</div>
-    </div>
-    <div class="right">
-      <div><strong>วันที่สั่งซื้อ:</strong> {{ orderGroup.order_date | date }}</div>
-      <div><strong>เลขที่ใบส่งสินค้า:</strong> {{ orderGroup.orderID }}</div>
-    </div>
-  </div>
-
-  <div class="separator"></div>
-
-  <!-- ข้อมูลผู้ซื้อ -->
-  <div class="header">
-    <div class="left">
-      <div><strong>ชื่อผู้ซื้อ:</strong> {{ orderGroup.items[0]?.userFirstName }} {{ orderGroup.items[0]?.userLastName }}</div>
-      <div><strong>ที่อยู่จัดส่ง:</strong> {{ orderGroup.items[0]?.address || 'ไม่ระบุ' }} {{ orderGroup.items[0]?.city }} {{ orderGroup.items[0]?.region }} {{ orderGroup.items[0]?.country }} {{ orderGroup.items[0]?.postal_Code }}</div>
+  <!-- ส่วนข้อมูลคำสั่งซื้อ -->
+  <div class="card mb-4 shadow-sm border-0">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h5 class="fw-bold">ข้อมูลผู้สั่งซื้อ</h5>
+          <p><strong>ชื่อ:</strong> {{ orderGroup.items[0]?.userFirstName }} {{ orderGroup.items[0]?.userLastName }}</p>
+          <p><strong>ที่อยู่จัดส่ง:</strong> {{ orderGroup.items[0]?.address }} {{ orderGroup.items[0]?.city }} {{ orderGroup.items[0]?.region }} {{ orderGroup.items[0]?.country }} {{ orderGroup.items[0]?.postal_Code }}</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <p><strong>วันที่สั่งซื้อ:</strong> {{ orderGroup.order_date | date }}</p>
+          <p><strong>หมายเลขคำสั่งซื้อ:</strong> {{ orderGroup.orderID }}</p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="separator"></div>
-
-  <!-- ตารางรายการสินค้า -->
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ลำดับ</th>
-        <th>สินค้า</th>
-        <th>จำนวน</th>
-        <th>ราคา</th>
-        <th>รวม</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of orderGroup.items">
-        <td>{{ item.orderItemID }}</td>
-        <td>{{ item.product_Name }} ({{ item.size }} - {{ item.color }})</td>
-        <td>{{ item.quantity }}</td>
-        <td>฿{{ item.priceAmount }}</td>
-        <td>฿{{ item.quantity * item.priceAmount }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="separator"></div>
-
-  <!-- ยอดรวม -->
-  <div class="total">
-    <div><strong>ยอดรวม:</strong> ฿{{ orderGroup.items.length > 0 ? orderGroup.items[0]?.payment_Amount : '0' }}</div>
+  <!-- ตารางสินค้า -->
+  <div class="card mb-4 shadow-sm border-0">
+    <div class="card-body">
+      <h5 class="fw-bold mb-3">รายการสินค้า</h5>
+      <table class="table table-bordered align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>ลำดับ</th>
+            <th>สินค้า</th>
+            <th>จำนวน</th>
+            <th>ราคา</th>
+            <th>รวม</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of orderGroup.items; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ item.product_Name }} ({{ item.size }} - {{ item.color }})</td>
+            <td>{{ item.quantity }}</td>
+            <td>฿{{ item.priceAmount | number:'1.0-0' }}</td>
+            <td>฿{{ item.quantity * item.priceAmount | number:'1.0-0' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="text-end fw-bold fs-5">
+        ยอดรวมทั้งหมด: ฿{{ orderGroup.items[0]?.payment_Amount | number:'1.0-0' }}
+      </div>
+    </div>
   </div>
 
-  <!-- ข้อมูลเพิ่มเติม -->
-  <div class="footer">
-    <div class="date">วันที่: {{ orderGroup.order_date | date }}</div>
-    <div>ขอบคุณที่ใช้บริการของเรา</div>
+  <!-- เลือกขนส่ง -->
+  <div class="card mb-4 shadow-sm border-0">
+    <div class="card-body">
+      <h5 class="fw-bold mb-3">เลือกบริษัทขนส่ง</h5>
+
+      <div class="d-flex flex-wrap gap-3">
+        <div *ngFor="let ship of shippers" class="form-check form-check-inline">
+          <input class="form-check-input"
+                 type="radio"
+                 [id]="ship.id"
+                 name="shipper"
+                 [value]="ship.name"
+                 [(ngModel)]="selectedShipper">
+          <label class="form-check-label" [for]="ship.id">
+            <img [src]="ship.logo" alt="{{ ship.name }}" style="height:40px; margin-right:5px;">
+            {{ ship.name }}
+          </label>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- ปุ่มปริ้น -->
-  <button (click)="print()">ปริ้นใบส่งสินค้า</button>
+  <!-- ปุ่มยืนยัน -->
+  <div class="text-center">
+    <button class="btn btn-primary btn-lg"
+            [disabled]="!selectedShipper"
+            (click)="confirmAndPrint()">
+      ยืนยันและปริ้นใบส่งสินค้า
+    </button>
+  </div>
 </div>

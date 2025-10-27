@@ -163,12 +163,12 @@ namespace TEST100API.Controllers
       if (dto.PDescription3 != null) product.PDescription3 = dto.PDescription3;
       if (dto.Price.HasValue) product.Price = dto.Price;
       if (dto.Price_Discount.HasValue) product.Price_Discount = dto.Price_Discount;
-      if (dto.Image_Url1 != null) product.Image_Url1 = dto.Image_Url1;
-      if (dto.Image_Url2 != null) product.Image_Url2 = dto.Image_Url2;
-      if (dto.Image_Url3 != null) product.Image_Url1 = dto.Image_Url3;
       if (dto.Is_Active != null) product.Is_Active = dto.Is_Active;
       if (dto.Stock != null) product.Stock = dto.Stock;
 
+      product.Image_Url1 = dto.Image_Url1;
+      product.Image_Url2 = dto.Image_Url2;
+      product.Image_Url3 = dto.Image_Url3;
       await _context.SaveChangesAsync();
       return NoContent();
     }

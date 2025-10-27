@@ -18,7 +18,7 @@ export interface Product {
   image_Url1?: string;
   image_Url2?: string;
   image_Url3?: string;
-  is_Active?: boolean;
+  is_Active?: string | boolean;
   stock?: number;
 }
 

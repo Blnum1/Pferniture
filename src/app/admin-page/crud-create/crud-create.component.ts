@@ -31,12 +31,24 @@ export class CrudCreateComponent implements OnInit {
   ngOnInit(): void {}
 
   createProduct(product: Product): void {
-    this.productService.createProduct(product).subscribe((data) => {
+  // 👇 แปลง boolean → string YES/NO ก่อนส่ง
+  const payload = {
+    ...product,
+    is_Active: product.is_Active ? 'YES' : 'NO'
+  };
+
+  this.productService.createProduct(payload).subscribe({
+    next: () => {
       alert('Product created successfully');
-      // หลังจากสร้างสินค้าแล้ว คุณสามารถไปที่หน้าอื่น หรือรีเซ็ตฟอร์ม
       this.resetForm();
-    });
-  }
+    },
+    error: (err) => {
+      console.error('Create failed:', err);
+      alert('Failed to create product. Check console for details.');
+    }
+  });
+}
+
 
   resetForm(): void {
     this.product = { // รีเซ็ตฟอร์ม

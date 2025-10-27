@@ -87,9 +87,12 @@
 
 /* Order cards */
 .order-card {
+  width: 97%;
+  background-color: #ffffff;
   border: 1px solid #eee;
   border-radius: 8px;
   padding: 12px;
+  margin-left: 15px;
   margin-bottom: 12px;
 }
 .order-items { display: grid; gap: 8px; margin-top: 8px; }
@@ -115,4 +118,31 @@
 .container-xxl, .container-fluid {
   transform: none !important;
   overflow: visible !important;
+}
+.avatar {
+  width: 80px;  /* กำหนดขนาดของกรอบ */
+  height: 80px; /* กำหนดขนาดของกรอบ */
+  border-radius: 50%; /* ทำให้เป็นวงกลม */
+  overflow: hidden; /* ซ่อนส่วนเกิน */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f7f7f7; /* เพิ่มสีพื้นหลัง */
+}
+
+.image-logo {
+  width: 100%;  /* ให้รูปขยายตามขนาดกรอบ */
+  height: 100%; /* ให้รูปขยายตามขนาดกรอบ */
+  object-fit: cover; /* ให้รูปเต็มพื้นที่และไม่เสียสัดส่วน */
+}
+
+.order-card.clickable {
+  cursor: pointer;
+  transition: box-shadow .2s, transform .05s;
+}
+.order-card.clickable:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+.order-card.clickable:active {
+  transform: translateY(1px);
 }

@@ -1,82 +1,53 @@
-.product-detail-container {
-  display: flex;
-  gap: 20px;
-}
-
-.image-gallery {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 25%;
-}
-
-.image-thumbnails {
-  display: flex;
-  gap: 10px;
-}
-
-.image-thumbnails div {
-  cursor: pointer;
-}
-
-.image-thumbnails img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 5px;
-}
-
-.add-image-btn {
-  width: 80px;
-  height: 80px;
-  font-size: 2rem;
-  text-align: center;
-  border-radius: 5px;
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
-  cursor: pointer;
-}
-
-.product-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.product-info .form-group {
-  margin-bottom: 10px;
-}
-
-.product-info input,
-.product-info textarea {
-  width: 100%;
-  padding: 10px;
-}
-
-.img-fluid {
-  width: 100%;
-  height: auto;
-}
-
-.form-control {
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.form-control[readonly] {
-  background-color: #f8f8f8;
-}
-
 .main-container {
-  padding-left: 7%;  
-  padding-right: 7%;
-  padding-top: 40px;
-  margin-top: 10px;
-  padding-bottom: 20px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  margin-left: 150px;  
+    padding: 40px 5%; 
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 190px; 
+    border-radius: 10px; 
+    background-color: #f0f2f5; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+    min-height: 80vh; 
+}
+
+/* Card Styles */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e9ecef; 
+    border-radius: 8px;
+}
+
+.card:hover {
+    transform: translateY(-2px); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.image-management-card {
+    background-color: #ffffff;
+}
+
+/* Image Preview Styles */
+.image-preview-box {
+    height: 150px; /* กำหนดความสูงให้ Preview Box */
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.preview-image {
+    max-height: 140px; 
+    object-fit: contain; 
+}
+
+/* Input Styles */
+.form-control:focus, .form-select:focus {
+    border-color: #007bff; 
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+.bg-light {
+    color: #6c757d; 
 }

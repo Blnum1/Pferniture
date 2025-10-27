@@ -10,7 +10,9 @@ namespace TEST100API.Models.Entities
     public string? Region { get; set; }
     public string? Country { get; set; }
     public int? Postal_Code { get; set; }
+    public string? LastName { get; set; }
     public string? Shipping_Phone { get; set; }
+    public string? FirstName { get; set; }
   }
 
   public class ShippingInfoCreateDto
@@ -21,8 +23,9 @@ namespace TEST100API.Models.Entities
     public string? Region { get; set; }
     public string? Country { get; set; }
     public int? Postal_Code { get; set; }
-    public string? Shipping_Method { get; set; }
+    public string? LastName { get; set; }
     public string? Shipping_Phone { get; set; }
+    public string? FirstName { get; set; }
   }
 
   public class ShippingInfoUpdateDto
@@ -32,8 +35,9 @@ namespace TEST100API.Models.Entities
     public string? Region { get; set; }
     public string? Country { get; set; }
     public int? Postal_Code { get; set; }
-    public string? Shipping_Method { get; set; }
+    public string? LastName { get; set; }
     public string? Shipping_Phone { get; set; }
+    public string? FirstName { get; set; }
   }
 
 

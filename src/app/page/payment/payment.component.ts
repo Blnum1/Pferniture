@@ -53,7 +53,17 @@ export class PaymentComponent implements OnInit {
   showAddModal = false;
   addSubmitting = false;
   addError = '';
-  newAddr = { house: '', subdistrict: '', district: '', province: '', postal: '', note: '' };
+  newAddr = {
+    house: '', 
+    subdistrict: '', 
+    district: '', 
+    province: '', 
+    postal: '', 
+    note: '', 
+    firstName: '',
+    lastName: '',
+    phone: ''
+  };
 
   selectedBank: string | null = null;
 
@@ -64,7 +74,7 @@ export class PaymentComponent implements OnInit {
     private authSvc: AuthService,
     private shipSvc: ShippingInfoService,
     private cartSvc: CartService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const st: any = history.state;
@@ -87,7 +97,7 @@ export class PaymentComponent implements OnInit {
     if (this.userId) this.fetchShippingList(this.userId);
   }
 
-   banks = [
+  banks = [
     { id: 'bbl', name: 'ธนาคารกสิกรไทย(BBL)', account: 'xxx-x-xxxx', img: 'assets/image/kbank.png' },
     { id: 'scb', name: 'ธนาคารไทยพาณิชย์ (SCB)', account: 'xxx-x-xxxx', img: 'assets/image/scb.png' },
     { id: 'ktb', name: 'ธนาคารกรุงไทย (KTB)', account: 'xxx-x-xxxx', img: 'assets/image/ktb.png' }
@@ -152,64 +162,64 @@ export class PaymentComponent implements OnInit {
   }
 
   placeOrder(): void {
-  if (this.selectedShippingId === null) {
-    this.errorMsg = 'กรุณาเลือกที่อยู่จัดส่ง';
-    return;
-  }
-
-  const sid = Number(this.selectedShippingId);
-  if (!Number.isFinite(sid) || sid <= 0) {
-    this.errorMsg = 'กรุณาเลือกที่อยู่จัดส่ง';
-    return;
-  }
-
-  if (!this.userId) {
-    this.errorMsg = 'กรุณาเข้าสู่ระบบก่อนสั่งซื้อ';
-    return;
-  }
-
-  this.errorMsg = '';
-  this.loading = true;
-
-  // สร้าง payload ที่จะส่งไปยัง API
-  const payload = {
-    cartID: this.cartID,
-    userID: this.userId,
-    shippingInfoID: sid,
-    payment: {
-      payment_Method: this.payMethod,
-      payment_Status: 'Pending',
-      payment_date: new Date().toISOString(),
-      payment_Amount: this.grandTotal
-    },
-    status: 'waitpay',
-    order_date: new Date().toISOString(),
-    // เพิ่ม cartItems ที่ประกอบไปด้วย CartItemID และ Quantity
-    cartItems: this.items
-      .filter(item => item.selected)  // เลือกเฉพาะสินค้าที่ถูกเลือก
-      .map(item => ({
-        cartItemID: item.cartItemID,  // ส่ง CartItemID
-        quantity: item.quantity       // ส่ง Quantity
-      }))
-  };
-
-  // เรียก API เพื่อสร้าง Order
-  this.orderSvc.createOrderFromCart(payload).subscribe({
-    next: (res: any) => {
-      const newCartId = res?.newCartID ?? res?.newCartId ?? res?.new_cart_id;
-      if (newCartId) {
-        this.cartSvc.setCurrentCartId(Number(newCartId));  // ตั้งค่า CartID ใหม่
-      }
-      this.loading = false;
-      this.success = true;
-      this.router.navigate(['/order/success'], { state: { orderId: res?.orderID } });
-    },
-    error: err => {
-      this.loading = false;
-      this.errorMsg = err?.error ?? 'สั่งซื้อไม่สำเร็จ';
+    if (this.selectedShippingId === null) {
+      this.errorMsg = 'กรุณาเลือกที่อยู่จัดส่ง';
+      return;
     }
-  });
-}
+
+    const sid = Number(this.selectedShippingId);
+    if (!Number.isFinite(sid) || sid <= 0) {
+      this.errorMsg = 'กรุณาเลือกที่อยู่จัดส่ง';
+      return;
+    }
+
+    if (!this.userId) {
+      this.errorMsg = 'กรุณาเข้าสู่ระบบก่อนสั่งซื้อ';
+      return;
+    }
+
+    this.errorMsg = '';
+    this.loading = true;
+
+    // สร้าง payload ที่จะส่งไปยัง API
+    const payload = {
+      cartID: this.cartID,
+      userID: this.userId,
+      shippingInfoID: sid,
+      payment: {
+        payment_Method: this.payMethod,
+        payment_Status: 'Pending',
+        payment_date: new Date().toISOString(),
+        payment_Amount: this.grandTotal
+      },
+      status: 'waitpay',
+      order_date: new Date().toISOString(),
+      // เพิ่ม cartItems ที่ประกอบไปด้วย CartItemID และ Quantity
+      cartItems: this.items
+        .filter(item => item.selected)  // เลือกเฉพาะสินค้าที่ถูกเลือก
+        .map(item => ({
+          cartItemID: item.cartItemID,  // ส่ง CartItemID
+          quantity: item.quantity       // ส่ง Quantity
+        }))
+    };
+
+    // เรียก API เพื่อสร้าง Order
+    this.orderSvc.createOrderFromCart(payload).subscribe({
+      next: (res: any) => {
+        const newCartId = res?.newCartID ?? res?.newCartId ?? res?.new_cart_id;
+        if (newCartId) {
+          this.cartSvc.setCurrentCartId(Number(newCartId));  // ตั้งค่า CartID ใหม่
+        }
+        this.loading = false;
+        this.success = true;
+        this.router.navigate(['/order/success'], { state: { orderId: res?.orderID } });
+      },
+      error: err => {
+        this.loading = false;
+        this.errorMsg = err?.error ?? 'สั่งซื้อไม่สำเร็จ';
+      }
+    });
+  }
 
 
 
@@ -236,7 +246,7 @@ export class PaymentComponent implements OnInit {
 
   openAddAddress() {
     this.addError = '';
-    this.newAddr = { house: '', subdistrict: '', district: '', province: '', postal: '', note: '' };
+    this.newAddr = { house: '', subdistrict: '', district: '', province: '', postal: '', note: '', firstName: '',lastName: '',phone: ''};
     this.showAddModal = true;
   }
 
@@ -253,8 +263,9 @@ export class PaymentComponent implements OnInit {
       Region: this.newAddr.province,
       Country: 'TH',
       Postal_Code: this.newAddr.postal ? Number(this.newAddr.postal) : undefined,
-      Shipping_Method: this.shipMethod,
-      Shipping_Phone: this.phone || ''
+      Shipping_Phone: this.newAddr.phone || '',  
+      FirstName: this.newAddr.firstName,   
+      LastName: this.newAddr.lastName  
     };
 
     this.addSubmitting = true;

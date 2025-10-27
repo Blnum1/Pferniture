@@ -1,38 +1,39 @@
 <app-nav-header></app-nav-header>
-
 <div class="container-xxl page with-tabs-offset">
   <div class="row g-3">
 
+    <!-- Sidebar (Nav) -->
     <div class="col-12 col-lg-3">
       <nav class="side-nav">
         <div class="profile-header">
-        <div class="avatar"></div>
-        <div class="info">
-          <div class="name-row">
-            <div class="field">
-              <div class="label"></div>
-              <div class="value">จิรยุทธ์ พรมจีน</div>
+          <div class="avatar">
+            <div class="headerlogo">
+              <a routerLink="/profile" class="logo-link">
+                <img src="assets/image/github-logos.png" alt="Pferniture Logo" class="image-logo">
+              </a>
             </div>
           </div>
-          <div class="phone-row">
-            <div class="label th">เบอร์โทร</div>
-            <div class="value">088-8888888</div>
+          <div class="info">
+            <div class="name-row">
+              <div class="field">
+                <div class="label"></div>
+                <div class="value">จิรยุทธ์ พรมจีน</div>
+              </div>
+            </div>
+            <div class="phone-row">
+              <div class="label th">เบอร์โทร</div>
+              <div class="value">088-8888888</div>
+            </div>
           </div>
         </div>
-      </div>
-        <a class="side-link" [routerLink]="['/pf-1']" routerLinkActive="active"
-          [routerLinkActiveOptions]="{exact:true}">
-          การสั่งซื้อของฉัน
-        </a>
+        <a class="side-link" [routerLink]="['/pf-1']" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">การสั่งซื้อของฉัน</a>
         <a class="side-link" [routerLink]="['/profile']" routerLinkActive="active">บัญชีของฉัน</a>
         <a class="side-link" [routerLink]="['/location']" routerLinkActive="active">ที่อยู่</a>
       </nav>
     </div>
 
-    <!-- Main content (Right) -->
-    <div class="col-12 col-lg-9">
-
-      <!-- <<< ทั้งบล็อก location ต้องอยู่ “ข้างใน” col-9 นี้ >>> -->
+    <!-- Main Content -->
+    <div class="col-12 col-lg-9 bg-white">
       <div class="page">
         <div class="page-header">
           <h2 class="title">ที่อยู่ของฉัน</h2>
@@ -67,13 +68,11 @@
           </div>
         </div>
       </div>
-      <!-- /page -->
-
     </div> <!-- /col-9 -->
   </div> <!-- /row -->
 </div>  <!-- /container -->
 
-<!-- ===== ADD MODAL ===== -->
+<!-- Add Modal -->
 <div class="modal-custom" *ngIf="showAddModal" (keydown.escape)="closeAddAddress()">
   <div class="modal-card modal-lg">
     <div class="modal-header">
@@ -108,7 +107,7 @@
   </div>
 </div>
 
-<!-- ========== EDIT MODAL ========== -->
+<!-- Edit Modal -->
 <div class="modal-custom" *ngIf="showEditModal" (keydown.escape)="closeEditAddress()">
   <div class="modal-card modal-lg">
     <div class="modal-header">

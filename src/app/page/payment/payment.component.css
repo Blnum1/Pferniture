@@ -234,3 +234,96 @@
   border-color: #0d6efd;
   background: radial-gradient(circle at center, #0d6efd 0, transparent 40%);
 }
+
+/* Custom CSS สำหรับความสวยงาม */
+
+/* รูปสินค้าในรายการ */
+.item-img {
+    width: 80px; /* เพิ่มขนาดรูปเล็กน้อย */
+    height: 80px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.list-group-item:hover .item-img {
+    transform: scale(1.05); /* เพิ่มเอฟเฟกต์โฮเวอร์ */
+}
+
+/* รายการธนาคาร */
+.bank-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.bank-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 2px solid #e9ecef; /* ขอบเริ่มต้น */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: #f8f9fa;
+}
+.bank-item:hover {
+    background-color: #e9ecef;
+}
+.bank-item.selected {
+    border-color: #0d6efd; /* สีขอบเมื่อถูกเลือก */
+    background-color: #e7f1ff; /* สีพื้นหลังเมื่อถูกเลือก */
+    box-shadow: 0 0 5px rgba(13, 110, 253, 0.3);
+}
+.bank-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 4px;
+}
+.bank-item .check-icon {
+    font-size: 1.2rem;
+    color: #0d6efd;
+}
+
+/* สไตล์โมดัลที่ปรับปรุง (เลือกที่อยู่) */
+.addr-card-enhanced {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 8px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: #fff;
+}
+.addr-card-enhanced:hover {
+    background-color: #f8f9fa;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+.addr-card-enhanced.addr-selected-enhanced {
+    border-color: #198754; /* สีเขียวสำหรับที่อยู่หลัก */
+    background-color: #e6f7ef;
+}
+.addr-card-enhanced .check-icon {
+    font-size: 1.5rem;
+    color: #198754;
+    margin-left: 10px;
+}
+
+/* ปุ่มเพิ่มที่อยู่ใหม่ในโมดัล */
+.addr-add-enhanced {
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+    border: 1px dashed #0d6efd;
+    color: #0d6efd;
+    background-color: #f0f7ff;
+    border-radius: 8px;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+    cursor: pointer;
+    font-weight: 600;
+}
+.addr-add-enhanced:hover {
+    background-color: #cfe2ff;
+}
