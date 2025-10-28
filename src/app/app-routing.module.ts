@@ -38,6 +38,8 @@ import { LocationComponent } from './profile-page/location/location.component';
 import { DeliveryNoteComponent } from './admin-page/delivery-note/delivery-note.component';
 import { OrderManageDetailComponent } from './admin-page/order-manage-detail/order-manage-detail.component';
 import { SearchComponent } from './page/search/search.component';
+import { PaymentConfirmComponent } from './page/payment-confirm/payment-confirm.component';
+import { Pf6Component } from './profile-page/pf-6/pf-6.component';
 
 const routes: Routes = [
   { path: '', 
@@ -139,6 +141,9 @@ const routes: Routes = [
   { path: 'payment',
     component: PaymentComponent
   },
+  { path: 'payment-confirm/:orderID',
+    component: PaymentConfirmComponent
+  },
   { path: 'profile',
     component: ProfileComponent
   },
@@ -162,6 +167,9 @@ const routes: Routes = [
   },
   { path: 'pf-5',
     component: Pf5Component
+  },
+  { path: 'pf-6',
+    component: Pf6Component
   },
 ];
 

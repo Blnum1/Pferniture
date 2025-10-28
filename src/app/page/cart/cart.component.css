@@ -127,3 +127,62 @@ button {
 .btn-close:hover {
   color: #f00;
 }
+
+
+.cart-layout {
+  max-width: 1300px;
+}
+
+.product-item {
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: background 0.15s ease;
+}
+.product-item:hover {
+  background: #f9fafb;
+}
+
+.product-thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.subtotal {
+  min-width: 120px;
+}
+
+/* ✅ Sidebar ด้านขวา */
+.summary-card {
+  position: sticky;
+  top: 100px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #e9ecef;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-primary {
+  border-radius: 12px;
+  font-weight: 500;
+  background: linear-gradient(135deg, #007bff, #0056d2);
+  border: none;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0069d9, #004bb1);
+}
+
+/* ✅ Responsive */
+@media (max-width: 992px) {
+  .summary-card {
+    position: relative;
+    margin-top: 20px;
+  }
+}

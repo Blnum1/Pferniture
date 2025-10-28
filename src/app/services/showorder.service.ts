@@ -71,10 +71,8 @@ private apiUrl2 = 'http://localhost:5140/api/Order';
   }
 
   getOrderById(orderID: number): Observable<ShowOrder[]> {
-    const params = new HttpParams()
-      .set('orderID', orderID.toString());
-
-    return this.http.get<ShowOrder[]>(`${this.apiUrl}/GetShowOrderByID`, { params });
-  }
+  const params = new HttpParams().set('orderID', orderID.toString());
+  return this.http.get<ShowOrder[]>(`${this.apiUrl}/GetShowOrderByID`, { params });
+}
 
 }

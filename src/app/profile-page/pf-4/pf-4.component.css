@@ -25,7 +25,7 @@
 }
 .tab-item{ display:block; }
 .tab-block{
-  display:block; min-width:160px; padding:18px 12px 10px; text-align:center;
+  display:block; min-width:130px; padding:18px 12px 10px; text-align:center;
   text-decoration:none; border-radius:6px; background:#f8f9fa; color:#111;
   border:1px solid transparent; font-weight:600; transition:.2s;
 }
@@ -134,4 +134,15 @@
   width: 100%;  /* ให้รูปขยายตามขนาดกรอบ */
   height: 100%; /* ให้รูปขยายตามขนาดกรอบ */
   object-fit: cover; /* ให้รูปเต็มพื้นที่และไม่เสียสัดส่วน */
+}
+
+.order-card.clickable {
+  cursor: pointer;
+  transition: box-shadow .2s, transform .05s;
+}
+.order-card.clickable:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+.order-card.clickable:active {
+  transform: translateY(1px);
 }

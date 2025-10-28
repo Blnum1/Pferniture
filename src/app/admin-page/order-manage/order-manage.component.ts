@@ -167,6 +167,7 @@ export class OrderManageComponent implements OnInit {
       case 'RETURN': return 'คืนสินค้า/คืนเงิน';
       case 'FAILED': return 'จัดส่งไม่สำเร็จ';
       case 'WAITPAY': return 'รอการชำระเงิน'; 
+      case 'PAID': return 'ชำระเงินแล้ว';
       default: return '—';
     }
   }

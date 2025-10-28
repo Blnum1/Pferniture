@@ -1,4 +1,109 @@
+<!-- dashboard.component.html -->
 <app-nav-admin></app-nav-admin>
-<p>dashboard works!</p>
-<br>
 
+<div class="container-fluid py-4 dashboard-container">
+
+  <!-- แถวแรก: สรุปยอด -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3 col-sm-6" *ngFor="let card of summaryCards">
+      <div class="card dashboard-card text-white shadow-sm" [ngClass]="card.bg">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-uppercase fw-semibold small mb-1">{{ card.title }}</h6>
+              <h2 class="fw-bold mb-0">{{ card.value }}</h2>
+            </div>
+            <div class="icon-circle">
+              <i [class]="card.icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- แถวที่สอง: กราฟ + สินค้าขายดี -->
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white fw-semibold">
+          📈 สถิติยอดขายรายเดือน
+        </div>
+        <div class="card-body">
+          <canvas id="salesChart" height="120"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white fw-semibold">
+          🪑 สินค้าขายดี 5 อันดับ
+        </div>
+        <div class="list-group list-group-flush">
+          <div *ngFor="let item of bestSellers" class="list-group-item d-flex align-items-center">
+            <img [src]="item.image" alt="" class="me-3 rounded-3" style="width:50px; height:50px; object-fit:cover;">
+            <div class="flex-grow-1">
+              <div class="fw-semibold">{{ item.name }}</div>
+              <small class="text-muted">ขายได้ {{ item.sold }} ชิ้น</small>
+            </div>
+            <div class="fw-bold text-primary">{{ item.price | number:'1.0-0' }} ฿</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- แถวที่สาม: คำสั่งซื้อใหม่ + รีวิวลูกค้า -->
+  <div class="row g-4 mt-2">
+    <div class="col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white fw-semibold">🧾 คำสั่งซื้อใหม่ล่าสุด</div>
+        <div class="table-responsive">
+          <table class="table mb-0">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>ลูกค้า</th>
+                <th>ยอดรวม</th>
+                <th>สถานะ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of recentOrders">
+                <td>{{ order.id }}</td>
+                <td>{{ order.customer }}</td>
+                <td>{{ order.total | number:'1.0-0' }} ฿</td>
+                <td>
+                  <span class="badge bg-success" *ngIf="order.status === 'ชำระแล้ว'">ชำระแล้ว</span>
+                  <span class="badge bg-warning text-dark" *ngIf="order.status === 'รอดำเนินการ'">รอดำเนินการ</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white fw-semibold">💬 รีวิวลูกค้าล่าสุด</div>
+        <div class="list-group list-group-flush">
+          <div *ngFor="let review of recentReviews" class="list-group-item d-flex align-items-start">
+            <img [src]="review.avatar" class="rounded-circle me-3" width="50" height="50">
+            <div>
+              <div class="fw-semibold">{{ review.name }}</div>
+              <div class="text-warning small mb-1">
+                <ng-container *ngFor="let star of [].constructor(review.stars)">
+                  ⭐
+                </ng-container>
+              </div>
+              <div class="text-muted small">{{ review.comment }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

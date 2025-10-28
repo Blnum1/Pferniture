@@ -53,6 +53,8 @@ import { DeliveryNoteComponent } from './admin-page/delivery-note/delivery-note.
 import { OrderManageDetailComponent } from './admin-page/order-manage-detail/order-manage-detail.component';
 import { SearchComponent } from './page/search/search.component';
 import { PfDetailComponent } from './profile-page/pf-detail/pf-detail.component';
+import { PaymentConfirmComponent } from './page/payment-confirm/payment-confirm.component';
+import { Pf6Component } from './profile-page/pf-6/pf-6.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +100,9 @@ import { PfDetailComponent } from './profile-page/pf-detail/pf-detail.component'
     DeliveryNoteComponent,
     OrderManageDetailComponent,
     SearchComponent,
-    PfDetailComponent
+    PfDetailComponent,
+    PaymentConfirmComponent,
+    Pf6Component
   ],
   imports: [
     BrowserModule,

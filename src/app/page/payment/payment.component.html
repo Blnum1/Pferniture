@@ -1,8 +1,8 @@
 <app-nav-header></app-nav-header>
-
-<div class="container py-4" *ngIf="items?.length; else noitems">
-  <h2 class="mb-4 fw-bold text-primary">การชำระเงิน <i class="bi bi-cart-check"></i></h2>
-
+<div class="background">
+<div class="container py-4 bg-light" *ngIf="items?.length; else noitems">
+  <h2 class="mb-1 fw-bold text-primary">สั่งซื้อสินค้า <i class="bi bi-cart-check"></i></h2>
+  <h5 class="mb-4 fw-semibold text-dark">กรอกข้อมูลการจัดส่งและชำระเงิน</h5>
   <div class="card shadow-sm mb-4 border-0">
     <div class="card-body">
       <h5 class="card-title fw-semibold text-dark d-flex align-items-center mb-3">
@@ -12,8 +12,8 @@
       <div class="d-flex align-items-start gap-3 mb-3 p-3 bg-light rounded-3">
         <i class="bi bi-person-circle fs-3 text-muted"></i>
         <div class="flex-grow-1">
-          <div class="fw-bold fs-6">{{ customerName || 'ชื่อผู้รับ' }}</div>
-          <div class="text-secondary small">{{ phone || 'เบอร์โทร' }}</div>
+          <div class="fw-bold fs-6">{{ selectedShipping?.firstName || 'ชื่อผู้รับ' }} {{ selectedShipping?.lastName || 'นามสกุล' }}</div>
+          <div class="text-secondary small">{{ selectedShipping?.phone }}</div>
         </div>
       </div>
 
@@ -30,8 +30,8 @@
               name="shippingSelect">
         <option [ngValue]="null" disabled>— เลือกที่อยู่ —</option>
         <option *ngFor="let s of shippingList" [ngValue]="s.id">
-          {{ s.id }} • {{ s.address }}{{ s.city ? ', ' + s.city : '' }}{{ s.postal ? ', ' + s.postal : '' }}
-        </option>
+  {{ s.address }}{{ s.city ? ', ' + s.city : '' }}{{ s.postal ? ', ' + s.postal : '' }}
+</option>
       </select>
 
       <div class="form-text text-success" *ngIf="selectedShippingId !== null">
@@ -246,7 +246,7 @@
     </div>
   </div>
 </div>
-
+</div>
 <ng-template #noitems>
   <div class="container my-5 text-center">
     <div class="alert alert-info py-4 rounded-3 shadow-sm">

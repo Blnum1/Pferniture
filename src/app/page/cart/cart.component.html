@@ -1,73 +1,86 @@
-<!-- src/app/page/cart/cart.component.html -->
 <app-nav-header></app-nav-header>
 <app-nav-appheader></app-nav-appheader>
 
-<div class="container my-4">
-  <h2 class="mb-3">ตะกร้าสินค้า</h2>
+<div class="container-fluid my-4 cart-layout">
+  <div class="row">
+    
+    <!-- ✅ พื้นที่รายการสินค้า (ซ้าย) -->
+    <div class="col-lg-9 col-md-8">
+      <h2 class="mb-3">ตะกร้าสินค้า</h2>
 
-  <div *ngIf="loading" class="text-muted">กำลังโหลด...</div>
-  <div *ngIf="!loading && errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+      <div *ngIf="loading" class="text-muted">กำลังโหลด...</div>
+      <div *ngIf="!loading && errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
 
-  <ng-container *ngIf="!loading && !errorMsg">
-    <ng-container *ngIf="cartItems?.length; else noItems">
+      <ng-container *ngIf="!loading && !errorMsg">
+        <ng-container *ngIf="cartItems?.length; else noItems">
 
-      <div class="list-group">
-  <div class="list-group-item d-flex align-items-center" *ngFor="let item of cartItems">
-    <!-- Checkbox -->
-    <input type="checkbox" class="form-check-input me-3" [(ngModel)]="item.selected" (change)="updateSelection()">
+          <div class="list-group">
+            <div class="list-group-item d-flex align-items-center flex-wrap product-item" *ngFor="let item of cartItems">
+              
+              <!-- Checkbox -->
+              <input type="checkbox" class="form-check-input me-3" [(ngModel)]="item.selected" (change)="updateSelection()">
 
-    <!-- Image -->
-    <img *ngIf="item.image_Url1" [src]="item.image_Url1" alt="product" class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover;">
+              <!-- Image -->
+              <img *ngIf="item.image_Url1"
+                   [src]="item.image_Url1"
+                   alt="product"
+                   class="img-thumbnail me-3 product-thumb">
 
-    <!-- Content -->
-    <div class="flex-grow-1" (click)="goToProductDetail(item.productID)" style="cursor: pointer;">
-  <h5 class="mb-1">{{ item.product_Name }}</h5>
-  <div class="text-muted small">รหัสสินค้า: {{ item.productID }}</div>
-  <div>ราคาต่อชิ้น: <b>{{ item.price_amount | number:'1.0-0' }}</b> ฿</div>
+              <!-- Content -->
+              <div class="flex-grow-1" (click)="goToProductDetail(item.productID)" style="cursor: pointer;">
+                <h5 class="mb-1">{{ item.product_Name }}</h5>
+                <div class="text-muted small">รหัสสินค้า: {{ item.productID }}</div>
+                <div>ราคาต่อชิ้น: <b>{{ item.price_amount | number:'1.0-0' }}</b> ฿</div>
 
-  <div class="d-flex align-items-center gap-2 mt-2">
-    <button class="btn btn-outline-secondary btn-sm" (click)="decreaseQuantity(item); $event.stopPropagation()">−</button>
-    <span class="px-3">{{ item.quantity }}</span>
-    <button class="btn btn-outline-secondary btn-sm" (click)="increaseQuantity(item); $event.stopPropagation()">+</button>
-    <button class="btn btn-outline-danger btn-sm " (click)="remove(item); $event.stopPropagation()">
-      <img src="assets/image/delete.png" alt="ลบ" class="trash-icon" />
-    </button>
-  </div>
-</div>
+                <div class="d-flex align-items-center gap-2 mt-2">
+                  <button class="btn btn-outline-secondary btn-sm" (click)="decreaseQuantity(item); $event.stopPropagation()">−</button>
+                  <span class="px-3">{{ item.quantity }}</span>
+                  <button class="btn btn-outline-secondary btn-sm" (click)="increaseQuantity(item); $event.stopPropagation()">+</button>
+                  <button class="btn btn-outline-danger btn-sm" (click)="remove(item); $event.stopPropagation()">
+                    <img src="assets/image/delete.png" alt="ลบ" class="trash-icon" />
+                  </button>
+                </div>
+              </div>
 
-    <!-- Subtotal -->
-    <div class="ms-3 text-end" style="min-width: 120px;">
-      <div class="fw-bold">{{ (item.price_amount * item.quantity) | number:'1.0-0' }} ฿</div>
+              <!-- Subtotal -->
+              <div class="ms-auto text-end subtotal">
+                <div class="fw-bold">{{ (item.price_amount * item.quantity) | number:'1.0-0' }} ฿</div>
+              </div>
+            </div>
+          </div>
+
+        </ng-container>
+
+        <ng-template #noItems>
+          <div class="alert alert-info">ตะกร้าของคุณว่างเปล่า</div>
+        </ng-template>
+      </ng-container>
     </div>
-  </div>
-</div>
 
-      <div class="fixed-bottom-bar">
-  <div class="d-flex justify-content-between align-items-center mt-4 p-3 border-top">
-    <div class="form-check">
-      <input type="checkbox" class="form-check-input" [checked]="allSelected" (change)="toggleSelectAll($event)">
-      <label class="form-check-label">เลือกทั้งหมด</label>
-    </div>
+    <!-- ✅ Sidebar ด้านขวา -->
+    <div class="col-lg-3 col-md-4 mb-4">
+      <div class="summary-card shadow-sm">
+        <div class="form-check mb-3">
+          <input type="checkbox" class="form-check-input" [checked]="allSelected" (change)="toggleSelectAll($event)">
+          <label class="form-check-label ms-2">เลือกทั้งหมด</label>
+        </div>
 
-    <div class="d-flex align-items-center">
-      <div class="me-3 fs-5">
-        รวมที่เลือก: <b>{{ selectedTotal | number:'1.0-0' }}</b> ฿
+        <div class="summary-total mb-3">
+          <div>รวมที่เลือก:</div>
+          <div class="fs-4 fw-bold text-primary">{{ selectedTotal | number:'1.0-0' }} ฿</div>
+        </div>
+
+        <button class="btn btn-primary w-100 py-2"
+                [disabled]="!hasSelection()"
+                (click)="checkout()">
+          ดำเนินการสั่งซื้อ
+        </button>
       </div>
-      <button class="btn btn-primary btn-lg" [disabled]="!hasSelection()" (click)="checkout()">ดำเนินการสั่งซื้อ</button>
     </div>
   </div>
 </div>
 
-
-    </ng-container>
-
-    <ng-template #noItems>
-      <div class="alert alert-info">ตะกร้าของคุณว่างเปล่า</div>
-    </ng-template>
-  </ng-container>
-</div>
-
-
+<!-- Modal ยืนยันลบ -->
 <div class="modal-backdrop-custom" *ngIf="showDeleteModal"></div>
 <div class="modal-custom" *ngIf="showDeleteModal">
   <div class="modal-card modal-md">

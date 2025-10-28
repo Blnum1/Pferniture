@@ -1,1 +1,96 @@
-<p>pf-detail works!</p>
+<app-nav-header></app-nav-header>
+<div class="pf-container" *ngIf="!loading && order; else loadingTpl">
+
+  <!-- Header -->
+  <div class="pf-header">
+    <h2>สรุปรายการสั่งซื้อ</h2>
+    <span class="order-id">หมายเลขคำสั่งซื้อ #{{ order.orderID }}</span>
+    <div class="order-status">
+      <span class="badge" [ngClass]="{
+        'bg-warning': order.status === 'waitpay',
+        'bg-success': order.status === 'completed' || order.status === 'Paid',
+        'bg-danger': order.status === 'cancelled'
+      }">
+        {{ order.status | uppercase }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="pf-grid">
+    <!-- Left: Product Summary -->
+    <div class="pf-left">
+      <div class="card shadow-sm mb-3">
+        <div class="card-header fw-semibold bg-white">รายละเอียดสินค้า</div>
+        <div class="card-body d-flex align-items-center">
+          <img [src]="order.image_Url1" class="product-img me-3" alt="Product">
+          <div>
+            <h5 class="fw-semibold">{{ order.product_Name }}</h5>
+            <p class="mb-1 text-muted small">
+              {{ order.color }} | {{ order.size }}
+            </p>
+            <p class="mb-1">จำนวน: {{ order.quantity }}</p>
+            <p class="fw-bold text-primary">
+              {{ order.priceAmount | number:'1.0-0' }} ฿
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm mb-3">
+        <div class="card-header fw-semibold bg-white">ข้อมูลการจัดส่ง</div>
+        <div class="card-body">
+          <p><b>ชื่อผู้รับ:</b> {{ order.shippingFirstName }} {{ order.shippingLastName }}</p>
+          <p><b>เบอร์โทร:</b> {{ order.shipping_Phone }}</p>
+          <p><b>ที่อยู่:</b> {{ order.address }}, {{ order.city }}, {{ order.region }}, {{ order.country }} {{ order.postal_Code }}</p>
+        </div>
+      </div>
+
+      <div class="pf-shipping-steps card shadow-sm mb-3" *ngIf="shipping()">
+  <h3>ขั้นตอนการจัดส่ง</h3>
+  <ul class="list-group">
+    <li *ngFor="let step of shippingSteps; let i = index" class="list-group-item">
+      <span [ngClass]="{ 'text-muted': i > 0 }">{{ step }}</span>
+    </li>
+  </ul>
+</div>
+    </div>
+
+    <!-- Right: Payment Summary -->
+    <div class="pf-right">
+      <div class="card shadow-sm mb-3">
+        <div class="card-header fw-semibold bg-white">การชำระเงิน</div>
+        <div class="card-body">
+          <p><b>วิธีชำระเงิน:</b> {{ order.payment_Method }}</p>
+          <p><b>สถานะการชำระเงิน:</b>
+            <span [ngClass]="{
+              'text-warning': order.payment_Status === 'Pending',
+              'text-success': order.payment_Status === 'Paid'
+            }">
+              {{ order.payment_Status }}
+            </span>
+          </p>
+          <p><b>ยอดชำระ:</b> {{ order.payment_Amount | number:'1.0-0' }} ฿</p>
+          <p><b>วันที่ชำระ:</b> {{ order.payment_Date | date:'medium' }}</p>
+        </div>
+      </div>
+
+      <div class="card shadow-sm text-center p-3">
+        <h4>ยอดรวมทั้งหมด</h4>
+        <h2 class="text-primary fw-bold">{{ order.payment_Amount | number:'1.0-0' }} ฿</h2>
+
+        <!-- ✅ เงื่อนไขแสดงปุ่ม "ชำระเงิน" -->
+        <button *ngIf="canPay()" class="btn btn-success mt-3" (click)="goToPaymentConfirm()">
+          <i class="bi bi-qr-code me-2"></i> ชำระเงิน
+        </button>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading -->
+<ng-template #loadingTpl>
+  <div class="text-center py-5 text-muted">กำลังโหลดข้อมูล...</div>
+</ng-template>

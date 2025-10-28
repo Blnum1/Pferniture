@@ -11,6 +11,8 @@ export interface ShippingInfo {
   Region?: string;
   Country?: string;
   Postal_Code?: number;
+  LastName?: string;
+  FirstName?: string;
   Shipping_Method?: string;
   Shipping_Phone?: string;
 }
@@ -22,7 +24,8 @@ export interface ShippingInfoCreateDto {
   Region?: string;
   Country?: string;
   Postal_Code?: number;
-  Shipping_Method?: string;
+  LastName?: string;
+  FirstName?: string;
   Shipping_Phone?: string;
 }
 
@@ -32,7 +35,8 @@ export interface ShippingInfoUpdateDto {
   Region?: string;
   Country?: string;
   Postal_Code?: number;
-  Shipping_Method?: string;
+  LastName?: string;
+  FirstName?: string;
   Shipping_Phone?: string;
 }
 

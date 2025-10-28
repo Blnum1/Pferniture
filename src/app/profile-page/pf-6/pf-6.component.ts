@@ -3,18 +3,18 @@ import { ShowOrder, ShoworderService } from '../../services/showorder.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-pf-2',
-  templateUrl: './pf-2.component.html',
-  styleUrl: './pf-2.component.css'
+  selector: 'app-pf-6',
+  templateUrl: './pf-6.component.html',
+  styleUrl: './pf-6.component.css'
 })
-export class Pf2Component implements OnInit {
+export class Pf6Component implements OnInit {
   orders: ShowOrder[] = [];
   groupedOrders: any[] = [];
 
   constructor(private showOrderService: ShoworderService,private router: Router) {}
 
   ngOnInit(): void {
-    const status = 'waitpay';  // สามารถเปลี่ยนค่า status ได้
+    const status = 'waitcheckpay';  // สามารถเปลี่ยนค่า status ได้
     const userID = 1;          // เปลี่ยนเป็น userID ของผู้ใช้ที่ต้องการโหลดข้อมูล
 
     this.loadOrders(status, userID);
@@ -62,3 +62,4 @@ goToPaymentConfirm(): void {
     console.log("hello");
   }
 }
+

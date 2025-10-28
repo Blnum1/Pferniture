@@ -1,0 +1,104 @@
+/* -------------------- LAYOUT & STRUCTURE -------------------- */
+.pf-container {
+    padding: 30px;
+    max-width: 1100px; /* จำกัดความกว้างให้ดูดีบนจอใหญ่ */
+    margin: 20px auto;
+    background-color: #f8f9fa; /* พื้นหลังสีเทาอ่อน */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* เพิ่มเงาเบาๆ */
+}
+
+/* Header Styling */
+.pf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e9ecef; /* เส้นแบ่งใต้ Header */
+}
+
+.pf-header h2 {
+    color: #343a40; /* สีเข้มสำหรับหัวข้อหลัก */
+    font-weight: 700;
+}
+
+.order-id {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+/* Main Grid Layout */
+.pf-grid {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr; /* ปรับ Right column ให้กว้างขึ้นเล็กน้อย */
+    gap: 30px;
+}
+
+/* -------------------- CARD & CONTENT STYLING -------------------- */
+.card {
+    border: none; /* ลบเส้นขอบเริ่มต้นของ Bootstrap card */
+    border-radius: 10px;
+}
+
+.card-header {
+    background-color: #ffffff !important; /* พื้นหลัง Header เป็นสีขาว */
+    border-bottom: 1px solid #e9ecef;
+    font-size: 1.1rem;
+    color: #007bff; /* สีน้ำเงินสดใสสำหรับหัวข้อย่อย */
+    font-weight: 700;
+}
+
+/* Product Image */
+.product-img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px; /* ขอบโค้งมน */
+    border: 1px solid #dee2e6;
+}
+
+/* Product List Item Separator */
+.card-body > .d-flex {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    margin-bottom: 0;
+}
+.card-body > .d-flex:not(:last-child) {
+    border-bottom: 1px dashed #ced4da !important; /* ใช้เส้นประแบ่งรายการสินค้า */
+}
+
+/* Product Price */
+.text-primary {
+    color: #28a745 !important; /* เปลี่ยนราคาสินค้าเป็นสีเขียว (Success color) */
+    font-size: 1.1rem;
+}
+
+/* Payment Summary Box (Right Column Total) */
+.pf-right .card.shadow-sm.text-center {
+    background: linear-gradient(135deg, #e6f7ff 0%, #ffffff 100%); /* พื้นหลังไล่สีอ่อนๆ */
+    border: 1px solid #b3d9ff;
+    padding: 20px;
+}
+.pf-right .card h2.text-primary {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #17a2b8 !important; /* ยอดรวมเป็นสีฟ้าเข้ม (Info color) */
+    margin-top: 5px;
+}
+
+/* Shipping Steps Styling */
+.pf-shipping-steps .list-group-item {
+    border: none;
+    padding: 10px 0;
+    color: #495057;
+}
+
+.pf-shipping-steps .text-success {
+    font-weight: bold;
+    color: #28a745 !important;
+}
+
+.pf-shipping-steps .text-secondary {
+    color: #adb5bd !important;
+}

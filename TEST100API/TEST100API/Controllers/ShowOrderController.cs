@@ -67,7 +67,7 @@ namespace TEST100API.Controllers
                     JOIN Payments pm ON pm.OrderID = o.OrderID
                    WHERE 
                     (
-                        @status = 'All' AND o.Status IN ('waitpay', 'musttranfer', 'mustrecieve', 'finish') 
+                        @status = 'All' AND o.Status IN ('waitpay', 'paid', 'waitcheckpay', 'musttranfer', 'mustrecieve', 'finish') 
                         OR o.Status = @status
                     )
                     AND u.UserID = @userid
@@ -127,7 +127,7 @@ namespace TEST100API.Controllers
             JOIN Payments pm ON pm.OrderID = o.OrderID
             WHERE 
               (
-                  @status = 'All' AND o.Status IN ('waitpay', 'musttranfer', 'mustrecieve', 'finish') 
+                  @status = 'All' AND o.Status IN ('waitpay', 'paid','waitcheckpay', 'musttranfer', 'mustrecieve', 'finish') 
                   OR o.Status = @status
               )
             ORDER BY 

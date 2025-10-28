@@ -1,0 +1,79 @@
+<app-nav-header></app-nav-header>
+
+<div class="confirm-container" *ngIf="!loading && order; else loadingTpl">
+  <h2 class="fw-bold text-primary mb-3">
+    สรุปคำสั่งซื้อ #{{ orderId }}
+  </h2>
+
+  <div class="card shadow-sm mb-4 border-0">
+    <div class="card-body">
+      <h5 class="fw-semibold text-dark mb-2">
+        <i class="bi bi-bag-check-fill me-2 text-success"></i> รายการสินค้า
+      </h5>
+      <div class="d-flex align-items-center gap-3">
+        <img [src]="order.image_Url1" alt="สินค้า" class="rounded-3 shadow-sm" width="120">
+        <div>
+          <div class="fw-bold">{{ order.product_Name }}</div>
+          <div class="text-muted small">{{ order.color }} | {{ order.size }}</div>
+          <div>จำนวน: {{ order.quantity }}</div>
+          <div class="text-primary fw-bold fs-5 mt-1">{{ order.priceAmount | number:'1.0-0' }} ฿</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-4 border-0">
+    <div class="card-body">
+      <h5 class="fw-semibold text-dark mb-2">
+        <i class="bi bi-geo-alt-fill text-danger me-2"></i> ที่อยู่จัดส่ง
+      </h5>
+      <div>{{ order.shippingFirstName }} {{ order.shippingLastName }}</div>
+      <div>{{ order.address }}, {{ order.city }}, {{ order.region }} {{ order.postal_Code }}</div>
+      <div class="text-muted small">โทร: {{ order.shipping_Phone }}</div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-4 border-0">
+    <div class="card-body">
+      <h5 class="fw-semibold text-dark mb-2">
+        <i class="bi bi-wallet2 me-2 text-primary"></i> วิธีการชำระเงิน
+      </h5>
+      <div><b>ช่องทาง:</b> {{ payMethod }}</div>
+      <div><b>ยอดชำระ:</b> {{ amount | number:'1.0-0' }} ฿</div>
+      <div><b>สถานะ:</b> {{ order.payment_Status }}</div>
+<button class="btn btn-success fw-semibold text-center" (click)="simulatePayment()">
+    <i class="bi bi-check-circle-fill me-1"></i> ชำระเงินเรียบร้อยแล้ว
+  </button>
+      <div *ngIf="showQR" class="text-center mt-4">
+        <div class="fw-bold text-primary mb-2">
+          <i class="bi bi-qr-code"></i> สแกนเพื่อชำระเงิน
+        </div>
+        <img [src]="qrUrl" width="200" height="200" class="border rounded shadow-sm bg-white">
+        <div class="small text-muted mt-2">ยอดชำระ {{ amount | number:'1.0-0' }} บาท</div>
+        
+    </div>
+      
+
+  <!-- แสดงสถานะ -->
+  <div *ngIf="paidSuccess" class="alert alert-success mt-3">
+    ✅ การชำระเงินสำเร็จ! 
+  </div>
+      <div *ngIf="!showQR" class="alert alert-success mt-3">
+        <i class="bi bi-check-circle-fill me-2"></i> การสั่งซื้อของคุณถูกบันทึกแล้ว
+      </div>
+    </div>
+  </div>
+
+  <div class="d-grid mt-4">
+    <button class="btn btn-outline-primary" routerLink="/">
+      กลับไปหน้าหลัก
+    </button>
+    <button class="btn btn-outline-success mt-1" routerLink="/pf-1">
+      ไปหน้าการสั่งซื้อของฉัน
+    </button>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="text-center py-5 text-muted">กำลังโหลด...</div>
+</ng-template>

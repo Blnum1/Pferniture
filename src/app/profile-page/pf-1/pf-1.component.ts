@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class Pf1Component implements OnInit {
   orders: ShowOrder[] = [];
   groupedOrders: any[] = [];
-
+  order: any;
   constructor(private showOrderService: ShoworderService,private router: Router) {}
 
   ngOnInit(): void {
@@ -57,4 +57,8 @@ export class Pf1Component implements OnInit {
   if (!orderID) return;
   this.router.navigate(['/pf-detail', orderID]);
 }
+
+goToPaymentConfirm(): void {
+    console.log("hello");
+  }
 }

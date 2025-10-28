@@ -1,3 +1,4 @@
+import { first } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartItemDto } from '../../services/cart.service';
@@ -11,6 +12,8 @@ type ShipMethod = 'ในประเทศ' | 'ด่วนพิเศษ';
 
 type UiShipping = {
   id: number;
+  firstName?: string;
+  lastName?: string;
   address: string;
   city?: string;
   region?: string;
@@ -205,20 +208,32 @@ export class PaymentComponent implements OnInit {
 
     // เรียก API เพื่อสร้าง Order
     this.orderSvc.createOrderFromCart(payload).subscribe({
-      next: (res: any) => {
-        const newCartId = res?.newCartID ?? res?.newCartId ?? res?.new_cart_id;
-        if (newCartId) {
-          this.cartSvc.setCurrentCartId(Number(newCartId));  // ตั้งค่า CartID ใหม่
-        }
-        this.loading = false;
-        this.success = true;
-        this.router.navigate(['/order/success'], { state: { orderId: res?.orderID } });
-      },
-      error: err => {
-        this.loading = false;
-        this.errorMsg = err?.error ?? 'สั่งซื้อไม่สำเร็จ';
+  next: (res: any) => {
+    const newCartId = res?.newCartID ?? res?.newCartId ?? res?.new_cart_id;
+    const orderId = res?.orderID ?? res?.OrderID;
+
+    if (newCartId) {
+      this.cartSvc.setCurrentCartId(Number(newCartId));
+    }
+
+    this.loading = false;
+    this.success = true;
+
+    // ✅ ไปหน้า payment-confirm พร้อมส่งข้อมูล
+    this.router.navigate(['/payment-confirm', orderId], {
+      state: {
+        orderId,
+        payMethod: this.payMethod,
+        amount: this.grandTotal,
+        customerName: this.customerName,
       }
     });
+  },
+  error: err => {
+    this.loading = false;
+    this.errorMsg = err?.error ?? 'สั่งซื้อไม่สำเร็จ';
+  }
+});
   }
 
 

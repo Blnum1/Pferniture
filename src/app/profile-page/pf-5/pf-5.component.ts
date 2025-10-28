@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ShowOrder, ShoworderService } from '../../services/showorder.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pf-5',
@@ -10,7 +11,7 @@ export class Pf5Component implements OnInit {
   orders: ShowOrder[] = [];
   groupedOrders: any[] = [];
 
-  constructor(private showOrderService: ShoworderService) {}
+  constructor(private showOrderService: ShoworderService, private router:Router) {}
 
   ngOnInit(): void {
     const status = 'finish';  // สามารถเปลี่ยนค่า status ได้
@@ -51,5 +52,9 @@ export class Pf5Component implements OnInit {
     });
     this.groupedOrders = grouped;
   }
+  goToPfDetail(orderID: number) {
+  if (!orderID) return;
+  this.router.navigate(['/pf-detail', orderID]);
+}
 }
 

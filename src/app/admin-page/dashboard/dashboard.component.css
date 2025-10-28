@@ -1,0 +1,79 @@
+.dashboard-container {
+  margin-top: 80px;            /* ระยะจาก navbar ด้านบน */
+  margin-left: 280px;          /* ระยะเว้นจาก sidebar ซ้าย */
+  padding: 24px 28px;
+  background-color: #f8f9fb;   /* สีเทาอ่อนเนียนกว่าเดิม */
+  min-height: 100vh;
+  max-width: 1600px;
+}
+
+/* การ์ดบนสุด */
+.dashboard-card {
+  border: none;
+  border-radius: 16px;
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+  height: 100%;
+}
+.dashboard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.icon-circle {
+  background: rgba(255, 255, 255, 0.25);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+/* สีการ์ด */
+.bg-primary { background: linear-gradient(135deg, #0066ff, #003cb3); }
+.bg-success { background: linear-gradient(135deg, #28a745, #1e7e34); }
+.bg-warning { background: linear-gradient(135deg, #ffb703, #ff9e00); color: #212529 !important; }
+.bg-danger  { background: linear-gradient(135deg, #dc3545, #b02a37); }
+
+/* การ์ดในส่วน chart และ table */
+.card {
+  border-radius: 14px;
+  border: 1px solid #eaeaea;
+  background: #ffffff;
+}
+.card-header {
+  border-bottom: 1px solid #eee;
+  font-weight: 600;
+  background: #fff;
+}
+
+/* ตาราง */
+.table thead th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+.table tbody tr:hover {
+  background-color: #f3f4f6;
+}
+
+/* list-group ของสินค้าและรีวิว */
+.list-group-item {
+  border: none;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 10px 14px;
+}
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+/* Responsive สำหรับจอเล็ก */
+@media (max-width: 992px) {
+  .dashboard-container {
+    margin-left: 0;
+    padding: 16px;
+  }
+  .dashboard-card h2 {
+    font-size: 1.5rem;
+  }
+}
