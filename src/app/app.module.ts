@@ -55,6 +55,7 @@ import { SearchComponent } from './page/search/search.component';
 import { PfDetailComponent } from './profile-page/pf-detail/pf-detail.component';
 import { PaymentConfirmComponent } from './page/payment-confirm/payment-confirm.component';
 import { Pf6Component } from './profile-page/pf-6/pf-6.component';
+import { CategoryManageComponent } from './admin-page/category-manage/category-manage.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +103,8 @@ import { Pf6Component } from './profile-page/pf-6/pf-6.component';
     SearchComponent,
     PfDetailComponent,
     PaymentConfirmComponent,
-    Pf6Component
+    Pf6Component,
+    CategoryManageComponent
   ],
   imports: [
     BrowserModule,

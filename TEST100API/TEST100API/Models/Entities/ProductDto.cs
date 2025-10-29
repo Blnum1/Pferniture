@@ -19,4 +19,5 @@ namespace TEST100API.Models.Entities
     public string? Is_Active { get; set; }
       public int? Stock { get; set; }
   }
+
 }

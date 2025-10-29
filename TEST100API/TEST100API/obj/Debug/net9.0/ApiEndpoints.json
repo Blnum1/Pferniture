@@ -267,6 +267,16 @@
   },
   {
     "ContainingType": "TEST100API.Controllers.ProductController",
+    "Method": "GetCategoryAll",
+    "RelativePath": "api/Product/GetCategoryAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TEST100API.Controllers.ProductController",
     "Method": "GetCategoryByID",
     "RelativePath": "api/Product/GetCategoryByID",
     "HttpMethod": "GET",

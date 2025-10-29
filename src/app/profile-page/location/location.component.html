@@ -26,7 +26,8 @@
             </div>
           </div>
         </div>
-        <a class="side-link" [routerLink]="['/pf-1']" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">การสั่งซื้อของฉัน</a>
+        <a class="side-link" [routerLink]="['/pf-1']" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact:true}">การสั่งซื้อของฉัน</a>
         <a class="side-link" [routerLink]="['/profile']" routerLinkActive="active">บัญชีของฉัน</a>
         <a class="side-link" [routerLink]="['/location']" routerLinkActive="active">ที่อยู่</a>
       </nav>
@@ -45,23 +46,23 @@
 
         <div class="list">
           <div class="list-row" *ngFor="let s of shippingList">
-            <div class="left">
-              <div class="name-phone">
-                <span class="name">นายจอห์น โด</span>
-                <span class="phone" *ngIf="s.phone">{{ s.phone }}</span>
-              </div>
-              <div class="addr">
-                {{ s.address }}
-                <ng-container *ngIf="s.city || s.region || s.postal">
-                  , อ.{{ s.city }} , จ.{{ s.region }} <span *ngIf="s.postal">, {{ s.postal }}</span>
-                </ng-container>
-              </div>
-            </div>
-            <div class="right">
-              <button class="link edit" (click)="openEditAddress(s)">แก้ไข</button>
-              <button class="link delete" (click)="confirmDeleteAddress(s)">ลบ</button>
-            </div>
-          </div>
+  <div class="left">
+    <div class="name-phone">
+      <span class="name">{{ s.firstName }} {{ s.lastName }}</span>
+      <span class="phone" *ngIf="s.phone">{{ s.phone }}</span>
+    </div>
+    <div class="addr">
+      {{ s.address }}
+      <ng-container *ngIf="s.city || s.region || s.postal">
+        , อ.{{ s.city }} , จ.{{ s.region }} <span *ngIf="s.postal">, {{ s.postal }}</span>
+      </ng-container>
+    </div>
+  </div>
+  <div class="right">
+    <button class="link edit" (click)="openEditAddress(s)">แก้ไข</button>
+    <button class="link delete" (click)="confirmDeleteAddress(s)">ลบ</button>
+  </div>
+</div>
 
           <div class="list-row empty" *ngIf="!loading && shippingList.length === 0">
             ยังไม่มีที่อยู่
@@ -70,9 +71,8 @@
       </div>
     </div> <!-- /col-9 -->
   </div> <!-- /row -->
-</div>  <!-- /container -->
+</div> <!-- /container -->
 
-<!-- Add Modal -->
 <div class="modal-custom" *ngIf="showAddModal" (keydown.escape)="closeAddAddress()">
   <div class="modal-card modal-lg">
     <div class="modal-header">
@@ -80,6 +80,17 @@
       <button class="btn-close" (click)="closeAddAddress()"></button>
     </div>
     <div class="modal-body">
+      <div class="row g-2 mb-3">
+        <div class="col-md-6">
+          <input class="form-control" placeholder="ชื่อ *" [(ngModel)]="newAddr.firstName" name="firstName">
+        </div>
+        <div class="col-md-6">
+          <input class="form-control" placeholder="นามสกุล *" [(ngModel)]="newAddr.lastName" name="lastName">
+        </div>
+      </div>
+      <div class="mb-3">
+        <input class="form-control" placeholder="เบอร์โทร *" [(ngModel)]="newAddr.phone" name="phone" inputmode="numeric">
+      </div>
       <div class="mb-3">
         <input class="form-control" placeholder="บ้านเลขที่ / ถนน / อาคาร *" [(ngModel)]="newAddr.house" name="house">
       </div>
@@ -90,8 +101,7 @@
         <div class="col-md-6"><input class="form-control" placeholder="รหัสไปรษณีย์" [(ngModel)]="newAddr.postal" inputmode="numeric"></div>
       </div>
       <div class="mt-3">
-        <img src="assets/image/google-map.png" alt="map"
-             style="width:100%;max-height:180px;object-fit:contain;border-radius:12px;">
+        <img src="assets/image/google-map.png" alt="map" style="width:100%;max-height:180px;object-fit:contain;border-radius:12px;">
       </div>
       <div class="mt-3">
         <input class="form-control" placeholder="บันทึก/ปักหมุด (ไม่บังคับ)" [(ngModel)]="newAddr.note">
@@ -107,7 +117,7 @@
   </div>
 </div>
 
-<!-- Edit Modal -->
+<!-- Edit Modal - แก้ไขให้ชื่อ-นามสกุลแสดงถูกต้อง -->
 <div class="modal-custom" *ngIf="showEditModal" (keydown.escape)="closeEditAddress()">
   <div class="modal-card modal-lg">
     <div class="modal-header">
@@ -116,24 +126,29 @@
     </div>
 
     <div class="modal-body" *ngIf="editing">
+      <div class="row g-2 mb-3">
+        <div class="col-md-6">
+          <input class="form-control" placeholder="ชื่อ *" [(ngModel)]="editing.firstName" name="editFirstName">
+        </div>
+        <div class="col-md-6">
+          <input class="form-control" placeholder="นามสกุล *" [(ngModel)]="editing.lastName" name="editLastName">
+        </div>
+      </div>
       <div class="mb-3">
-        <input class="form-control" placeholder="บ้านเลขที่ / ถนน / อาคาร *" [(ngModel)]="editing.house">
+        <input class="form-control" placeholder="เบอร์โทร *" [(ngModel)]="editing.phone" name="editPhone" inputmode="numeric">
       </div>
-
+      <div class="mb-3">
+        <input class="form-control" placeholder="บ้านเลขที่ / ถนน / อาคาร *" [(ngModel)]="editing.house" name="editHouse">
+      </div>
       <div class="row g-2">
-        <div class="col-md-6"><input class="form-control" placeholder="ตำบล" [(ngModel)]="editing.subdistrict"></div>
-        <div class="col-md-6"><input class="form-control" placeholder="อำเภอ *" [(ngModel)]="editing.district"></div>
-        <div class="col-md-6"><input class="form-control" placeholder="จังหวัด *" [(ngModel)]="editing.province"></div>
-        <div class="col-md-6"><input class="form-control" placeholder="รหัสไปรษณีย์" [(ngModel)]="editing.postal" inputmode="numeric"></div>
+        <div class="col-md-6"><input class="form-control" placeholder="ตำบล" [(ngModel)]="editing.subdistrict" name="editSubdistrict"></div>
+        <div class="col-md-6"><input class="form-control" placeholder="อำเภอ *" [(ngModel)]="editing.district" name="editDistrict"></div>
+        <div class="col-md-6"><input class="form-control" placeholder="จังหวัด *" [(ngModel)]="editing.province" name="editProvince"></div>
+        <div class="col-md-6"><input class="form-control" placeholder="รหัสไปรษณีย์" [(ngModel)]="editing.postal" name="editPostal" inputmode="numeric"></div>
       </div>
 
       <div class="mt-3">
-        <img src="assets/image/google-map.png" alt="map"
-             style="width:100%;max-height:180px;object-fit:contain;border-radius:12px;">
-      </div>
-
-      <div class="mt-3">
-        <input class="form-control" placeholder="เบอร์โทร (ไม่บังคับ)" [(ngModel)]="editing.phone">
+        <img src="assets/image/google-map.png" alt="map" style="width:100%;max-height:180px;object-fit:contain;border-radius:12px;">
       </div>
 
       <div *ngIf="editError" class="alert alert-danger mt-3">{{ editError }}</div>

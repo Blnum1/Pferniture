@@ -141,6 +141,22 @@ namespace TEST100API.Controllers
       return Ok(rows);
     }
 
+    [AllowAnonymous]
+    [HttpGet("GetCategoryAll")]
+    public async Task<IActionResult> GetCategoryAll()
+    {
+      var rows = await _context.Categories
+          .FromSqlRaw(@"
+            SELECT
+                c.CategoryID,
+                c.Category_Name
+             FROM dbo.Categories c
+             ORDER BY c.CategoryID")
+          .AsNoTracking()
+          .ToListAsync();
+      return Ok(rows);
+    }
+
 
     [HttpPut("UpdateProduct/{id:int}")]
     public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductUpdateDto dto)
@@ -257,4 +273,6 @@ namespace TEST100API.Controllers
 
 
   }
+
+  
 }

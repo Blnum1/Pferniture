@@ -110,6 +110,7 @@ export class PaymentComponent implements OnInit {
     return this.banks.find(b => b.id === id)?.name ?? '';
   }
 
+  // ✅ แก้ไขฟังก์ชันนี้ให้ดึง firstName และ lastName
   private normalizeApiItem(item: any): UiShipping {
     const id = item?.ShippingInfoID ?? item?.shippingInfoID ?? item?.id ?? item?.ShippingId ?? null;
     const address = (item?.Address ?? item?.address ?? '').toString().trim();
@@ -117,6 +118,13 @@ export class PaymentComponent implements OnInit {
     const region = item?.Region ?? item?.region;
     const postal = item?.Postal_Code ?? item?.postal_Code ?? item?.postal ?? item?.PostalCode;
     const phone = item?.Shipping_Phone ?? item?.shipping_Phone ?? item?.phone;
+    
+    // ✅ เพิ่มการดึง firstName และ lastName
+    const firstName = item?.FirstName ?? item?.firstName ?? item?.first_name ?? '';
+    const lastName = item?.LastName ?? item?.lastName ?? item?.last_name ?? '';
+    
+    console.log('Normalized shipping item:', { id, firstName, lastName, phone, address }); // Debug log
+    
     return {
       id: Number(id),
       address,
@@ -124,6 +132,8 @@ export class PaymentComponent implements OnInit {
       region,
       postal,
       phone,
+      firstName,
+      lastName,
       raw: item
     };
   }
@@ -131,8 +141,11 @@ export class PaymentComponent implements OnInit {
   fetchShippingList(userId: number) {
     this.shipSvc.getUserShippings(userId).subscribe({
       next: (list: any[]) => {
+        console.log('Raw shipping list from API:', list); // Debug log
         const arr = (list ?? []).map(i => this.normalizeApiItem(i)).filter(x => Number.isFinite(x.id));
         this.shippingList = arr;
+        console.log('Processed shipping list:', this.shippingList); // Debug log
+        
         if (!this.selectedShippingId && this.shippingList.length > 0) {
           const first = this.shippingList[0];
           this.selectedShippingId = first.id;
@@ -145,10 +158,13 @@ export class PaymentComponent implements OnInit {
 
   onShippingChange(ev: any) {
     this.selectedShippingId = (ev === null || ev === undefined) ? null : Number(ev);
+    console.log('Selected shipping:', this.selectedShipping); // Debug log
   }
 
   get selectedShipping(): UiShipping | undefined {
-    return this.shippingList.find(s => s.id === (this.selectedShippingId ?? -1));
+    const selected = this.shippingList.find(s => s.id === (this.selectedShippingId ?? -1));
+    console.log('Current selected shipping:', selected); // Debug log
+    return selected;
   }
 
   onChangeShip(m: ShipMethod) {
@@ -208,35 +224,33 @@ export class PaymentComponent implements OnInit {
 
     // เรียก API เพื่อสร้าง Order
     this.orderSvc.createOrderFromCart(payload).subscribe({
-  next: (res: any) => {
-    const newCartId = res?.newCartID ?? res?.newCartId ?? res?.new_cart_id;
-    const orderId = res?.orderID ?? res?.OrderID;
+      next: (res: any) => {
+        const newCartId = res?.newCartID ?? res?.newCartId ?? res?.new_cart_id;
+        const orderId = res?.orderID ?? res?.OrderID;
 
-    if (newCartId) {
-      this.cartSvc.setCurrentCartId(Number(newCartId));
-    }
+        if (newCartId) {
+          this.cartSvc.setCurrentCartId(Number(newCartId));
+        }
 
-    this.loading = false;
-    this.success = true;
+        this.loading = false;
+        this.success = true;
 
-    // ✅ ไปหน้า payment-confirm พร้อมส่งข้อมูล
-    this.router.navigate(['/payment-confirm', orderId], {
-      state: {
-        orderId,
-        payMethod: this.payMethod,
-        amount: this.grandTotal,
-        customerName: this.customerName,
+        // ✅ ไปหน้า payment-confirm พร้อมส่งข้อมูล
+        this.router.navigate(['/payment-confirm', orderId], {
+          state: {
+            orderId,
+            payMethod: this.payMethod,
+            amount: this.grandTotal,
+            customerName: this.customerName,
+          }
+        });
+      },
+      error: err => {
+        this.loading = false;
+        this.errorMsg = err?.error ?? 'สั่งซื้อไม่สำเร็จ';
       }
     });
-  },
-  error: err => {
-    this.loading = false;
-    this.errorMsg = err?.error ?? 'สั่งซื้อไม่สำเร็จ';
   }
-});
-  }
-
-
 
   openSelectAddress() {
     if (!this.selectedShippingId && this.shippingList.length) {
@@ -261,15 +275,39 @@ export class PaymentComponent implements OnInit {
 
   openAddAddress() {
     this.addError = '';
-    this.newAddr = { house: '', subdistrict: '', district: '', province: '', postal: '', note: '', firstName: '',lastName: '',phone: ''};
+    this.newAddr = { 
+      house: '', 
+      subdistrict: '', 
+      district: '', 
+      province: '', 
+      postal: '', 
+      note: '', 
+      firstName: '',
+      lastName: '',
+      phone: this.phone || '' // ใช้เบอร์ user เป็นค่า default
+    };
     this.showAddModal = true;
   }
 
   closeAddAddress() { if (!this.addSubmitting) this.showAddModal = false; }
 
   saveNewAddress() {
-    if (!this.newAddr.house.trim()) { this.addError = 'กรุณากรอกบ้านเลขที่/ถนน'; return; }
-    if (!this.newAddr.district.trim() || !this.newAddr.province.trim()) { this.addError = 'กรุณากรอก อำเภอ และ จังหวัด'; return; }
+    if (!this.newAddr.house.trim()) { 
+      this.addError = 'กรุณากรอกบ้านเลขที่/ถนน'; 
+      return; 
+    }
+    if (!this.newAddr.district.trim() || !this.newAddr.province.trim()) { 
+      this.addError = 'กรุณากรอก อำเภอ และ จังหวัด'; 
+      return; 
+    }
+    if (!this.newAddr.firstName.trim() || !this.newAddr.lastName.trim()) {
+      this.addError = 'กรุณากรอกชื่อและนามสกุล';
+      return;
+    }
+    if (!this.newAddr.phone.trim()) {
+      this.addError = 'กรุณากรอกเบอร์โทร';
+      return;
+    }
 
     const dto = {
       UserID: this.userId,
@@ -278,23 +316,27 @@ export class PaymentComponent implements OnInit {
       Region: this.newAddr.province,
       Country: 'TH',
       Postal_Code: this.newAddr.postal ? Number(this.newAddr.postal) : undefined,
-      Shipping_Phone: this.newAddr.phone || '',  
+      Shipping_Phone: this.newAddr.phone,  
       FirstName: this.newAddr.firstName,   
       LastName: this.newAddr.lastName  
     };
 
+    console.log('Creating new address with:', dto); // Debug log
+
     this.addSubmitting = true;
     this.shipSvc.createShipping(dto).subscribe({
       next: (created: any) => {
+        console.log('Created address response:', created); // Debug log
         const ui = this.normalizeApiItem(created);
         this.shippingList.unshift(ui);
-        this.tempSelectedShippingId = ui.id;
+        this.selectedShippingId = ui.id; // ✅ เลือกที่อยู่ใหม่ทันที
         this.addSubmitting = false;
         this.showAddModal = false;
       },
       error: err => {
         this.addSubmitting = false;
         this.addError = err?.error ?? 'บันทึกไม่สำเร็จ';
+        console.error('Create address error:', err);
       }
     });
   }

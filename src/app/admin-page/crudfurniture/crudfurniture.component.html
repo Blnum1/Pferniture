@@ -10,67 +10,67 @@
   <div class="container">
     <div class="row mb-3">
       <div class="col-md-2">
-        <label for="searchProductId">Search by ID:</label>
+        <label for="searchProductId">ค้นหาด้วยรหัสสินค้า</label>
       </div>
       <div class="col-md-4">
-        <input id="searchProductId" [(ngModel)]="searchProductId" class="form-control" placeholder="Enter product ID" />
+        <input id="searchProductId" [(ngModel)]="searchProductId" class="form-control" placeholder="กรอกรหัสสินค้า" />
       </div>
       <div class="col-md-2">
-        <label for="searchProductName">Search by Name:</label>
+        <label for="searchProductName">ค้นหาด้วยชื่อสินค้า</label>
       </div>
       <div class="col-md-4">
         <input id="searchProductName" [(ngModel)]="searchProductName" class="form-control"
-          placeholder="Enter product name" />
+          placeholder="กรอกชื่อสินค้า" />
       </div>
     </div>
 
     <div class="row mb-3">
       <div class="col-md-2">
-        <label for="searchCategoryId">Search by Category ID:</label>
+        <label for="searchCategoryId">ค้นหาด้วยรหัสหมวดหมู่</label>
       </div>
       <div class="col-md-4">
         <input id="searchCategoryId" [(ngModel)]="searchCategoryId" class="form-control"
-          placeholder="Enter category ID" />
+          placeholder="กรอกรหัสหมวดหมู่" />
       </div>
       <div class="col-md-2">
-        <label for="searchCategoryName">Search by Category Name:</label>
+        <label for="searchCategoryName">ค้นหาด้วยชื่อหมวดหมู่</label>
       </div>
       <div class="col-md-4">
         <input id="searchCategoryName" [(ngModel)]="searchCategoryName" class="form-control"
-          placeholder="Enter category name" />
+          placeholder="กรอกชื่อหมวดหมู่" />
       </div>
     </div>
 
     <div class="row mb-3">
       <div class="col-md-2">
-        <label for="searchPriceStart">Price Start:</label>
+        <label for="searchPriceStart">ราคาเริ่มต้น</label>
       </div>
       <div class="col-md-4">
         <input type="number" id="searchPriceStart" [(ngModel)]="searchPriceStart" class="form-control"
-          placeholder="Min price" />
+          placeholder="ราคาเริ่มต้น" />
       </div>
       <div class="col-md-2">
-        <label for="searchPriceEnd">Price End:</label>
+        <label for="searchPriceEnd">ราคาสิ้นสุด</label>
       </div>
       <div class="col-md-4">
         <input type="number" id="searchPriceEnd" [(ngModel)]="searchPriceEnd" class="form-control"
-          placeholder="Max price" />
+          placeholder="ราคาสิ้นสุด" />
       </div>
     </div>
 
     <div class="row mb-3">
       <div class="col-md-2">
-        <label for="searchIsActive">Active:</label>
+        <label for="searchIsActive">สถานะ</label>
       </div>
       <div class="col-md-4">
-        <input id="searchIsActive" [(ngModel)]="searchIsActive" class="form-control" placeholder="true / false" />
+        <input id="searchIsActive" [(ngModel)]="searchIsActive" class="form-control" placeholder="ํYES หรือ NO" />
       </div>
     </div>
   </div>
 
   <div class="search-button d-flex justify-content-center mb-3" style="gap: 10px;">
-    <button class="btn btn-primary" (click)="searchProducts()">Search</button>
-    <button class="btn btn-secondary" (click)="clearSearch()">Clear</button>
+    <button class="btn btn-primary" (click)="searchProducts()">ค้นหา</button>
+    <button class="btn btn-secondary" (click)="clearSearch()">ล้าง</button>
   </div>
 
   <div class="table-container">

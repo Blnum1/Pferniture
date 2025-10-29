@@ -40,6 +40,7 @@ import { OrderManageDetailComponent } from './admin-page/order-manage-detail/ord
 import { SearchComponent } from './page/search/search.component';
 import { PaymentConfirmComponent } from './page/payment-confirm/payment-confirm.component';
 import { Pf6Component } from './profile-page/pf-6/pf-6.component';
+import { CategoryManageComponent } from './admin-page/category-manage/category-manage.component';
 
 const routes: Routes = [
   { path: '', 
@@ -66,6 +67,10 @@ const routes: Routes = [
   },
   { path: 'crud-create', 
     component: CrudCreateComponent,
+    canActivate:[AuthGuard] 
+  },
+  { path: 'category-manage', 
+    component: CategoryManageComponent,
     canActivate:[AuthGuard] 
   },
   { path: 'onoff', 

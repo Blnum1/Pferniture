@@ -1,0 +1,150 @@
+<app-nav-admin></app-nav-admin>
+<p>crudfurniture works!</p>
+<br />
+<div class="main-container">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+        <h1>จัดการหมวดหมู่</h1>
+        <button class="btn btn-primary me-2" style="width: 120px;" (click)="openCreateCategoryModal()">เพิ่มหมวดหมู่</button>
+    </div>
+
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-md-2">
+                <label for="searchCategoryId">ค้นหาด้วยรหัสหมวดหมู่</label>
+            </div>
+            <div class="col-md-4">
+                <input id="searchCategoryId" [(ngModel)]="searchCategoryId" class="form-control"
+                    placeholder="กรอกรหัสหมวดหมู่" />
+            </div>
+            <div class="col-md-2">
+                <label for="searchCategoryName">ค้นหาด้วยชื่อหมวดหมู่</label>
+            </div>
+            <div class="col-md-4">
+                <input id="searchCategoryName" [(ngModel)]="searchCategoryName" class="form-control"
+                    placeholder="กรอกชื่อหมวดหมู่" />
+            </div>
+        </div>
+
+    </div>
+
+    <div class="search-button d-flex justify-content-center mb-3" style="gap: 10px;">
+        <button class="btn btn-primary" (click)="searchProducts()">ค้นหา</button>
+        <button class="btn btn-secondary" (click)="clearSearch()">ล้าง</button>
+    </div>
+
+    <div class="table-container">
+        <table class="table table-bordered table-striped table-responsive" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 10%;">Category ID</th>
+                    <th scope="col" style="width: 20%;">Category Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of currentProducts()">
+                    <td>
+                        <a href="javascript:void(0);" 
+                           class="text-primary text-decoration-underline" 
+                           style="cursor: pointer;"
+                           (click)="openEditCategoryModal(p)">
+                            {{ p.categoryID }}
+                        </a>
+                    </td>
+                    <td>{{ p.category_Name }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination-options">
+        <label for="pageSize">Items per page: </label>
+        <select id="pageSize" [(ngModel)]="pageSize" (change)="updatePageSize()">
+            <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
+        </select>
+    </div>
+    <div class="pagination-controls">
+        <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+
+</div>
+
+<!-- Modal สำหรับเพิ่มหมวดหมู่ -->
+<div class="modal fade" id="createCategoryModal" tabindex="-1" aria-labelledby="createCategoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createCategoryModalLabel">เพิ่มหมวดหมู่</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #categoryForm="ngForm">
+          <div class="mb-3">
+            <label for="categoryName" class="form-label">ชื่อหมวดหมู่ <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="categoryName" 
+              [(ngModel)]="newCategory.category_Name"
+              name="categoryName"
+              required
+              placeholder="กรอกชื่อหมวดหมู่">
+            <div class="text-danger mt-1" *ngIf="categoryForm.submitted && !newCategory.category_Name">
+              กรุณากรอกชื่อหมวดหมู่
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+        <button type="button" class="btn btn-primary" (click)="createCategory()">บันทึก</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal สำหรับแก้ไขหมวดหมู่ -->
+<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editCategoryModalLabel">แก้ไขหมวดหมู่</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #editCategoryForm="ngForm">
+          <div class="mb-3">
+            <label for="editCategoryId" class="form-label">รหัสหมวดหมู่</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="editCategoryId" 
+              [(ngModel)]="editingCategory.categoryID"
+              name="editCategoryId"
+              readonly
+              disabled>
+          </div>
+          <div class="mb-3">
+            <label for="editCategoryName" class="form-label">ชื่อหมวดหมู่ <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="editCategoryName" 
+              [(ngModel)]="editingCategory.category_Name"
+              name="editCategoryName"
+              required
+              placeholder="กรอกชื่อหมวดหมู่">
+            <div class="text-danger mt-1" *ngIf="editCategoryForm.submitted && !editingCategory.category_Name">
+              กรุณากรอกชื่อหมวดหมู่
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+        <button type="button" class="btn btn-primary" (click)="updateCategory()">บันทึกการแก้ไข</button>
+      </div>
+    </div>
+  </div>
+</div>

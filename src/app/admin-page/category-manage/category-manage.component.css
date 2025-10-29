@@ -1,0 +1,62 @@
+.table-responsive {
+  overflow-x: auto; 
+  -webkit-overflow-scrolling: touch;
+}
+
+.table th, .table td {
+  text-align: center; 
+  vertical-align: middle; 
+}
+
+.table td img {
+  max-width: 100%; 
+  height: auto;
+}
+
+.ContainerTable {
+  margin: 10px; 
+  border: 1px solid #ddd; 
+  border-radius: 5px; 
+  background-color: #f9f9f9; 
+}
+
+.table-container {
+  max-height: 600px;  
+  overflow-y: auto;   
+  display: block;     
+}
+
+.pagination-options {
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: end;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.pagination-controls button {
+  padding: 5px 10px;
+  margin: 0 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+}
+
+.pagination-controls button:disabled {
+  cursor: not-allowed;
+  background-color: #ddd;
+}
+.main-container {
+  padding-left: 7%;  
+  padding-right: 7%;
+  padding-top: 40px;
+  margin-top: 10px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin-left: 150px;  
+}

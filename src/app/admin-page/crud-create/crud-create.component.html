@@ -11,7 +11,7 @@
 
                     <div class="row mb-4 align-items-center">
                         <div class="col-md-4">
-                            <label class="form-label fw-bold">Image 1:</label>
+                            <label class="form-label fw-bold">รูปภาพที่ 1</label>
                         </div>
                         <div class="col-md-8">
                             <div *ngIf="product.image_Url1" class="mb-2">
@@ -23,7 +23,7 @@
 
                     <div class="row mb-4 align-items-center">
                         <div class="col-md-4">
-                            <label class="form-label fw-bold">Image 2:</label>
+                            <label class="form-label fw-bold">รูปภาพที่ 2</label>
                         </div>
                         <div class="col-md-8">
                             <div *ngIf="product.image_Url2" class="mb-2">
@@ -35,7 +35,7 @@
 
                     <div class="row mb-4 align-items-center">
                         <div class="col-md-4">
-                            <label class="form-label fw-bold">Image 3:</label>
+                            <label class="form-label fw-bold">รูปภาพที่ 3</label>
                         </div>
                         <div class="col-md-8">
                             <div *ngIf="product.image_Url3" class="mb-2">
@@ -54,56 +54,56 @@
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h2 class="mb-0 text-primary">🛍️ เพิ่มสินค้า</h2>
                         <button type="button" (click)="createProduct(product)" class="btn btn-lg btn-success">
-                            Create Product
+                            ยืนยันการเพิ่มสินค้า
                         </button>
                     </div>
 
-                    <h3 class="mb-3">{{ product.product_Name || 'Product Name Preview' }}</h3>
+                    <h3 class="mb-3">{{ product.product_Name || 'ชื่อสินค้า' }}</h3>
 
                     <form #productForm="ngForm">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Product Name:</label>
+                                    <label class="form-label fw-bold">ชื่อสินค้า</label>
                                     <input [(ngModel)]="product.product_Name" name="product_Name" class="form-control" />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Product ID:</label>
+                                    <label class="form-label fw-bold">รหัสสินค้า</label>
                                     <input [(ngModel)]="product.productID" name="productID" readonly class="form-control bg-light" />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Category Name:</label>
+                                    <label class="form-label fw-bold">ชื่อหมวดหมู่</label>
                                     <input [(ngModel)]="product.category_Name" name="category_Name" readonly class="form-control bg-light" />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Category ID:</label>
+                                    <label class="form-label fw-bold">รหัสหมวดหมู่</label>
                                     <input [(ngModel)]="product.categoryID" name="categoryID" class="form-control" />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Size:</label>
+                                    <label class="form-label fw-bold">ขนาด</label>
                                     <input [(ngModel)]="product.size" name="size" class="form-control" />
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Color:</label>
+                                    <label class="form-label fw-bold">สี</label>
                                     <input [(ngModel)]="product.color" name="color" class="form-control" />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Price:</label>
+                                    <label class="form-label fw-bold">ราคาขายจริง</label>
                                     <input [(ngModel)]="product.price" name="price" type="number" class="form-control" />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Price Discount:</label>
+                                    <label class="form-label fw-bold">ราคาก่อนลด</label>
                                     <input [(ngModel)]="product.price_Discount" name="price_Discount" type="number" class="form-control" />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Stock:</label>
+                                    <label class="form-label fw-bold">จำนวนสินค้าคงเหลือ</label>
                                     <input [(ngModel)]="product.stock" name="stock" type="number" class="form-control" />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Is Active</label>
+                                    <label class="form-label fw-bold">สถานะพร้อมขาย</label>
                                     <select [(ngModel)]="product.is_Active" name="is_Active" class="form-select">
                                         <option [ngValue]="true">Active</option>
                                         <option [ngValue]="false">Inactive</option>
@@ -115,15 +115,15 @@
                         <hr class="my-4">
                         <h5 class="mb-3">📝 คำอธิบายสินค้า</h5>
                         <div class="mb-3">
-                            <label class="form-label">Description 1:</label>
+                            <label class="form-label">คำอธิบายสินค้า 1</label>
                             <textarea [(ngModel)]="product.pDescription1" name="description1" class="form-control" rows="2"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Description 2:</label>
+                            <label class="form-label">คำอธิบายสินค้า 1</label>
                             <textarea [(ngModel)]="product.pDescription2" name="description2" class="form-control" rows="2"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Description 3:</label>
+                            <label class="form-label">คำอธิบายสินค้า 3</label>
                             <textarea [(ngModel)]="product.pDescription3" name="description3" class="form-control" rows="2"></textarea>
                         </div>
                     </form>
