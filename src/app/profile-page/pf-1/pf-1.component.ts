@@ -61,4 +61,32 @@ export class Pf1Component implements OnInit {
 goToPaymentConfirm(): void {
     console.log("hello");
   }
+
+  statusDisplayMap: { [key: string]: string } = {
+  'waitpay': 'รอการชำระเงิน',
+  'waitcheckpay': 'กำลังเตรียมพัสดุ',
+  'musttransfer': 'กำลังเตรียมสินค้าจัดส่ง',
+  'transfering': 'กำลังจัดส่งสินค้า',
+  'mustreceive': 'ต้องได้รับสินค้า',
+  'success': 'จัดส่งสำเร็จ',
+  'cancel': 'ยกเลิกแล้ว',
+  'return': 'คืนสินค้า',
+  'failed': 'จัดส่งล้มเหลว'
+};
+
+getDisplayStatus(status: string): string {
+  return this.statusDisplayMap[status] || status;
+}
+
+paymentDisplayMap: { [key: string]: string } = {
+  'QR': 'สแกนคิวอาร์โค้ด',
+  'COD': 'ชำระเงินปลายทาง',
+  'BANK': 'ชำระผ่านธนาคาร'
+};
+
+// ฟังก์ชันช่วยแปลงชื่อก่อนแสดง
+getPaymentDisplayStatus(method: string): string {
+  return this.paymentDisplayMap[method] || method;
+}
+
 }

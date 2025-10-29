@@ -14,7 +14,7 @@ export class Pf3Component implements OnInit {
   constructor(private showOrderService: ShoworderService,private router:Router) {}
 
   ngOnInit(): void {
-    const status = 'musttranfer';  // สามารถเปลี่ยนค่า status ได้
+    const status = 'musttransfer';  // สามารถเปลี่ยนค่า status ได้
     const userID = 1;          // เปลี่ยนเป็น userID ของผู้ใช้ที่ต้องการโหลดข้อมูล
 
     this.loadOrders(status, userID);
@@ -61,4 +61,30 @@ export class Pf3Component implements OnInit {
 goToPaymentConfirm(): void {
     console.log("hello");
   }
+
+  statusDisplayMap: { [key: string]: string } = {
+  'waitpay': 'รอการชำระเงิน',
+  'waitcheckpay': 'กำลังเตรียมพัสดุ',
+  'musttransfer': 'กำลังเตรียมสินค้าจัดส่ง',
+  'transfering': 'กำลังจัดส่งสินค้า',
+  'mustreceive': 'ต้องได้รับสินค้า',
+  'success': 'จัดส่งสำเร็จ',
+  'cancel': 'ยกเลิกแล้ว',
+  'return': 'คืนสินค้า',
+  'failed': 'จัดส่งล้มเหลว'
+};
+
+  getDisplayStatus(status: string): string {
+  return this.statusDisplayMap[status] || status;
+}
+
+paymentDisplayMap: { [key: string]: string } = {
+  'QR': 'สแกนคิวอาร์โค้ด',
+  'COD': 'ชำระเงินปลายทาง',
+  'BANK': 'ชำระผ่านธนาคาร'
+};
+
+getPaymentDisplayStatus(method: string): string {
+  return this.paymentDisplayMap[method] || method;
+}
 }

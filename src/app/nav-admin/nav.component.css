@@ -3,10 +3,8 @@
   top: 0;
   left: 0;
   width: 100%;
-  /* เปลี่ยนเป็นสีดำสนิทหรือเทาเข้มมาก */
-  background-color: #0A0A0A; /* Deep Black for Base */
+  background-color: #131313;
   color: rgb(255, 255, 255);
-  /* เพิ่มเงาเล็กน้อย (Optional: เพื่อให้ดูมีมิติ) */
   z-index: 1000;
   display: flex;
   justify-content: flex-start;
@@ -16,36 +14,12 @@
   transition: background-color 0.3s ease;
 }
 
-.hamburger-menu {
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 30px;
-  height: 25px;
-  background: transparent;
-  border: none;
-  z-index: 1001;
-  /* ปรับระยะห่างระหว่างเส้นเพื่อให้ดูประณีต */
-  padding: 2px 0; 
-
-  .line {
-    width: 100%;
-    height: 2.5px; /* ลดความหนาเล็กน้อยเพื่อให้ดูคมขึ้น */
-    background-color: white;
-    transition: all 0.3s ease;
-    /* เพิ่มขอบมนเล็กน้อย (Optional) */
-    border-radius: 2px;
-  }
-}
-
 .menu {
   position: fixed;
   top: 0;
   left: 0; 
   height: 100vh; 
-  width: 280px; /* เพิ่มความกว้างเล็กน้อย */
-  /* เปลี่ยนเป็นเทาเข้มพรีเมียม */
+  width: 250px; 
   background-color: #1A1A1A; /* Darker, sophisticated gray */
   padding-top: 60px; /* เพิ่ม padding-top เล็กน้อย */
   z-index: 999;
@@ -55,7 +29,7 @@
   ul {
     list-style-type: none;
     padding: 0;
-    margin: 0;
+    margin: 10px;
 
     li a {
       color: #ffffff; /* สีขาวนวลแทนสีขาวปกติ */
@@ -66,11 +40,7 @@
       /* เพิ่ม transition เพื่อให้การเปลี่ยนสีดูนุ่มนวล */
       transition: background-color 0.3s ease, color 0.3s ease;
 
-      &:hover {
-        /* ใช้สีทองเป็น Accent Color เพื่อความหรูหรา */
-        background-color: #2D2D2D; /* พื้นหลัง hover ยังคงเข้ม */
-        color: #7298ff; /* **สีทองพรีเมียม** */
-      }
+
       /* Optional: Active/Current link */
       /* &.active {
         color: #C89933;
@@ -79,4 +49,21 @@
       } */
     }
   }
+}
+
+.menu ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 8px 16px;
+  margin-bottom: 10px;
+  display: inline-block;
+  transition: 0.1s;
+}
+
+.menu ul li a:hover,
+.menu ul li a.active {
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
 }

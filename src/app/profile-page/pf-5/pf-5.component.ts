@@ -14,7 +14,7 @@ export class Pf5Component implements OnInit {
   constructor(private showOrderService: ShoworderService, private router:Router) {}
 
   ngOnInit(): void {
-    const status = 'finish';  // สามารถเปลี่ยนค่า status ได้
+    const status = 'success';  // สามารถเปลี่ยนค่า status ได้
     const userID = 1;          // เปลี่ยนเป็น userID ของผู้ใช้ที่ต้องการโหลดข้อมูล
 
     this.loadOrders(status, userID);
@@ -55,6 +55,32 @@ export class Pf5Component implements OnInit {
   goToPfDetail(orderID: number) {
   if (!orderID) return;
   this.router.navigate(['/pf-detail', orderID]);
+}
+
+statusDisplayMap: { [key: string]: string } = {
+  'waitpay': 'รอการชำระเงิน',
+  'waitcheckpay': 'กำลังเตรียมพัสดุ',
+  'musttransfer': 'กำลังเตรียมสินค้าจัดส่ง',
+  'transfering': 'กำลังจัดส่งสินค้า',
+  'mustreceive': 'ต้องได้รับสินค้า',
+  'success': 'จัดส่งสำเร็จ',
+  'cancel': 'ยกเลิกแล้ว',
+  'return': 'คืนสินค้า',
+  'failed': 'จัดส่งล้มเหลว'
+};
+
+  getDisplayStatus(status: string): string {
+  return this.statusDisplayMap[status] || status;
+}
+
+paymentDisplayMap: { [key: string]: string } = {
+  'QR': 'สแกนคิวอาร์โค้ด',
+  'COD': 'ชำระเงินปลายทาง',
+  'BANK': 'ชำระผ่านธนาคาร'
+};
+
+getPaymentDisplayStatus(method: string): string {
+  return this.paymentDisplayMap[method] || method;
 }
 }
 

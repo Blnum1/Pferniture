@@ -13,9 +13,10 @@ export class OrderManageDetailComponent implements OnInit {
   orders: any[] = [];
   groupedOrders: any[] = [];
 
-  // 💡 เพิ่ม Property นี้เพื่อเก็บข้อมูลกลุ่มเดียวที่จะนำไปใช้ใน template
+  // เก็บข้อมูลกลุ่มเดียวที่จะนำไปใช้ใน template
   orderGroup: any;
   selectedShipper: string = '';
+  isUpdating: boolean = false; // สำหรับแสดง loading state
 
   // รายชื่อบริษัทขนส่ง
   shippers = [
@@ -24,6 +25,7 @@ export class OrderManageDetailComponent implements OnInit {
     { id: 'jt', name: 'J&T Express', logo: 'assets/image/jnt-logo.png' },
     { id: 'thpost', name: 'ไปรษณีย์ไทย', logo: 'assets/image/th-post-logo.png' }
   ];
+
   constructor(
     private route: ActivatedRoute,
     private showorderService: ShoworderService,
@@ -46,6 +48,7 @@ export class OrderManageDetailComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error fetching order details:', err);
+          alert('เกิดข้อผิดพลาดในการโหลดข้อมูลคำสั่งซื้อ');
         }
       });
   }
@@ -73,19 +76,79 @@ export class OrderManageDetailComponent implements OnInit {
 
     this.groupedOrders = grouped;
 
-    // 💡 กำหนดให้ orderGroup เป็นกลุ่มแรก (ซึ่งควรจะเป็นกลุ่มเดียว)
+    // กำหนดให้ orderGroup เป็นกลุ่มแรก (ซึ่งควรจะเป็นกลุ่มเดียว)
     if (this.groupedOrders.length > 0) {
       this.orderGroup = this.groupedOrders[0];
     }
   }
 
   confirmAndPrint(): void {
-    if (!this.selectedShipper) return;
-    alert(`เลือกขนส่ง: ${this.selectedShipper}`);
+    // ตรวจสอบว่าเลือกขนส่งแล้วหรือยัง
+    if (!this.selectedShipper) {
+      alert('กรุณาเลือกบริษัทขนส่ง');
+      return;
+    }
 
-    // ไปหน้าใบส่งสินค้า + autoPrint
-    this.router.navigate([`/delivery-note`, this.orderGroup.orderID], {
-      queryParams: { autoPrint: true, shipper: this.selectedShipper }
+    // ตรวจสอบว่ามี orderGroup หรือไม่
+    if (!this.orderGroup || !this.orderGroup.orderID) {
+      alert('ไม่พบข้อมูลคำสั่งซื้อ');
+      return;
+    }
+
+    // แสดง loading state
+    this.isUpdating = true;
+
+    // เรียกใช้ service เพื่ออัปเดตสถานะ
+    this.showorderService.updateOrderStatus(
+      this.orderGroup.orderID,
+      'tranfering',  // OrderStatus
+      'paid'           // PaymentStatus (สมมติว่าชำระเงินแล้ว)
+    ).subscribe({
+      next: (response) => {
+        console.log('อัปเดตสถานะสำเร็จ:', response);
+        this.isUpdating = false;
+
+        // นำทางไปหน้าใบส่งสินค้าพร้อม query params
+        this.router.navigate(['/delivery-note', this.orderGroup.orderID], {
+          queryParams: { 
+            autoPrint: true, 
+            shipper: this.selectedShipper 
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error updating order status:', error);
+        this.isUpdating = false;
+        
+        // แสดงข้อความ error ที่เป็นมิตร
+        let errorMessage = 'เกิดข้อผิดพลาดในการอัปเดตสถานะคำสั่งซื้อ';
+        
+        if (error.error && error.error.message) {
+          errorMessage += ': ' + error.error.message;
+        }
+        
+        alert(errorMessage);
+      }
     });
+  }
+
+  // ฟังก์ชันสำรองเผื่อต้องการยกเลิก
+  cancelOrder(): void {
+    if (confirm('ต้องการยกเลิกคำสั่งซื้อนี้หรือไม่?')) {
+      this.showorderService.updateOrderStatus(
+        this.orderGroup.orderID,
+        'cancel',
+        this.orderGroup.items[0]?.payment_Status || 'unpaid'
+      ).subscribe({
+        next: () => {
+          alert('ยกเลิกคำสั่งซื้อสำเร็จ');
+          this.router.navigate(['/order-management']);
+        },
+        error: (error) => {
+          console.error('Error canceling order:', error);
+          alert('เกิดข้อผิดพลาดในการยกเลิกคำสั่งซื้อ');
+        }
+      });
+    }
   }
 }

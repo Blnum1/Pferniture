@@ -16,8 +16,8 @@
 
     <div class="header">
         <div class="left">
-            <div><strong>ชื่อผู้ซื้อ:</strong> {{ orderGroup.items[0]?.userFirstName }} {{
-                orderGroup.items[0]?.userLastName }}</div>
+            <div><strong>ชื่อผู้ซื้อ:</strong> {{ orderGroup.items[0]?.shippingFirstName }} {{
+                orderGroup.items[0]?.shippingLastName }}</div>
             <div><strong>ที่อยู่จัดส่ง:</strong> {{ orderGroup.items[0]?.address || 'ไม่ระบุ' }} {{
                 orderGroup.items[0]?.city }} {{ orderGroup.items[0]?.region }} {{ orderGroup.items[0]?.country }} {{
                 orderGroup.items[0]?.postal_Code }}</div>

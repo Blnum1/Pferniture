@@ -1,74 +1,3 @@
-// import { Component, OnInit } from '@angular/core';
-// import { ShoworderService } from './../../services/showorder.service';
-// import { HttpClient } from '@angular/common/http';
-// import { Router } from '@angular/router';
-
-// @Component({
-//   selector: 'app-order-manage',
-//   templateUrl: './order-manage.component.html',
-//   styleUrls: ['./order-manage.component.css']
-// })
-// export class OrderManageComponent implements OnInit {
-//   orders: any[] = [];  // เก็บรายการคำสั่งซื้อ
-//   groupedOrders: any[] = [];  // เก็บคำสั่งซื้อที่ถูกจัดกลุ่ม
-//   status: string = 'All';  // ค่าเริ่มต้นสำหรับสถานะ
-//   isPrintPopupOpen: boolean = false;
-//   selectedOrder: any;
-  
-//   constructor(private ShoworderService: ShoworderService, private http: HttpClient, private router: Router) { }
-
-//   ngOnInit(): void {
-//     this.loadOrders();
-//   }
-
-//   loadOrders(): void {
-//     this.ShoworderService.getAllOrders(this.status).subscribe({
-//       next: (data) => {
-//         console.log('Fetched orders:', data);  // เช็คข้อมูลที่ได้รับจาก API
-//         this.orders = data;
-//         this.groupOrders();  // เรียกใช้การจัดกลุ่มคำสั่งซื้อ
-//       },
-//       error: (err) => {
-//         console.error('Error fetching orders', err);
-//       }
-//     });
-//   }
-
-//   groupOrders(): void {
-//     const grouped: any[] = [];
-//     this.orders.forEach((order) => {
-//       const orderGroup = grouped.find(group => group.orderID === order.orderID);
-//       if (orderGroup) {
-//         orderGroup.items.push(order);  // เพิ่ม item ลงในกลุ่มที่มี orderID เดียวกัน
-//       } else {
-//         grouped.push({
-//           orderID: order.orderID,
-//           order_date: order.order_date,
-//           status: order.status,
-//           items: [order]  // สร้างกลุ่มใหม่
-//         });
-//       }
-//     });
-//     this.groupedOrders = grouped;
-//   }
-//   updateStatus(orderID: number, orderStatus: string, paymentStatus: string) {
-//     this.ShoworderService.updateOrderStatus(orderID, orderStatus, paymentStatus).subscribe({
-//       next: (response) => {
-//         console.log('Status updated successfully', response);
-//         // รีเฟรชข้อมูลหรืออัพเดต UI ตามที่ต้องการ
-//         this.loadOrders(); // รีเฟรชรายการคำสั่งซื้อ
-//       },
-//       error: (err) => {
-//         console.error('Error updating status', err);
-//       }
-//     });
-//   }
-
-//    printOrder(orderGroup: any): void {
-//     this.router.navigate(['/delivery-note', orderGroup.orderID]);
-//   }
-// }
-
 import { Component, OnInit } from '@angular/core';
 import { ShoworderService } from './../../services/showorder.service';
 import { HttpClient } from '@angular/common/http';
@@ -82,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class OrderManageComponent implements OnInit {
   orderID!: number;
   orders: any[] = [];
+  allOrders: any[] = []; // เก็บข้อมูลทั้งหมดสำหรับ filter
   groupedOrders: Array<{
     orderID: number;
     order_date: string;
@@ -93,6 +23,7 @@ export class OrderManageComponent implements OnInit {
   filterDateFrom?: string;
   filterDateTo?: string;
   filterOrderId?: string;
+  activeTab: string = 'ALL'; // เก็บสถานะแท็บที่เลือก
 
   constructor(
     private route: ActivatedRoute,
@@ -101,32 +32,46 @@ export class OrderManageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // ถ้าเปิดจากหน้าอ้างอิง orderId
     const id = this.route.snapshot.paramMap.get('orderID');
     this.orderID = id ? +id : 0;
     this.loadOrderDetails();
   }
 
   loadOrderDetails(): void {
-    // ถ้ามี orderID ระบุ มาใช้ API by ID; ถ้าไม่มีก็แล้วแต่คุณจะดึงแบบทั้งหมด
     if (this.orderID) {
       this.showorderService.getOrderById(this.orderID).subscribe({
         next: (data) => {
-          this.orders = data || [];
+          this.allOrders = data || [];
+          this.orders = [...this.allOrders];
+          this.filterExcludedStatuses(); // กรองสถานะที่ไม่ต้องการ
           this.groupOrders();
         },
-        error: (e) => console.error(e)
+        error: (e) => console.error('Error loading order:', e)
       });
     } else {
-      // ตัวอย่าง: ดึงทั้งหมดสถานะ “ทั้งหมด”
       this.showorderService.getAllOrders('ALL').subscribe({
         next: (data) => {
-          this.orders = data || [];
+          this.allOrders = data || [];
+          this.orders = [...this.allOrders];
+          this.filterExcludedStatuses(); // กรองสถานะที่ไม่ต้องการ
           this.groupOrders();
         },
-        error: (e) => console.error(e)
+        error: (e) => console.error('Error loading orders:', e)
       });
     }
+  }
+
+  /**
+   * กรองสถานะที่ไม่ต้องการแสดง (waitpay, waitcheckpay)
+   */
+  filterExcludedStatuses(): void {
+    const excludedStatuses = ['waitpay', 'waitcheckpay'];
+    this.orders = this.orders.filter(o => {
+      if (!o.status) return true; // ถ้าไม่มีสถานะก็แสดง
+      const status = o.status.toLowerCase();
+      return !excludedStatuses.includes(status);
+    });
+    console.log('Filtered orders (excluded waitpay, waitcheckpay):', this.orders);
   }
 
   groupOrders(): void {
@@ -145,35 +90,125 @@ export class OrderManageComponent implements OnInit {
       }
     });
     this.groupedOrders = grouped;
+    console.log('Grouped orders:', this.groupedOrders);
   }
 
-  // นับจำนวนตามสถานะสำหรับ badge
-  getCount(status: 'ALL' | 'TO_SHIP' | 'SHIPPING' | 'SUCCESS' | 'CANCEL' | 'RETURN' | 'FAILED') {
-    if (status === 'ALL') return this.groupedOrders.length;
-    return this.groupedOrders.filter(g => (g.status || '').toUpperCase() === status).length;
+  /**
+   * กรองข้อมูลตามสถานะที่เลือกจากแท็บ
+   */
+  filterByStatus(status: string): void {
+    this.activeTab = status;
+    
+    let temp = [...this.allOrders];
+    
+    // กรองสถานะที่ไม่ต้องการก่อน
+    const excludedStatuses = ['waitpay', 'waitcheckpay'];
+    temp = temp.filter(o => {
+      if (!o.status) return true;
+      const statusLower = o.status.toLowerCase();
+      return !excludedStatuses.includes(statusLower);
+    });
+    
+    // ถ้าไม่ใช่ ALL ให้กรองตามสถานะที่เลือก
+    if (status !== 'ALL') {
+      temp = temp.filter(o => 
+        (o.status || '').toUpperCase() === status
+      );
+    }
+    
+    // นำฟิลเตอร์อื่นๆ มาใช้ด้วย (OrderID, วันที่)
+    if (this.filterOrderId && this.filterOrderId.trim()) {
+      temp = temp.filter(o => 
+        String(o.orderID).includes(this.filterOrderId!.trim())
+      );
+    }
+    
+    if (this.filterDateFrom) {
+      const from = new Date(this.filterDateFrom);
+      from.setHours(0, 0, 0, 0);
+      temp = temp.filter(o => {
+        const orderDate = new Date(o.order_date);
+        orderDate.setHours(0, 0, 0, 0);
+        return orderDate >= from;
+      });
+    }
+    
+    if (this.filterDateTo) {
+      const to = new Date(this.filterDateTo);
+      to.setHours(23, 59, 59, 999);
+      temp = temp.filter(o => {
+        const orderDate = new Date(o.order_date);
+        return orderDate <= to;
+      });
+    }
+    
+    this.orders = temp;
+    this.groupOrders();
   }
 
-  getGroupTotal(group: { items: any[] }) {
-    return group.items?.reduce((sum, i) => sum + Number(i.quantity) * Number(i.price_Amount ?? i.priceAmount ?? 0), 0) || 0;
+  // นับจำนวนตามสถานะสำหรับ badge (นับจาก allOrders ไม่ใช่ groupedOrders)
+  getCount(status: 'ALL' | 'MUSTTRANSFER' | 'TRANSFERING' | 'MUSTRECEIVE' | 'SUCCESS' | 'CANCEL' | 'RETURN' | 'FAILED'): number {
+    // กรอง allOrders ที่ไม่รวม waitpay และ waitcheckpay
+    const excludedStatuses = ['waitpay', 'waitcheckpay'];
+    let filteredOrders = this.allOrders.filter(o => {
+      if (!o.status) return true;
+      const statusLower = o.status.toLowerCase();
+      return !excludedStatuses.includes(statusLower);
+    });
+
+    // จัดกลุ่ม orders ตาม orderID
+    const grouped: any[] = [];
+    filteredOrders.forEach((o) => {
+      const g = grouped.find((x) => x.orderID === o.orderID);
+      if (g) {
+        g.items.push(o);
+      } else {
+        grouped.push({
+          orderID: o.orderID,
+          status: o.status,
+          items: [o]
+        });
+      }
+    });
+
+    // นับทั้งหมด
+    if (status === 'ALL') return grouped.length;
+    
+    // นับตามสถานะเฉพาะ
+    return grouped.filter(g => 
+      (g.status || '').toUpperCase() === status
+    ).length;
   }
 
-  mapStatus(s: string) {
-    const k = (s || '').toUpperCase();
+  getGroupTotal(group: { items: any[] }): number {
+    if (!group || !group.items || group.items.length === 0) return 0;
+    return group.items.reduce((sum, i) => {
+      const quantity = Number(i.quantity) || 0;
+      const price = Number(i.price_Amount ?? i.priceAmount ?? 0);
+      return sum + (quantity * price);
+    }, 0);
+  }
+
+  mapStatus(s: string): string {
+    if (!s) return '—';
+    const k = s.toUpperCase();
     switch (k) {
-      case 'TO_SHIP': return 'ต้องจัดส่ง';
-      case 'SHIPPING': return 'กำลังจัดส่ง';
+      case 'MUSTTRANSFER': return 'ต้องจัดส่ง';
+      case 'TRANSFERING': return 'กำลังจัดส่ง';
+      case 'MUSTRECEIVE': return 'ต้องได้รับสินค้า';
       case 'SUCCESS': return 'สำเร็จ';
       case 'CANCEL': return 'ยกเลิก';
       case 'RETURN': return 'คืนสินค้า/คืนเงิน';
       case 'FAILED': return 'จัดส่งไม่สำเร็จ';
       case 'WAITPAY': return 'รอการชำระเงิน'; 
+      case 'WAITCHECKPAY': return 'ชำระเงินรอตรวจสอบ'; 
       case 'PAID': return 'ชำระเงินแล้ว';
-      default: return '—';
+      default: return s;
     }
   }
 
-  mapShipMethod(m?: string) {
-    if (!m) return '';
+  mapShipMethod(m?: string): string {
+    if (!m) return 'ส่งด่วนทันใจ - ในประเทศ';
     const k = m.toUpperCase();
     if (k.includes('EXPRESS')) return 'ส่งด่วนทันใจ - ในประเทศ';
     if (k.includes('STANDARD')) return 'ส่งมาตรฐาน - ในประเทศ';
@@ -181,38 +216,106 @@ export class OrderManageComponent implements OnInit {
     return m;
   }
 
-  // ปุ่ม “จัดส่งสินค้า”
-  goToShip(group: any) {
+  goToShip(group: any): void {
     window.print();
   }
+
   printOrder(orderGroup: any): void {
-     this.router.navigate(['/order-manage-detail', orderGroup.orderID]);
+    this.router.navigate(['/order-manage-detail', orderGroup.orderID]);
   }
 
-  // ฟิลเตอร์ (จำลองง่าย ๆ ที่ฝั่ง client)
-  applyFilter() {
-    // ในงานจริงควรส่งพารามิเตอร์ไป query จาก API
-    let temp = [...this.orders];
+  /**
+   * ฟิลเตอร์ข้อมูลตามเงื่อนไขที่ผู้ใช้กำหนด
+   */
+  applyFilter(): void {
+    let temp = [...this.allOrders];
 
-    if (this.filterOrderId && this.filterOrderId.trim()) {
-      temp = temp.filter(o => String(o.orderID).includes(this.filterOrderId!.trim()));
+    // กรองสถานะที่ไม่ต้องการก่อน
+    const excludedStatuses = ['waitpay', 'waitcheckpay'];
+    temp = temp.filter(o => {
+      if (!o.status) return true;
+      const status = o.status.toLowerCase();
+      return !excludedStatuses.includes(status);
+    });
+
+    // กรองตามแท็บที่เลือก
+    if (this.activeTab !== 'ALL') {
+      temp = temp.filter(o => 
+        (o.status || '').toUpperCase() === this.activeTab
+      );
     }
+
+    // กรองตาม OrderID
+    if (this.filterOrderId && this.filterOrderId.trim()) {
+      temp = temp.filter(o => 
+        String(o.orderID).includes(this.filterOrderId!.trim())
+      );
+    }
+
+    // กรองตามวันที่เริ่มต้น
     if (this.filterDateFrom) {
       const from = new Date(this.filterDateFrom);
-      temp = temp.filter(o => new Date(o.order_date) >= from);
-    }
-    if (this.filterDateTo) {
-      const to = new Date(this.filterDateTo);
-      temp = temp.filter(o => new Date(o.order_date) <= to);
+      from.setHours(0, 0, 0, 0);
+      temp = temp.filter(o => {
+        const orderDate = new Date(o.order_date);
+        orderDate.setHours(0, 0, 0, 0);
+        return orderDate >= from;
+      });
     }
 
-    // regroup
+    // กรองตามวันที่สิ้นสุด
+    if (this.filterDateTo) {
+      const to = new Date(this.filterDateTo);
+      to.setHours(23, 59, 59, 999);
+      temp = temp.filter(o => {
+        const orderDate = new Date(o.order_date);
+        return orderDate <= to;
+      });
+    }
+
     this.orders = temp;
     this.groupOrders();
   }
 
-  clearFilter() {
-    this.filterDateFrom = this.filterDateTo = this.filterOrderId = undefined;
-    this.loadOrderDetails();
+  /**
+   * ล้างฟิลเตอร์และโหลดข้อมูลใหม่
+   */
+  clearFilter(): void {
+    this.filterDateFrom = undefined;
+    this.filterDateTo = undefined;
+    this.filterOrderId = undefined;
+    this.activeTab = 'ALL'; // รีเซ็ตแท็บกลับไปที่ทั้งหมด
+    this.orders = [...this.allOrders];
+    this.filterExcludedStatuses();
+    this.groupOrders();
   }
+
+  confirmTransfer(group: any, event: MouseEvent): void {
+  event.stopPropagation(); // ป้องกันคลิกซ้อน
+
+  const orderID = group.orderID;
+  const orderStatus = 'mustreceive';
+  const paymentStatus = 'paid';
+
+  if (!orderID) {
+    alert('ไม่พบรหัสคำสั่งซื้อ ❌');
+    return;
+  }
+
+  // Popup ยืนยัน
+  if (confirm(`คุณต้องการอัปเดตคำสั่งซื้อ #${orderID} เป็น "ต้องได้รับสินค้า" หรือไม่?`)) {
+    this.showorderService.updateOrderStatus(orderID, orderStatus, paymentStatus).subscribe({
+      next: (res) => {
+        alert(`อัปเดตคำสั่งซื้อ #${orderID} สำเร็จ ✅`);
+        this.loadOrderDetails(); // โหลดข้อมูลใหม่หลังอัปเดต
+      },
+      error: (err) => {
+        console.error('Error updating order status:', err);
+        alert('เกิดข้อผิดพลาดในการอัปเดต ❌');
+      }
+    });
+  }
+}
+
+
 }

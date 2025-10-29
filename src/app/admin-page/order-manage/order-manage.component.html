@@ -2,13 +2,30 @@
 <div class="main-container">
   <!-- แท็บสถานะ -->
   <div class="tabs">
-    <button class="tab active">ทั้งหมด <span class="badge">{{ getCount('ALL') }}</span></button>
-    <button class="tab">ที่ต้องจัดส่ง <span class="badge">{{ getCount('TO_SHIP') }}</span></button>
-    <button class="tab">กำลังจัดส่ง <span class="badge">{{ getCount('SHIPPING') }}</span></button>
-    <button class="tab">สำเร็จ <span class="badge">{{ getCount('SUCCESS') }}</span></button>
-    <button class="tab">การยกเลิก <span class="badge">{{ getCount('CANCEL') }}</span></button>
-    <button class="tab">คืนสินค้า/คืนเงิน <span class="badge">{{ getCount('RETURN') }}</span></button>
-    <button class="tab">จัดส่งไม่สำเร็จ <span class="badge">{{ getCount('FAILED') }}</span></button>
+    <button class="tab" [class.active]="activeTab === 'ALL'" (click)="filterByStatus('ALL')">
+      ทั้งหมด <span class="badge">{{ getCount('ALL') }}</span>
+    </button>
+    <button class="tab" [class.active]="activeTab === 'MUSTTRANSFER'" (click)="filterByStatus('MUSTTRANSFER')">
+      ที่ต้องจัดส่ง <span class="badge">{{ getCount('MUSTTRANSFER') }}</span>
+    </button>
+    <button class="tab" [class.active]="activeTab === 'TRANSFERING'" (click)="filterByStatus('TRANSFERING')">
+      กำลังจัดส่ง <span class="badge">{{ getCount('TRANSFERING') }}</span>
+    </button>
+    <button class="tab" [class.active]="activeTab === 'MUSTRECEIVE'" (click)="filterByStatus('MUSTRECEIVE')">
+      ต้องได้รับ <span class="badge">{{ getCount('MUSTRECEIVE') }}</span>
+    </button>
+    <button class="tab" [class.active]="activeTab === 'SUCCESS'" (click)="filterByStatus('SUCCESS')">
+      จัดส่งสำเร็จ <span class="badge">{{ getCount('SUCCESS') }}</span>
+    </button>
+    <button class="tab" [class.active]="activeTab === 'CANCEL'" (click)="filterByStatus('CANCEL')">
+      การยกเลิก <span class="badge">{{ getCount('CANCEL') }}</span>
+    </button>
+    <button class="tab" [class.active]="activeTab === 'RETURN'" (click)="filterByStatus('RETURN')">
+      คืนสินค้า/คืนเงิน <span class="badge">{{ getCount('RETURN') }}</span>
+    </button>
+    <button class="tab" [class.active]="activeTab === 'FAILED'" (click)="filterByStatus('FAILED')">
+      จัดส่งไม่สำเร็จ <span class="badge">{{ getCount('FAILED') }}</span>
+    </button>
   </div>
 
   <!-- แถบค้นหา -->
@@ -19,19 +36,19 @@
         <input type="date" [(ngModel)]="filterDateFrom">
       </div>
       <div class="filter-item">
-      <div class="dash">—</div>
+        <div class="dash">—</div>
       </div>
 
       <div class="filter-item">
         <label>ถึงวันที่</label>
-      <input type="date" [(ngModel)]="filterDateTo">
+        <input type="date" [(ngModel)]="filterDateTo">
       </div>
       <div class="filter-item">
         <label>หมายเลขคำสั่งซื้อ</label>
         <input type="text" [(ngModel)]="filterOrderId" placeholder="ระบุหมายเลขคำสั่งซื้อ">
       </div>
       <div class="filter-actions">
-        <button class="btn btn-primary" (click)="applyFilter()">ค้นหา </button>
+        <button class="btn btn-primary" (click)="applyFilter()">ค้นหา</button>
         <button class="btn btn-light" (click)="clearFilter()">ล้าง</button>
       </div>
     </div>
@@ -53,13 +70,11 @@
       <div class="buyer">
         <span class="buyer-label">ชื่อผู้สั่งซื้อ</span>
         <span class="chip">{{ group.items[0]?.firstName || group.items[0]?.userFirstName }} {{ group.items[0]?.lastName || group.items[0]?.userLastName }}</span>
-          <span class="meta-label">สั่งซื้อเมื่อวันที่</span>
-          <span class="meta-value">{{ group.order_date | date:'dd/MM/yyyy' }}</span>
+        <span class="meta-label">สั่งซื้อเมื่อวันที่</span>
+        <span class="meta-value">{{ group.order_date | date:'dd/MM/yyyy' }}</span>
       </div>
       <div class="meta">
-        
         <div class="meta-item">
-
           <span class="meta-number">หมายเลขคำสั่งซื้อ</span>
           <span class="meta-value">{{ group.orderID }}</span>
         </div>
@@ -76,7 +91,6 @@
             <div class="prod-name">{{ item.product_Name }}</div>
             <div class="prod-sku">{{ item.size ? (item.size + (item.color ? ' - ' + item.color : '')) : (item.color || '') }}</div>
             <span class="meta-value">x{{ item.quantity }}</span>
-
           </div>
         </div>
       </div>
@@ -101,7 +115,8 @@
 
       <!-- ดำเนินการ -->
       <div class="col action">
-        <a class="link" (click)="printOrder(group)">จัดส่งสินค้า</a>
+        <a class="link" *ngIf="group.status?.toUpperCase() === 'MUSTTRANSFER'" (click)="printOrder(group)">จัดส่งสินค้า</a>
+        <a class="link" *ngIf="group.status?.toUpperCase() === 'TRANSFERING'" (click)="confirmTransfer(group, $event)">ผู้ส่งจัดส่งเสร็จแล้ว</a>
       </div>
     </div>
   </div>

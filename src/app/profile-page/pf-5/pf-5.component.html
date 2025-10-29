@@ -77,14 +77,17 @@
             (click)="goToPfDetail(orderGroup.orderID)">
 
             <div class="customer-info">
+              <div class="payment-info-right">
+                  <div>รหัสคำสั่งซื้อ #{{ orderGroup.orderID }}</div>
+                </div>
               <div class="payment-info">
                 <div class="payment-info-left">
                   <div>สั่งซื้อวันที่: {{ orderGroup.order_date | date }}</div>
                 </div>
                 <div class="payment-info-right">
                   <div class="d-flex align-items-center gap-3 flex-wrap">
-                    <span>วิธีการชำระเงิน: {{ orderGroup.items[0]?.payment_Method }}</span>
-                    <span class="text-orange fw-semibold">| {{ orderGroup.status }}</span>
+                    <span>วิธีการชำระเงิน: {{ getPaymentDisplayStatus(orderGroup.items[0]?.payment_Method) }}</span>
+                    <span class="text-orange fw-semibold">| {{ getDisplayStatus(orderGroup.status) }}</span>
                   </div>
                 </div>
               </div>

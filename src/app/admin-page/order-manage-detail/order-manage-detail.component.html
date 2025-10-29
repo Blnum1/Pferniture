@@ -9,11 +9,12 @@
       <div class="row">
         <div class="col-md-6">
           <h5 class="fw-bold">ข้อมูลผู้สั่งซื้อ</h5>
-          <p><strong>ชื่อ:</strong> {{ orderGroup.items[0]?.userFirstName }} {{ orderGroup.items[0]?.userLastName }}</p>
+          <p><strong>user</strong> {{ orderGroup.items[0]?.userFirstName }} {{ orderGroup.items[0]?.userLastName }}</p>
+          <p><strong>ชื่อ</strong> {{ orderGroup.items[0]?.shippingFirstName }} {{ orderGroup.items[0]?.shippingLastName }}</p>
           <p><strong>ที่อยู่จัดส่ง:</strong> {{ orderGroup.items[0]?.address }} {{ orderGroup.items[0]?.city }} {{ orderGroup.items[0]?.region }} {{ orderGroup.items[0]?.country }} {{ orderGroup.items[0]?.postal_Code }}</p>
         </div>
         <div class="col-md-6 text-md-end">
-          <p><strong>วันที่สั่งซื้อ:</strong> {{ orderGroup.order_date | date }}</p>
+          <p><strong>วันที่สั่งซื้อ:</strong> {{ orderGroup.order_date | date:'dd/MM/yyyy' }}</p>
           <p><strong>หมายเลขคำสั่งซื้อ:</strong> {{ orderGroup.orderID }}</p>
         </div>
       </div>
@@ -37,7 +38,7 @@
         <tbody>
           <tr *ngFor="let item of orderGroup.items; let i = index">
             <td>{{ i + 1 }}</td>
-            <td>{{ item.product_Name }} ({{ item.size }} - {{ item.color }})</td>
+            <td>{{ item.product_Name }} <span *ngIf="item.size || item.color">({{ item.size }}{{ item.size && item.color ? ' - ' : '' }}{{ item.color }})</span></td>
             <td>{{ item.quantity }}</td>
             <td>฿{{ item.priceAmount | number:'1.0-0' }}</td>
             <td>฿{{ item.quantity * item.priceAmount | number:'1.0-0' }}</td>
@@ -62,9 +63,13 @@
                  [id]="ship.id"
                  name="shipper"
                  [value]="ship.name"
-                 [(ngModel)]="selectedShipper">
+                 [(ngModel)]="selectedShipper"
+                 [disabled]="isUpdating">
           <label class="form-check-label" [for]="ship.id">
-            <img [src]="ship.logo" alt="{{ ship.name }}" style="height:40px; margin-right:5px;">
+            <img [src]="ship.logo" 
+                 [alt]="ship.name" 
+                 style="height:40px; margin-right:5px;"
+                 (error)="$any($event.target).src='assets/image/default-logo.png'">
             {{ ship.name }}
           </label>
         </div>
@@ -75,9 +80,21 @@
   <!-- ปุ่มยืนยัน -->
   <div class="text-center">
     <button class="btn btn-primary btn-lg"
-            [disabled]="!selectedShipper"
+            [disabled]="!selectedShipper || isUpdating"
             (click)="confirmAndPrint()">
-      ยืนยันและปริ้นใบส่งสินค้า
+      <span *ngIf="!isUpdating">ยืนยันและปริ้นใบส่งสินค้า</span>
+      <span *ngIf="isUpdating">
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        กำลังดำเนินการ...
+      </span>
     </button>
   </div>
+</div>
+
+<!-- Loading overlay สำหรับกรณีไม่มีข้อมูล -->
+<div class="text-center py-5" *ngIf="!orderGroup">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">กำลังโหลด...</span>
+  </div>
+  <p class="mt-3">กำลังโหลดข้อมูลคำสั่งซื้อ...</p>
 </div>

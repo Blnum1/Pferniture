@@ -1,0 +1,187 @@
+/* เพิ่ม margin-left ให้ content หลักเว้นจาก navbar */
+.main-container {
+  margin-top: 80px;
+  margin-left: 270px; /* ปรับให้เหมาะสมกับความกว้างของ navbar */
+  padding: 20px;
+  background-color: #ffffff;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tabs {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.tab {
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.tab.active {
+  font-weight: bold;
+  color: #1677ff;
+}
+
+.badge {
+  background-color: #0066ff;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-left: 10px;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-actions button {
+  padding: 8px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.list-header {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
+  padding: 5px;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+.col {
+  padding: 10px;
+}
+
+.order-card {
+  background-color: white;
+  margin-bottom: 40px;
+  border: 1px solid #ddd;
+  /* padding: 15px; */
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 10px;
+  border-bottom: 1px solid #ddd;
+  background-color: #ddd;
+}
+
+.order-body {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
+}
+
+.product-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.thumb {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+  border: 2px solid #ddd; 
+  border-radius: 4px;
+}
+
+.prod-texts {
+  flex: 1;
+}
+
+.prod-qty {
+  font-weight: bold;
+}
+
+.price-total {
+  font-weight: bold;
+}
+
+.status-text {
+  font-weight: bold;
+}
+
+.link {
+  color: #1677ff;
+  cursor: pointer;
+}
+.meta-value{
+  margin-left: 10px;
+}
+.meta-label{
+  margin-left: 50px;
+}
+
+.meta-number{
+  margin-right: 1px;
+}
+.buyer-label{
+  margin-right: 10px;
+}
+.prod-sku{
+  color:rgb(124, 124, 124);
+}
+.price-note{
+  color:rgb(124, 124, 124);
+}
+.dash{
+  margin-top: 20px;
+}
+
+.custom-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 400px;
+  max-width: 100%;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}

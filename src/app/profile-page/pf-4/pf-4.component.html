@@ -77,14 +77,17 @@
             (click)="goToPfDetail(orderGroup.orderID)">
 
             <div class="customer-info">
+              <div class="payment-info-right">
+                  <div>รหัสคำสั่งซื้อ #{{ orderGroup.orderID }}</div>
+                </div>
               <div class="payment-info">
                 <div class="payment-info-left">
                   <div>สั่งซื้อวันที่: {{ orderGroup.order_date | date }}</div>
                 </div>
                 <div class="payment-info-right">
                   <div class="d-flex align-items-center gap-3 flex-wrap">
-                    <span>วิธีการชำระเงิน: {{ orderGroup.items[0]?.payment_Method }}</span>
-                    <span class="text-orange fw-semibold">| {{ orderGroup.status }}</span>
+                    <span>วิธีการชำระเงิน: {{ getPaymentDisplayStatus(orderGroup.items[0]?.payment_Method) }}</span>
+                    <span class="text-orange fw-semibold">| {{ getDisplayStatus(orderGroup.status) }}</span>
                   </div>
                 </div>
               </div>
@@ -108,7 +111,12 @@
                 <div class="payment-info-left"></div>
                 <div class="payment-info-right">
                   <p>ยอดรวม: ฿{{ orderGroup.items[0]?.payment_Amount }}</p>
-
+                  <div *ngIf="orderGroup.status === 'mustreceive'">
+      <button class="btn btn-success mt-1"
+        (click)="openConfirmModal(orderGroup.orderID, $event)">
+        ฉันได้รับสินค้าแล้ว
+      </button>
+    </div>
                 </div>
               </div>
             </div>
@@ -123,5 +131,20 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" *ngIf="isModalOpen" (click)="closeModal()"></div>
+
+<div class="modal-container" *ngIf="isModalOpen">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>ยืนยันการได้รับสินค้า</h3>
+    <p>คุณได้รับสินค้าหมายเลขคำสั่งซื้อ #{{ selectedOrderID }} แล้วใช่หรือไม่?</p>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary" (click)="closeModal()">ยกเลิก</button>
+      <button class="btn btn-primary" (click)="confirmReceived()">ยืนยัน</button>
+    </div>
   </div>
 </div>

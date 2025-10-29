@@ -2,15 +2,11 @@
   <button class="btn btn-primary" (click)="logout()">Logout</button>
   <div class="menu">
     <ul>
-      <li><a routerLink="/" (click)="closeMenu()">Home</a></li>
-      <li><a routerLink="/dashboard" (click)="closeMenu()">แดชบอร์ด</a></li>
-      <li><a routerLink="/crud" (click)="closeMenu()">จัดการสินค้าทั้งหมด</a></li>
-      <!-- <li><a routerLink="/onoff" (click)="closeMenu()">On-Off status</a></li> -->
-      <!-- <li><a routerLink="/checkstock" (click)="closeMenu()">Check Stock</a></li> -->
-      <li><a routerLink="/order-manage" (click)="closeMenu()">จัดการคำสั่งซื้อ</a></li>
-      <li><a routerLink="/payment-manage" (click)="closeMenu()">จัดการการชำระเงิน</a></li>
-      
-      <!-- <li><a routerLink="/promotion" (click)="closeMenu()">Marketing Promotion</a></li> -->
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Home</a></li>
+      <li><a routerLink="/dashboard" routerLinkActive="active" (click)="closeMenu()">แดชบอร์ด</a></li>
+      <li><a routerLink="/crud" routerLinkActive="active" (click)="closeMenu()">จัดการสินค้าทั้งหมด</a></li>
+      <li><a routerLink="/order-manage" routerLinkActive="active" (click)="closeMenu()">จัดการคำสั่งซื้อ</a></li>
+      <li><a routerLink="/payment-manage" routerLinkActive="active" (click)="closeMenu()">จัดการการชำระเงิน</a></li>
       <!-- <li><a routerLink="/userinfo" (click)="closeMenu()">User info</a></li> -->
     </ul>
   </div>
