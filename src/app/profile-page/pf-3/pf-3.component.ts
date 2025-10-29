@@ -14,7 +14,7 @@ export class Pf3Component implements OnInit {
   constructor(private showOrderService: ShoworderService,private router:Router) {}
 
   ngOnInit(): void {
-    const status = 'musttransfer';  // สามารถเปลี่ยนค่า status ได้
+    const status = 'transfering';  // สามารถเปลี่ยนค่า status ได้
     const userID = 1;          // เปลี่ยนเป็น userID ของผู้ใช้ที่ต้องการโหลดข้อมูล
 
     this.loadOrders(status, userID);

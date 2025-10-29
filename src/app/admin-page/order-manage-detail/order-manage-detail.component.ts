@@ -101,7 +101,7 @@ export class OrderManageDetailComponent implements OnInit {
     // เรียกใช้ service เพื่ออัปเดตสถานะ
     this.showorderService.updateOrderStatus(
       this.orderGroup.orderID,
-      'tranfering',  // OrderStatus
+      'transfering',  // OrderStatus
       'paid'           // PaymentStatus (สมมติว่าชำระเงินแล้ว)
     ).subscribe({
       next: (response) => {
