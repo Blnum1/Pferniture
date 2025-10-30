@@ -101,7 +101,8 @@
   </div>
 </div> -->
 
-<div class="container my-3">
+<div class="container my-3 mt-5">
+  <h2 class="mb-4">เฟอร์นิเจอร์ทั้งหมด</h2>
   <div class="d-flex align-items-center justify-content-end gap-2 bg-light p-3 rounded shadow-sm">
     <div class="sort fw-semibold">เรียงโดย</div>
     <div class="dropdown">
@@ -163,6 +164,19 @@
     <div class="d-flex justify-content-center gap-2 mt-3">
       <button class="btn btn-secondary" (click)="closeModal()">ยกเลิก</button>
       <button class="btn btn-primary" (click)="addToCart()">เพิ่มลงตะกร้า</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+  <div class="toast show" role="alert" *ngIf="showToast">
+    <div class="toast-header bg-success text-white">
+      <i class="bi bi-check-circle-fill me-2"></i>
+      <strong class="me-auto">สำเร็จ</strong>
+      <button type="button" class="btn-close btn-close-white" (click)="showToast = false"></button>
+    </div>
+    <div class="toast-body">
+      เพิ่มสินค้าลงตะกร้าเรียบร้อยแล้ว
     </div>
   </div>
 </div>

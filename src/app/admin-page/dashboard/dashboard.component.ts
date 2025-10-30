@@ -15,10 +15,10 @@ export class DashboardComponent implements OnInit {
   ];
 
   bestSellers = [
-    { name: 'โต๊ะไม้โอ๊ค', sold: 48, price: 3500, image: 'assets/image/table.jpg' },
-    { name: 'เก้าอี้วินเทจ', sold: 32, price: 2200, image: 'assets/image/chair.jpg' },
-    { name: 'โซฟาผ้าเทา', sold: 29, price: 7200, image: 'assets/image/sofa.jpg' },
-    { name: 'ชั้นวางของไม้', sold: 21, price: 1900, image: 'assets/image/shelf.jpg' },
+    { name: 'โต๊ะไม้โอ๊ค', sold: 48, price: 3500, image: 'assets/image/oakTable.jpg' },
+    { name: 'เก้าอี้วินเทจ', sold: 32, price: 2200, image: 'assets/image/winTable.jpg' },
+    { name: 'โซฟาผ้าเทา', sold: 29, price: 7200, image: 'assets/image/sofaFabic.jpg' },
+    { name: 'ชั้นวางของไม้', sold: 21, price: 1900, image: 'assets/image/shelfwood.jpg' },
     { name: 'โคมไฟโมเดิร์น', sold: 17, price: 1400, image: 'assets/image/lamp.jpg' }
   ];
 
@@ -29,9 +29,9 @@ export class DashboardComponent implements OnInit {
   ];
 
   recentReviews = [
-    { name: 'ภัทรพล', stars: 5, comment: 'สินค้าดีมาก จัดส่งไว', avatar: 'assets/image/user1.jpg' },
-    { name: 'จิราพร', stars: 4, comment: 'เก้าอี้สวย แข็งแรง', avatar: 'assets/image/user2.jpg' },
-    { name: 'อนุชา', stars: 5, comment: 'บริการดีสุดๆ 👍', avatar: 'assets/image/user3.jpg' }
+    { name: 'นันทภพ', stars: 5, comment: 'สินค้าดีมาก จัดส่งไว', avatar: 'assets/image/githubprofile.png' },
+    { name: 'จิรยุทธ์', stars: 4, comment: 'เก้าอี้สวย แข็งแรง', avatar: 'assets/image/githubprofile.png' },
+    { name: 'พิมพ์ชนก', stars: 5, comment: 'บริการดีสุดๆ 👍', avatar: 'assets/image/githubprofile.png' }
   ];
 
   ngOnInit(): void {

@@ -18,13 +18,10 @@
             <i class="fas" [ngClass]="isEditMode ? 'fa-save' : 'fa-edit'"></i>
             {{ isEditMode ? 'บันทึกการเปลี่ยนแปลง' : 'แก้ไข' }}
           </button>
-           <button *ngIf="isEditMode" 
-                            type="button" 
-                            (click)="cancelEdit()" 
-                            class="btn btn-lg btn-outline-secondary ms-2">
-                        <i class="fas fa-undo"></i> ยกเลิก
-                    </button> 
-  
+          <button *ngIf="isEditMode" type="button" (click)="cancelEdit()" class="btn btn-lg btn-outline-secondary ms-2">
+            <i class="fas fa-undo"></i> ยกเลิก
+          </button>
+
           <button type="button" (click)="handleDelete()" class="btn btn-lg btn-danger ms-2" [disabled]="isEditMode">
             <i class="fas fa-trash-alt"></i> ลบ
           </button>
@@ -113,15 +110,33 @@
                   <label class="form-label fw-bold">รหัสสินค้า</label>
                   <input [(ngModel)]="product.productID" name="productID" readonly class="form-control bg-light" />
                 </div>
-                <div class="mb-3">
+
+                <!-- Autocomplete สำหรับหมวดหมู่ -->
+                <div class="mb-3 position-relative">
                   <label class="form-label fw-bold">ชื่อหมวดหมู่</label>
                   <input [(ngModel)]="product.category_Name" name="category_Name" class="form-control"
-                    [readonly]="!isEditMode" [ngClass]="{'bg-light': !isEditMode}" />
+                    placeholder="พิมพ์เพื่อค้นหาหมวดหมู่..." (input)="onCategorySearch($event)"
+                    (focus)="onCategoryFocus()" (blur)="onCategoryBlur()" [readonly]="!isEditMode"
+                    [ngClass]="{'bg-light': !isEditMode}" autocomplete="off" />
+
+                  <!-- Dropdown รายการหมวดหมู่ -->
+                  <div class="dropdown-menu show w-100" *ngIf="showDropdown && isEditMode"
+                    style="max-height: 200px; overflow-y: auto; z-index: 1050;">
+                    <button class="dropdown-item" type="button" *ngFor="let cat of filteredCategories"
+                      (click)="selectCategory(cat)">
+                      <strong>{{ cat.category_Name }}</strong>
+                      <span class="text-muted">(ID: {{ cat.categoryID }})</span>
+                    </button>
+                    <div class="dropdown-item text-muted" *ngIf="filteredCategories.length === 0">
+                      ไม่พบหมวดหมู่ที่ค้นหา
+                    </div>
+                  </div>
                 </div>
+
                 <div class="mb-3">
                   <label class="form-label fw-bold">รหัสหมวดหมู่</label>
-                  <input [(ngModel)]="product.categoryID" name="categoryID" type="number" class="form-control"
-                    [readonly]="!isEditMode" [ngClass]="{'bg-light': !isEditMode}" />
+                  <input [(ngModel)]="product.categoryID" name="categoryID" type="number" class="form-control" readonly
+                    class="form-control bg-light" />
                 </div>
                 <div class="mb-3">
                   <label class="form-label fw-bold">จำนวนสินค้าคงเหลือ</label>
@@ -130,7 +145,6 @@
                 </div>
                 <div class="mb-3">
                   <label class="form-label fw-bold">สถานะพร้อมขาย</label>
-                  <!-- ⭐ แก้ไข: ใช้ string 'YES'/'NO' เพื่อให้ตรงกับ API/Backend และ Product Interface -->
                   <select [(ngModel)]="product.is_Active" name="is_Active" class="form-select" [disabled]="!isEditMode"
                     [ngClass]="{'bg-light': !isEditMode}">
                     <option [ngValue]="true">Active</option>

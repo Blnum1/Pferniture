@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Product, ProductService } from '../../../services/product.service';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-pd-1',
@@ -11,7 +12,11 @@ export class Pd1Component implements OnInit{
   sortOrder: 'asc' | 'desc' = 'asc';
   sortLabel = 'ราคา';
   searchResults: any[] = [];
-  constructor(private productService: ProductService) { }
+  selectedProduct: any = null;
+  quantity = 1;
+  showModal = false;
+  showToast = false;
+  constructor(private productService: ProductService,private cartService: CartService) { }
 
   ngOnInit(): void {
     const DfcategoryId = 1;
@@ -43,6 +48,49 @@ applySort() {
     const priceB = Number(b.price ?? 0);
     return this.sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
   });
+}
+
+openCartModal(product: any, event: MouseEvent) {
+  event.preventDefault();       
+  event.stopPropagation();     
+  this.selectedProduct = product;
+  this.quantity = 1;
+  this.showModal = true;        
+}
+
+closeModal() {
+    this.showModal = false;
+  }
+
+  increaseQty() {
+    this.quantity++;
+  }
+
+  decreaseQty() {
+    if (this.quantity > 1) this.quantity--;
+  }
+
+  addToCart() {
+    if (!this.selectedProduct) return;
+    const userId = 1; // สมมติล็อกอินอยู่
+    this.cartService.getOrCreateCart(userId).subscribe({
+      next: (cartId) => {
+        this.cartService.addItem(cartId, this.selectedProduct.productID, this.quantity).subscribe({
+          next: () => {
+            this.closeModal();
+            this.showAddToCartToast();
+          },
+          error: (err) => console.error('เพิ่มสินค้าลงตะกร้าไม่สำเร็จ', err)
+        });
+      },
+      error: (err) => console.error('ไม่สามารถสร้าง/ดึง cart ได้', err)
+    });
+  }
+  showAddToCartToast() {
+  this.showToast = true;
+  setTimeout(() => {
+    this.showToast = false;
+  }, 3000); // แสดง 3 วินาที
 }
 }
 

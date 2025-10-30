@@ -76,6 +76,10 @@ getCategoryByID(categoryID: number): Observable<Product[]> {
     return this.http.delete(`${this.apiUrl}/DeleteProduct/${id}`);
   }
 
+  deleteCategory(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/DeleteCategory/${id}`);
+  }
+
  searchProducts(query: string): Observable<any[]> {
     const params = new HttpParams().set('query', query);
     return this.http.get<any[]>(`${this.apiUrl}/SearchProducts`, { params });

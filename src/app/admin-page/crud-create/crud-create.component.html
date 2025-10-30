@@ -15,9 +15,11 @@
                         </div>
                         <div class="col-md-8">
                             <div *ngIf="product.image_Url1" class="mb-2">
-                                <img [src]="product.image_Url1" alt="Image Preview" width="100%" height="auto" class="img-thumbnail img-fluid preview-image" />
+                                <img [src]="product.image_Url1" alt="Image Preview" width="100%" height="auto"
+                                    class="img-thumbnail img-fluid preview-image" />
                             </div>
-                            <input [(ngModel)]="product.image_Url1" name="image_Url1" class="form-control form-control-sm" placeholder="Paste Image URL here" />
+                            <input [(ngModel)]="product.image_Url1" name="image_Url1"
+                                class="form-control form-control-sm" placeholder="Paste Image URL here" />
                         </div>
                     </div>
 
@@ -27,9 +29,11 @@
                         </div>
                         <div class="col-md-8">
                             <div *ngIf="product.image_Url2" class="mb-2">
-                                <img [src]="product.image_Url2" alt="Image Preview" width="100%" height="auto" class="img-thumbnail img-fluid preview-image" />
+                                <img [src]="product.image_Url2" alt="Image Preview" width="100%" height="auto"
+                                    class="img-thumbnail img-fluid preview-image" />
                             </div>
-                            <input [(ngModel)]="product.image_Url2" name="image_Url2" class="form-control form-control-sm" placeholder="Paste Image URL here" />
+                            <input [(ngModel)]="product.image_Url2" name="image_Url2"
+                                class="form-control form-control-sm" placeholder="Paste Image URL here" />
                         </div>
                     </div>
 
@@ -39,9 +43,11 @@
                         </div>
                         <div class="col-md-8">
                             <div *ngIf="product.image_Url3" class="mb-2">
-                                <img [src]="product.image_Url3" alt="Image Preview" width="100%" height="auto" class="img-thumbnail img-fluid preview-image" />
+                                <img [src]="product.image_Url3" alt="Image Preview" width="100%" height="auto"
+                                    class="img-thumbnail img-fluid preview-image" />
                             </div>
-                            <input [(ngModel)]="product.image_Url3" name="image_Url3" class="form-control form-control-sm" placeholder="Paste Image URL here" />
+                            <input [(ngModel)]="product.image_Url3" name="image_Url3"
+                                class="form-control form-control-sm" placeholder="Paste Image URL here" />
                         </div>
                     </div>
                 </div>
@@ -65,20 +71,41 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">ชื่อสินค้า</label>
-                                    <input [(ngModel)]="product.product_Name" name="product_Name" class="form-control" />
+                                    <input [(ngModel)]="product.product_Name" name="product_Name"
+                                        class="form-control" />
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">รหัสสินค้า</label>
-                                    <input [(ngModel)]="product.productID" name="productID" readonly class="form-control bg-light" />
-                                </div>
-                                <div class="mb-3">
+                                <!-- <div class="mb-3">
+        <label class="form-label fw-bold">รหัสสินค้า</label>
+        <input [(ngModel)]="product.productID" name="productID" readonly class="form-control bg-light" />
+    </div> -->
+
+                                <!-- Autocomplete สำหรับหมวดหมู่ -->
+                                <div class="mb-3 position-relative">
                                     <label class="form-label fw-bold">ชื่อหมวดหมู่</label>
-                                    <input [(ngModel)]="product.category_Name" name="category_Name" readonly class="form-control bg-light" />
+                                    <input [(ngModel)]="product.category_Name" name="category_Name" class="form-control"
+                                        placeholder="พิมพ์เพื่อค้นหาหมวดหมู่..." (input)="onCategorySearch($event)"
+                                        (focus)="onCategoryFocus()" (blur)="onCategoryBlur()" autocomplete="off" />
+
+                                    <!-- Dropdown รายการหมวดหมู่ -->
+                                    <div class="dropdown-menu show w-100" *ngIf="showDropdown"
+                                        style="max-height: 200px; overflow-y: auto;">
+                                        <button class="dropdown-item" type="button"
+                                            *ngFor="let cat of filteredCategories" (click)="selectCategory(cat)">
+                                            <strong>{{ cat.category_Name }}</strong>
+                                            <span class="text-muted">(ID: {{ cat.categoryID }})</span>
+                                        </button>
+                                        <div class="dropdown-item text-muted" *ngIf="filteredCategories.length === 0">
+                                            ไม่พบหมวดหมู่ที่ค้นหา
+                                        </div>
+                                    </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">รหัสหมวดหมู่</label>
-                                    <input [(ngModel)]="product.categoryID" name="categoryID" class="form-control" />
+                                    <input [(ngModel)]="product.categoryID" name="categoryID" readonly
+                                        class="form-control bg-light" />
                                 </div>
+
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">ขนาด</label>
                                     <input [(ngModel)]="product.size" name="size" class="form-control" />
@@ -92,15 +119,18 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">ราคาขายจริง</label>
-                                    <input [(ngModel)]="product.price" name="price" type="number" class="form-control" />
+                                    <input [(ngModel)]="product.price" name="price" type="number"
+                                        class="form-control" />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">ราคาก่อนลด</label>
-                                    <input [(ngModel)]="product.price_Discount" name="price_Discount" type="number" class="form-control" />
+                                    <input [(ngModel)]="product.price_Discount" name="price_Discount" type="number"
+                                        class="form-control" />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">จำนวนสินค้าคงเหลือ</label>
-                                    <input [(ngModel)]="product.stock" name="stock" type="number" class="form-control" />
+                                    <input [(ngModel)]="product.stock" name="stock" type="number"
+                                        class="form-control" />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">สถานะพร้อมขาย</label>
@@ -116,15 +146,18 @@
                         <h5 class="mb-3">📝 คำอธิบายสินค้า</h5>
                         <div class="mb-3">
                             <label class="form-label">คำอธิบายสินค้า 1</label>
-                            <textarea [(ngModel)]="product.pDescription1" name="description1" class="form-control" rows="2"></textarea>
+                            <textarea [(ngModel)]="product.pDescription1" name="description1" class="form-control"
+                                rows="2"></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">คำอธิบายสินค้า 1</label>
-                            <textarea [(ngModel)]="product.pDescription2" name="description2" class="form-control" rows="2"></textarea>
+                            <textarea [(ngModel)]="product.pDescription2" name="description2" class="form-control"
+                                rows="2"></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">คำอธิบายสินค้า 3</label>
-                            <textarea [(ngModel)]="product.pDescription3" name="description3" class="form-control" rows="2"></textarea>
+                            <textarea [(ngModel)]="product.pDescription3" name="description3" class="form-control"
+                                rows="2"></textarea>
                         </div>
                     </form>
                 </div>
