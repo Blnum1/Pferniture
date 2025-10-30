@@ -186,3 +186,9 @@ button {
     margin-top: 20px;
   }
 }
+
+
+.form-check-input{
+  width: 30px;
+  height: 30px;
+}

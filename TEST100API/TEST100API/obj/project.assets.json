@@ -4740,23 +4740,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\blue\\.nuget\\packages\\": {},
+    "C:\\Users\\LOQ\\.nuget\\packages\\": {},
     "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Angular-Ferniture\\Pfurniture\\TEST100API\\TEST100API\\TEST100API.csproj",
+      "projectUniqueName": "D:\\Users\\PROJECT\\Pferniture\\TEST100API\\TEST100API\\TEST100API.csproj",
       "projectName": "TEST100API",
-      "projectPath": "D:\\Angular-Ferniture\\Pfurniture\\TEST100API\\TEST100API\\TEST100API.csproj",
-      "packagesPath": "C:\\Users\\blue\\.nuget\\packages\\",
-      "outputPath": "D:\\Angular-Ferniture\\Pfurniture\\TEST100API\\TEST100API\\obj\\",
+      "projectPath": "D:\\Users\\PROJECT\\Pferniture\\TEST100API\\TEST100API\\TEST100API.csproj",
+      "packagesPath": "C:\\Users\\LOQ\\.nuget\\packages\\",
+      "outputPath": "D:\\Users\\PROJECT\\Pferniture\\TEST100API\\TEST100API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\blue\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\LOQ\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

@@ -41,6 +41,15 @@ import { SearchComponent } from './page/search/search.component';
 import { PaymentConfirmComponent } from './page/payment-confirm/payment-confirm.component';
 import { Pf6Component } from './profile-page/pf-6/pf-6.component';
 import { CategoryManageComponent } from './admin-page/category-manage/category-manage.component';
+import { Pd11Component } from './page/sort-page/pd-11/pd-11.component';
+import { Pd12Component } from './page/sort-page/pd-12/pd-12.component';
+import { Pd13Component } from './page/sort-page/pd-13/pd-13.component';
+import { Pd14Component } from './page/sort-page/pd-14/pd-14.component';
+import { Pd15Component } from './page/sort-page/pd-15/pd-15.component';
+import { Pd16Component } from './page/sort-page/pd-16/pd-16.component';
+import { Pd17Component } from './page/sort-page/pd-17/pd-17.component';
+import { Pd18Component } from './page/sort-page/pd-18/pd-18.component';
+import { Pd19Component } from './page/sort-page/pd-19/pd-19.component';
 
 const routes: Routes = [
   { path: '', 
@@ -136,6 +145,33 @@ const routes: Routes = [
   },
   { path: 'pd-10', 
     component: Pd10Component 
+  },
+  { path: 'pd-11', 
+    component: Pd11Component 
+  },
+  { path: 'pd-12', 
+    component: Pd12Component 
+  },
+  { path: 'pd-13', 
+    component: Pd13Component 
+  },
+  { path: 'pd-14', 
+    component: Pd14Component 
+  },
+  { path: 'pd-15', 
+    component: Pd15Component 
+  },
+  { path: 'pd-16', 
+    component: Pd16Component 
+  },
+  { path: 'pd-17', 
+    component: Pd17Component 
+  },
+  { path: 'pd-18', 
+    component: Pd18Component 
+  },
+  { path: 'pd-19', 
+    component: Pd19Component 
   },
   { path: 'cart', 
     component: CartComponent 

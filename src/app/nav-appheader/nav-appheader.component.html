@@ -29,6 +29,9 @@
             <div class="dropdown-links">
               <a class="dropdown-link" [routerLink]="['/pd-2']">โต๊ะทำงาน</a>
               <a class="dropdown-link" [routerLink]="['/pd-1']">โต๊ะกินข้าว</a>
+              <a class="dropdown-link" [routerLink]="['/pd-11']">โต๊ะกลาง</a>
+            <br>
+              <a class="dropdown-link" [routerLink]="['/pd-14']">โต๊ะวางแล็ปท็อป</a>
             </div>
           </ul>
         </li>
@@ -57,6 +60,10 @@
           <ul class="dropdown-menu p-3" aria-labelledby="cabDropdown">
             <div class="dropdown-links">
               <a class="dropdown-link" [routerLink]="['/pd-6']">ตู้เสื้อผ้า</a>
+              <a class="dropdown-link" [routerLink]="['/pd-15']">ชั้นแขวนผนัง</a>
+              <a class="dropdown-link" [routerLink]="['/pd-12']">บานตู้</a>
+              <a class="dropdown-link" [routerLink]="['/pd-16']">ตู้เก็บของพร้อมบานตู้</a>
+              <a class="dropdown-link" [routerLink]="['/pd-18']">ตู้บานกระจก</a>
             </div>
           </ul>
         </li>
@@ -69,6 +76,7 @@
           </a>
           <ul class="dropdown-menu p-3" aria-labelledby="sofaDropdown">
             <div class="dropdown-links">
+              <a class="dropdown-link" [routerLink]="['/pd-13']">โซฟาเดี่ยว</a>
               <a class="dropdown-link" [routerLink]="['/pd-7']">โซฟา2ที่นั่ง</a>
               <a class="dropdown-link" [routerLink]="['/pd-8']">โซฟา3ที่นั่ง</a>
               <a class="dropdown-link" [routerLink]="['/pd-9']">โซฟา4ที่นั่ง</a>
@@ -79,8 +87,18 @@
           <a class="nav-link nav-block" [routerLink]="['/pd-10']" routerLinkActive="active">เตียง</a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link nav-block" [routerLink]="['/pd-11']" routerLinkActive="active">เบ็ดเตล็ด</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-block dropdown-toggle" href="#" id="sofaDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            เบ็ดเตล็ด
+          </a>
+          <ul class="dropdown-menu p-3" aria-labelledby="sofaDropdown">
+            <div class="dropdown-links">
+              <a class="dropdown-link" [routerLink]="['/pd-17']">พรม</a>
+              <br>
+              <a class="dropdown-link" [routerLink]="['/pd-19']">โคมไฟตั้งโต๊ะ</a>
+            </div>
+          </ul>
         </li>
 
         <li class="nav-item">

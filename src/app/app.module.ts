@@ -56,6 +56,15 @@ import { PfDetailComponent } from './profile-page/pf-detail/pf-detail.component'
 import { PaymentConfirmComponent } from './page/payment-confirm/payment-confirm.component';
 import { Pf6Component } from './profile-page/pf-6/pf-6.component';
 import { CategoryManageComponent } from './admin-page/category-manage/category-manage.component';
+import { Pd11Component } from './page/sort-page/pd-11/pd-11.component';
+import { Pd12Component } from './page/sort-page/pd-12/pd-12.component';
+import { Pd13Component } from './page/sort-page/pd-13/pd-13.component';
+import { Pd14Component } from './page/sort-page/pd-14/pd-14.component';
+import { Pd15Component } from './page/sort-page/pd-15/pd-15.component';
+import { Pd16Component } from './page/sort-page/pd-16/pd-16.component';
+import { Pd17Component } from './page/sort-page/pd-17/pd-17.component';
+import { Pd18Component } from './page/sort-page/pd-18/pd-18.component';
+import { Pd19Component } from './page/sort-page/pd-19/pd-19.component';
 
 @NgModule({
   declarations: [
@@ -104,7 +113,16 @@ import { CategoryManageComponent } from './admin-page/category-manage/category-m
     PfDetailComponent,
     PaymentConfirmComponent,
     Pf6Component,
-    CategoryManageComponent
+    CategoryManageComponent,
+    Pd11Component,
+    Pd12Component,
+    Pd13Component,
+    Pd14Component,
+    Pd15Component,
+    Pd16Component,
+    Pd17Component,
+    Pd18Component,
+    Pd19Component
   ],
   imports: [
     BrowserModule,

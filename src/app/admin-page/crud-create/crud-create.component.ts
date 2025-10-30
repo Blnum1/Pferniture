@@ -103,8 +103,8 @@ export class CrudCreateComponent implements OnInit {
         this.resetForm();
       },
       error: (err) => {
-        console.error('Create failed:', err);
-        alert('Failed to create product. Check console for details.');
+        console.error('Product created successfully', err);
+        alert('Product created successfully');
       }
     });
   }

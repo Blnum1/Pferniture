@@ -303,6 +303,22 @@
   },
   {
     "ContainingType": "TEST100API.Controllers.ProductController",
+    "Method": "SearchCategoryByID",
+    "RelativePath": "api/Product/SearchCategoryByID",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "categoryid",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TEST100API.Controllers.ProductController",
     "Method": "SearchProducts",
     "RelativePath": "api/Product/SearchProducts",
     "HttpMethod": "GET",

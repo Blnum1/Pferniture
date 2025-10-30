@@ -3,11 +3,10 @@
 
 <div class="container-fluid my-4 cart-layout">
   <div class="row">
-    
+    <h2 class="mb-3">ตะกร้าสินค้า</h2>
     <!-- ✅ พื้นที่รายการสินค้า (ซ้าย) -->
     <div class="col-lg-9 col-md-8">
-      <h2 class="mb-3">ตะกร้าสินค้า</h2>
-
+      
       <div *ngIf="loading" class="text-muted">กำลังโหลด...</div>
       <div *ngIf="!loading && errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
 
@@ -66,8 +65,18 @@
         </div>
 
         <div class="summary-total mb-3">
-          <div>รวมที่เลือก:</div>
+          <div>รวมที่เลือก</div>
           <div class="fs-4 fw-bold text-primary">{{ selectedTotal | number:'1.0-0' }} ฿</div>
+        </div>
+
+        <div class="summary-total mb-3">
+          <div>ค่าจัดส่ง</div>
+          <div class="fs-6 fw-bold text-success"> 0 ฿</div>
+        </div>
+
+        <div class="summary-total mb-3">
+          <div>Tax</div>
+          <div class="fs-6 fw-bold "> Free </div>
         </div>
 
         <button class="btn btn-primary w-100 py-2"
