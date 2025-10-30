@@ -271,8 +271,38 @@ namespace TEST100API.Controllers
       return Ok(rows);
     }
 
+    [AllowAnonymous]
+    [HttpGet("SearchCategoryByID")]
+    public async Task<IActionResult> SearchCategoryByID([FromQuery] string categoryid)
+    {
+      if (string.IsNullOrEmpty(categoryid))
+      {
+        return BadRequest("Search query cannot be empty.");
+      }
+
+      var rows = await _context.Categories
+          .FromSqlRaw(@"
+            SELECT
+                c.CategoryID,
+                c.Category_Name
+            FROM dbo.Categories c
+            WHERE c.CategoryID = @Query
+            ORDER BY c.CategoryID",
+              new SqlParameter("@Query", categoryid))
+          .AsNoTracking()
+          .ToListAsync();
+
+      if (rows == null || !rows.Any())
+      {
+        return NotFound("No category found with the given ID.");
+      }
+
+      return Ok(rows);
+    }
+
+
 
   }
 
-  
+
 }

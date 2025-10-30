@@ -84,4 +84,8 @@ getCategoryByID(categoryID: number): Observable<Product[]> {
     const params = new HttpParams().set('query', query);
     return this.http.get<any[]>(`${this.apiUrl}/SearchProducts`, { params });
   }
+
+  searchCategoryById(categoryId: number): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.apiUrl}/SearchCategoryByID?categoryid=${categoryId}`);
+  }
 }
